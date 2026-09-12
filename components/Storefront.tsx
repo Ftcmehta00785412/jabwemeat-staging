@@ -1,0 +1,21 @@
+import React from 'react';
+import { ShieldCheck, Snowflake, BadgeIndianRupee, Truck, Search } from 'lucide-react';
+import { CATEGORIES } from '../data';
+import { ProductCard } from './ProductCard';
+import type { CartItem, Product } from '../types';
+
+type Props={products:Product[]; cart:CartItem[]; category:string; setCategory:(v:string)=>void; search:string; setSearch:(v:string)=>void; pincode:string; serviceable:boolean; onAdd:(p:Product)=>void; onRemove:(id:string)=>void};
+export const Storefront: React.FC<Props> = ({products,cart,category,setCategory,search,setSearch,pincode,serviceable,onAdd,onRemove}) => {
+ const filtered=products.filter(p=>(category==='All'||p.category===category)&&(`${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase())));
+ return <main>
+  <section className="bg-primary text-primary-content"><div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-[1.25fr_.75fr] md:py-16"><div className="space-y-5"><span className="badge badge-lg border-primary-content/30 bg-primary-content/10 text-primary-content">Fresh cuts • Ranchi delivery</span><h1 className="max-w-2xl text-4xl font-black leading-tight md:text-6xl">Fresh meat, made simple.</h1><p className="max-w-xl text-lg text-primary-content/80">Clean cuts, careful packing and dependable slot-based delivery across selected Ranchi PIN codes.</p><div className="flex flex-wrap gap-2"><span className="badge badge-lg bg-base-100 text-base-content">₹100 off first order</span><span className="badge badge-lg bg-base-100 text-base-content">First 3 deliveries free</span><span className="badge badge-lg bg-base-100 text-base-content">COD only</span></div></div><div className="card self-center bg-base-100 text-base-content shadow-xl"><div className="card-body"><div className="text-5xl">🥩</div><h2 className="card-title">JabWeMeat™ quality promise</h2><p className="text-sm text-base-content/60">Transparent sourcing, hygienic handling and chilled delivery standards—your own proof and lab reports will appear here.</p></div></div></div></section>
+  <section className="mx-auto max-w-7xl space-y-6 px-4 py-8">
+   {pincode.length===6 && <div className={`alert ${serviceable?'alert-success':'alert-warning'}`}>{serviceable?<><Truck size={20}/><span>Great—we deliver to {pincode}. Select your slot at checkout.</span></>:<><Truck size={20}/><span>{pincode} is outside the current service area. Launch PINs: 834002, 834003 and 834004.</span></>}</div>}
+   <label className="input input-bordered flex items-center gap-2 sm:hidden"><Search size={16} className="opacity-60"/><input className="grow" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search products…"/></label>
+   <div className="flex gap-2 overflow-x-auto pb-2">{CATEGORIES.map(c=><button key={c} className={`btn btn-sm whitespace-nowrap ${category===c?'btn-primary':'btn-ghost bg-base-200'}`} onClick={()=>setCategory(c)}>{c}</button>)}</div>
+   <div className="flex items-end justify-between"><div><p className="text-sm font-semibold text-primary">SHOP FRESH</p><h2 className="text-2xl font-black">Popular in Ranchi</h2></div><span className="text-sm text-base-content/60">{filtered.length} products</span></div>
+   {filtered.length?<div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{filtered.map(p=><ProductCard key={p.id} product={p} quantity={cart.find(i=>i.id===p.id)?.quantity||0} onAdd={()=>onAdd(p)} onRemove={()=>onRemove(p.id)}/>)}</div>:<div className="card bg-base-200"><div className="card-body items-center py-12"><Search size={36} className="opacity-40"/><p>No matching products found.</p></div></div>}
+  </section>
+  <section className="bg-base-200"><div className="mx-auto grid max-w-7xl gap-4 px-4 py-10 md:grid-cols-4">{[[ShieldCheck,'Quality checks','Document sourcing and hygiene standards.'],[Snowflake,'Chilled handling','Temperature-aware packing and dispatch.'],[BadgeIndianRupee,'Fair value','Clear weight, price and discounts.'],[Truck,'Ranchi slots','Four scheduled windows every day.']].map(([Icon,title,body]:any)=><div className="card bg-base-100" key={title}><div className="card-body p-5"><Icon className="text-primary"/><h3 className="font-bold">{title}</h3><p className="text-sm text-base-content/60">{body}</p></div></div>)}</div></section>
+ </main>
+};
