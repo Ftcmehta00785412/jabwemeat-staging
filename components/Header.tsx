@@ -1,25 +1,32 @@
 import React from 'react';
-import { MapPin, Search, ShoppingCart, Store, LayoutDashboard } from 'lucide-react';
+import { MapPin, Search, ShoppingBag, Store, LayoutDashboard, UserRound, ChevronDown, Menu } from 'lucide-react';
 import type { AppView } from '../types';
 
 type Props = { view: AppView; setView:(v:AppView)=>void; pincode:string; setPincode:(v:string)=>void; search:string; setSearch:(v:string)=>void; cartCount:number; onCart:()=>void };
 
 export const Header: React.FC<Props> = ({view,setView,pincode,setPincode,search,setSearch,cartCount,onCart}) => (
-  <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/95 backdrop-blur">
-    <div className="navbar mx-auto max-w-7xl gap-2 px-4">
-      <button className="flex items-center gap-2" onClick={()=>setView('store')}>
-        <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-xl font-black text-primary-content">J</span>
-        <span className="text-lg font-black tracking-tight">JabWeMeat<sup className="text-xs text-primary">™</sup></span>
-      </button>
-      <label className="input input-bordered ml-2 hidden min-w-40 items-center gap-2 md:flex">
-        <MapPin size={16} className="opacity-60"/><input className="grow" maxLength={6} value={pincode} onChange={e=>setPincode(e.target.value.replace(/\D/g,''))} placeholder="Ranchi PIN" />
-      </label>
-      {view==='store' && <label className="input input-bordered ml-auto hidden max-w-md flex-1 items-center gap-2 sm:flex"><Search size={16} className="opacity-60"/><input className="grow" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search chicken, fish, eggs…"/></label>}
-      <div className="ml-auto flex gap-2 sm:ml-0">
-        <button className={`btn btn-sm ${view==='store'?'btn-primary':'btn-ghost'}`} onClick={()=>setView('store')}><Store size={16}/><span className="hidden lg:inline">Store</span></button>
-        <button className={`btn btn-sm ${view==='admin'?'btn-secondary':'btn-ghost'}`} onClick={()=>setView('admin')}><LayoutDashboard size={16}/><span className="hidden lg:inline">Admin</span></button>
-        {view==='store' && <button className="btn btn-sm btn-ghost relative" onClick={onCart}><ShoppingCart size={18}/><span className="badge badge-primary badge-sm">{cartCount}</span></button>}
+  <>
+    <div className="offer-bar">Freshness delivered in Ranchi · ₹100 off your first order · COD available</div>
+    <header className="site-header">
+      <div className="header-inner">
+        <button className="mobile-menu" aria-label="Open menu"><Menu size={23}/></button>
+        <button className="brand" onClick={()=>setView('store')} aria-label="JabWeMeat home">
+          <span className="brand-mark"><span>J</span></span>
+          <span className="brand-copy"><b>JabWeMeat<sup>™</sup></b><small>FRESH · CLEAN · TRUSTED</small></span>
+        </button>
+        <div className="delivery-location">
+          <span className="location-icon"><MapPin size={18}/></span>
+          <label><small>Delivering to</small><span>Ranchi, {pincode || 'enter PIN'} <ChevronDown size={14}/></span></label>
+          <input aria-label="Delivery PIN" maxLength={6} value={pincode} onChange={e=>setPincode(e.target.value.replace(/\D/g,''))}/>
+        </div>
+        {view==='store' && <label className="desktop-search"><Search size={18}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search for chicken, fish, mutton…"/></label>}
+        <nav className="header-actions">
+          <button className={`nav-action ${view==='store'?'active':''}`} onClick={()=>setView('store')}><Store size={20}/><span>Shop</span></button>
+          <button className={`nav-action admin-link ${view==='admin'?'active':''}`} onClick={()=>setView('admin')}><LayoutDashboard size={20}/><span>Admin</span></button>
+          <button className="nav-action"><UserRound size={20}/><span>Profile</span></button>
+          {view==='store' && <button className="cart-button" onClick={onCart}><ShoppingBag size={21}/><span>Cart</span>{cartCount>0&&<b>{cartCount}</b>}</button>}
+        </nav>
       </div>
-    </div>
-  </header>
+    </header>
+  </>
 );

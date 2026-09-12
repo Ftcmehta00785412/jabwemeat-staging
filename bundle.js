@@ -23830,7 +23830,7 @@
     }
   });
 
-  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-06fd877b-0cf3-4817-a39e-d0dded6d8e5f/app.tsx
+  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-fa95ee6b-98fd-4899-b197-cffa68b99650/app.tsx
   var import_react5 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
@@ -23923,8 +23923,15 @@
     return Component;
   };
 
-  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/badge-indian-rupee.js
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/arrow-right.js
   var __iconNode = [
+    ["path", { d: "M5 12h14", key: "1ays0h" }],
+    ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+  ];
+  var ArrowRight = createLucideIcon("arrow-right", __iconNode);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/badge-indian-rupee.js
+  var __iconNode2 = [
     [
       "path",
       {
@@ -23936,44 +23943,76 @@
     ["path", { d: "M8 12h8", key: "1wcyev" }],
     ["path", { d: "m13 17-5-1h1a4 4 0 0 0 0-8", key: "nu2bwa" }]
   ];
-  var BadgeIndianRupee = createLucideIcon("badge-indian-rupee", __iconNode);
+  var BadgeIndianRupee = createLucideIcon("badge-indian-rupee", __iconNode2);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/chevron-down.js
+  var __iconNode3 = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+  var ChevronDown = createLucideIcon("chevron-down", __iconNode3);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/chevron-right.js
+  var __iconNode4 = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+  var ChevronRight = createLucideIcon("chevron-right", __iconNode4);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/clock-3.js
-  var __iconNode2 = [
+  var __iconNode5 = [
     ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
     ["polyline", { points: "12 6 12 12 16.5 12", key: "1aq6pp" }]
   ];
-  var Clock3 = createLucideIcon("clock-3", __iconNode2);
+  var Clock3 = createLucideIcon("clock-3", __iconNode5);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/ellipsis.js
-  var __iconNode3 = [
+  var __iconNode6 = [
     ["circle", { cx: "12", cy: "12", r: "1", key: "41hilf" }],
     ["circle", { cx: "19", cy: "12", r: "1", key: "1wjl8i" }],
     ["circle", { cx: "5", cy: "12", r: "1", key: "1pcz8c" }]
   ];
-  var Ellipsis = createLucideIcon("ellipsis", __iconNode3);
+  var Ellipsis = createLucideIcon("ellipsis", __iconNode6);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/facebook.js
+  var __iconNode7 = [
+    [
+      "path",
+      { d: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z", key: "1jg4f8" }
+    ]
+  ];
+  var Facebook = createLucideIcon("facebook", __iconNode7);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/indian-rupee.js
-  var __iconNode4 = [
+  var __iconNode8 = [
     ["path", { d: "M6 3h12", key: "ggurg9" }],
     ["path", { d: "M6 8h12", key: "6g4wlu" }],
     ["path", { d: "m6 13 8.5 8", key: "u1kupk" }],
     ["path", { d: "M6 13h3", key: "wdp6ag" }],
     ["path", { d: "M9 13c6.667 0 6.667-10 0-10", key: "1nkvk2" }]
   ];
-  var IndianRupee = createLucideIcon("indian-rupee", __iconNode4);
+  var IndianRupee = createLucideIcon("indian-rupee", __iconNode8);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/instagram.js
+  var __iconNode9 = [
+    ["rect", { width: "20", height: "20", x: "2", y: "2", rx: "5", ry: "5", key: "2e1cvw" }],
+    ["path", { d: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z", key: "9exkf1" }],
+    ["line", { x1: "17.5", x2: "17.51", y1: "6.5", y2: "6.5", key: "r4j83e" }]
+  ];
+  var Instagram = createLucideIcon("instagram", __iconNode9);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/layout-dashboard.js
-  var __iconNode5 = [
+  var __iconNode10 = [
     ["rect", { width: "7", height: "9", x: "3", y: "3", rx: "1", key: "10lvy0" }],
     ["rect", { width: "7", height: "5", x: "14", y: "3", rx: "1", key: "16une8" }],
     ["rect", { width: "7", height: "9", x: "14", y: "12", rx: "1", key: "1hutg5" }],
     ["rect", { width: "7", height: "5", x: "3", y: "16", rx: "1", key: "ldoo1y" }]
   ];
-  var LayoutDashboard = createLucideIcon("layout-dashboard", __iconNode5);
+  var LayoutDashboard = createLucideIcon("layout-dashboard", __iconNode10);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/mail.js
+  var __iconNode11 = [
+    ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
+    ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
+  ];
+  var Mail = createLucideIcon("mail", __iconNode11);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/map-pin.js
-  var __iconNode6 = [
+  var __iconNode12 = [
     [
       "path",
       {
@@ -23983,14 +24022,22 @@
     ],
     ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
   ];
-  var MapPin = createLucideIcon("map-pin", __iconNode6);
+  var MapPin = createLucideIcon("map-pin", __iconNode12);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/menu.js
+  var __iconNode13 = [
+    ["path", { d: "M4 12h16", key: "1lakjw" }],
+    ["path", { d: "M4 18h16", key: "19g7jn" }],
+    ["path", { d: "M4 6h16", key: "1o0s65" }]
+  ];
+  var Menu = createLucideIcon("menu", __iconNode13);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/minus.js
-  var __iconNode7 = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-  var Minus = createLucideIcon("minus", __iconNode7);
+  var __iconNode14 = [["path", { d: "M5 12h14", key: "1ays0h" }]];
+  var Minus = createLucideIcon("minus", __iconNode14);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/package.js
-  var __iconNode8 = [
+  var __iconNode15 = [
     [
       "path",
       {
@@ -24002,24 +24049,36 @@
     ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
     ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
   ];
-  var Package = createLucideIcon("package", __iconNode8);
+  var Package = createLucideIcon("package", __iconNode15);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/phone.js
+  var __iconNode16 = [
+    [
+      "path",
+      {
+        d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
+        key: "9njp5v"
+      }
+    ]
+  ];
+  var Phone = createLucideIcon("phone", __iconNode16);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/plus.js
-  var __iconNode9 = [
+  var __iconNode17 = [
     ["path", { d: "M5 12h14", key: "1ays0h" }],
     ["path", { d: "M12 5v14", key: "s699le" }]
   ];
-  var Plus = createLucideIcon("plus", __iconNode9);
+  var Plus = createLucideIcon("plus", __iconNode17);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/search.js
-  var __iconNode10 = [
+  var __iconNode18 = [
     ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
     ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
   ];
-  var Search = createLucideIcon("search", __iconNode10);
+  var Search = createLucideIcon("search", __iconNode18);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/shield-check.js
-  var __iconNode11 = [
+  var __iconNode19 = [
     [
       "path",
       {
@@ -24029,10 +24088,10 @@
     ],
     ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
   ];
-  var ShieldCheck = createLucideIcon("shield-check", __iconNode11);
+  var ShieldCheck = createLucideIcon("shield-check", __iconNode19);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/shopping-bag.js
-  var __iconNode12 = [
+  var __iconNode20 = [
     ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }],
     ["path", { d: "M3.103 6.034h17.794", key: "awc11p" }],
     [
@@ -24043,24 +24102,10 @@
       }
     ]
   ];
-  var ShoppingBag = createLucideIcon("shopping-bag", __iconNode12);
-
-  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/shopping-cart.js
-  var __iconNode13 = [
-    ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
-    ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
-    [
-      "path",
-      {
-        d: "M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12",
-        key: "9zh506"
-      }
-    ]
-  ];
-  var ShoppingCart = createLucideIcon("shopping-cart", __iconNode13);
+  var ShoppingBag = createLucideIcon("shopping-bag", __iconNode20);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/snowflake.js
-  var __iconNode14 = [
+  var __iconNode21 = [
     ["path", { d: "m10 20-1.25-2.5L6 18", key: "18frcb" }],
     ["path", { d: "M10 4 8.75 6.5 6 6", key: "7mghy3" }],
     ["path", { d: "m14 20 1.25-2.5L18 18", key: "1chtki" }],
@@ -24074,10 +24119,38 @@
     ["path", { d: "m7 21 3-6-1.5-3", key: "j8hb9u" }],
     ["path", { d: "m7 3 3 6h4", key: "1otusx" }]
   ];
-  var Snowflake = createLucideIcon("snowflake", __iconNode14);
+  var Snowflake = createLucideIcon("snowflake", __iconNode21);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/sparkles.js
+  var __iconNode22 = [
+    [
+      "path",
+      {
+        d: "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z",
+        key: "4pj2yx"
+      }
+    ],
+    ["path", { d: "M20 3v4", key: "1olli1" }],
+    ["path", { d: "M22 5h-4", key: "1gvqau" }],
+    ["path", { d: "M4 17v2", key: "vumght" }],
+    ["path", { d: "M5 18H3", key: "zchphs" }]
+  ];
+  var Sparkles = createLucideIcon("sparkles", __iconNode22);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/star.js
+  var __iconNode23 = [
+    [
+      "path",
+      {
+        d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
+        key: "r04s7s"
+      }
+    ]
+  ];
+  var Star = createLucideIcon("star", __iconNode23);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/store.js
-  var __iconNode15 = [
+  var __iconNode24 = [
     ["path", { d: "m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7", key: "ztvudi" }],
     ["path", { d: "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8", key: "1b2hhj" }],
     ["path", { d: "M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4", key: "2ebpfo" }],
@@ -24090,10 +24163,10 @@
       }
     ]
   ];
-  var Store = createLucideIcon("store", __iconNode15);
+  var Store = createLucideIcon("store", __iconNode24);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/tag.js
-  var __iconNode16 = [
+  var __iconNode25 = [
     [
       "path",
       {
@@ -24103,20 +24176,20 @@
     ],
     ["circle", { cx: "7.5", cy: "7.5", r: ".5", fill: "currentColor", key: "kqv944" }]
   ];
-  var Tag = createLucideIcon("tag", __iconNode16);
+  var Tag = createLucideIcon("tag", __iconNode25);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/trash-2.js
-  var __iconNode17 = [
+  var __iconNode26 = [
     ["path", { d: "M3 6h18", key: "d0wm0j" }],
     ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
     ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
     ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
     ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
   ];
-  var Trash2 = createLucideIcon("trash-2", __iconNode17);
+  var Trash2 = createLucideIcon("trash-2", __iconNode26);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/triangle-alert.js
-  var __iconNode18 = [
+  var __iconNode27 = [
     [
       "path",
       {
@@ -24127,10 +24200,10 @@
     ["path", { d: "M12 9v4", key: "juzpu7" }],
     ["path", { d: "M12 17h.01", key: "p32p05" }]
   ];
-  var TriangleAlert = createLucideIcon("triangle-alert", __iconNode18);
+  var TriangleAlert = createLucideIcon("triangle-alert", __iconNode27);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/truck.js
-  var __iconNode19 = [
+  var __iconNode28 = [
     ["path", { d: "M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2", key: "wrbu53" }],
     ["path", { d: "M15 18H9", key: "1lyqi6" }],
     [
@@ -24143,59 +24216,87 @@
     ["circle", { cx: "17", cy: "18", r: "2", key: "332jqn" }],
     ["circle", { cx: "7", cy: "18", r: "2", key: "19iecd" }]
   ];
-  var Truck = createLucideIcon("truck", __iconNode19);
+  var Truck = createLucideIcon("truck", __iconNode28);
+
+  // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/user-round.js
+  var __iconNode29 = [
+    ["circle", { cx: "12", cy: "8", r: "5", key: "1hypcn" }],
+    ["path", { d: "M20 21a8 8 0 0 0-16 0", key: "rfgkzh" }]
+  ];
+  var UserRound = createLucideIcon("user-round", __iconNode29);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/users.js
-  var __iconNode20 = [
+  var __iconNode30 = [
     ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
     ["path", { d: "M16 3.128a4 4 0 0 1 0 7.744", key: "16gr8j" }],
     ["path", { d: "M22 21v-2a4 4 0 0 0-3-3.87", key: "kshegd" }],
     ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }]
   ];
-  var Users = createLucideIcon("users", __iconNode20);
+  var Users = createLucideIcon("users", __iconNode30);
 
   // ../../../tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/lucide-react/dist/esm/icons/x.js
-  var __iconNode21 = [
+  var __iconNode31 = [
     ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
     ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
   ];
-  var X = createLucideIcon("x", __iconNode21);
+  var X = createLucideIcon("x", __iconNode31);
 
-  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-06fd877b-0cf3-4817-a39e-d0dded6d8e5f/components/Header.tsx
+  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-fa95ee6b-98fd-4899-b197-cffa68b99650/components/Header.tsx
   var import_jsx_runtime = __toESM(require_jsx_runtime());
-  var Header = ({ view, setView, pincode, setPincode, search, setSearch, cartCount, onCart }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", { className: "sticky top-0 z-30 border-b border-base-300 bg-base-100/95 backdrop-blur", children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "navbar mx-auto max-w-7xl gap-2 px-4", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: "flex items-center gap-2", onClick: () => setView("store"), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "grid h-10 w-10 place-items-center rounded-2xl bg-primary text-xl font-black text-primary-content", children: "J" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "text-lg font-black tracking-tight", children: [
-        "JabWeMeat",
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("sup", { className: "text-xs text-primary", children: "\u2122" })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { className: "input input-bordered ml-2 hidden min-w-40 items-center gap-2 md:flex", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { size: 16, className: "opacity-60" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { className: "grow", maxLength: 6, value: pincode, onChange: (e) => setPincode(e.target.value.replace(/\D/g, "")), placeholder: "Ranchi PIN" })
-    ] }),
-    view === "store" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { className: "input input-bordered ml-auto hidden max-w-md flex-1 items-center gap-2 sm:flex", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { size: 16, className: "opacity-60" }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { className: "grow", value: search, onChange: (e) => setSearch(e.target.value), placeholder: "Search chicken, fish, eggs\u2026" })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "ml-auto flex gap-2 sm:ml-0", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: `btn btn-sm ${view === "store" ? "btn-primary" : "btn-ghost"}`, onClick: () => setView("store"), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Store, { size: 16 }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "hidden lg:inline", children: "Store" })
+  var Header = ({ view, setView, pincode, setPincode, search, setSearch, cartCount, onCart }) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "offer-bar", children: "Freshness delivered in Ranchi \xB7 \u20B9100 off your first order \xB7 COD available" }),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", { className: "site-header", children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "header-inner", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: "mobile-menu", "aria-label": "Open menu", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Menu, { size: 23 }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: "brand", onClick: () => setView("store"), "aria-label": "JabWeMeat home", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "brand-mark", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "J" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "brand-copy", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("b", { children: [
+            "JabWeMeat",
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("sup", { children: "\u2122" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "FRESH \xB7 CLEAN \xB7 TRUSTED" })
+        ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: `btn btn-sm ${view === "admin" ? "btn-secondary" : "btn-ghost"}`, onClick: () => setView("admin"), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LayoutDashboard, { size: 16 }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "hidden lg:inline", children: "Admin" })
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "delivery-location", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "location-icon", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MapPin, { size: 18 }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "Delivering to" }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+            "Ranchi, ",
+            pincode || "enter PIN",
+            " ",
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { size: 14 })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { "aria-label": "Delivery PIN", maxLength: 6, value: pincode, onChange: (e) => setPincode(e.target.value.replace(/\D/g, "")) })
       ] }),
-      view === "store" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: "btn btn-sm btn-ghost relative", onClick: onCart, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShoppingCart, { size: 18 }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "badge badge-primary badge-sm", children: cartCount })
+      view === "store" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { className: "desktop-search", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, { size: 18 }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", { value: search, onChange: (e) => setSearch(e.target.value), placeholder: "Search for chicken, fish, mutton\u2026" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", { className: "header-actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: `nav-action ${view === "store" ? "active" : ""}`, onClick: () => setView("store"), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Store, { size: 20 }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Shop" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: `nav-action admin-link ${view === "admin" ? "active" : ""}`, onClick: () => setView("admin"), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LayoutDashboard, { size: 20 }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Admin" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: "nav-action", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserRound, { size: 20 }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Profile" })
+        ] }),
+        view === "store" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", { className: "cart-button", onClick: onCart, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShoppingBag, { size: 21 }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Cart" }),
+          cartCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: cartCount })
+        ] })
       ] })
-    ] })
-  ] }) });
+    ] }) })
+  ] });
 
-  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-06fd877b-0cf3-4817-a39e-d0dded6d8e5f/data.ts
+  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-fa95ee6b-98fd-4899-b197-cffa68b99650/data.ts
   var PRODUCTS = [
     { id: "p1", sku: "JWM-CHK-001", name: "Classic Chicken Curry Cut", category: "Chicken", description: "Fresh skinless curry pieces, cleaned and ready to cook.", weight: "500 g", servings: "3\u20134", price: 179, mrp: 209, stock: 32, icon: "\u{1F357}", featured: true },
     { id: "p2", sku: "JWM-CHK-002", name: "Chicken Breast Boneless", category: "Chicken", description: "Lean, tender cuts for grills, curries and meal prep.", weight: "450 g", servings: "2\u20133", price: 229, mrp: 259, stock: 18, icon: "\u{1F969}", featured: true },
@@ -24210,121 +24311,230 @@
   var SLOTS = ["9:00\u201311:00 AM", "12:00\u20133:00 PM", "4:00\u20136:00 PM", "7:00\u20139:00 PM"];
   var SERVICEABLE_PINS = ["834002", "834003", "834004"];
 
-  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-06fd877b-0cf3-4817-a39e-d0dded6d8e5f/components/ProductCard.tsx
+  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-fa95ee6b-98fd-4899-b197-cffa68b99650/components/ProductCard.tsx
   var import_jsx_runtime2 = __toESM(require_jsx_runtime());
+  var PRODUCT_IMAGES = {
+    p1: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=800&q=85",
+    p2: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=85",
+    p3: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=800&q=85",
+    p4: "https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=800&q=85",
+    p5: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=800&q=85",
+    p6: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=800&q=85",
+    p7: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=800&q=85",
+    p8: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=85"
+  };
   var ProductCard = ({ product, quantity, onAdd, onRemove }) => {
     const discount = Math.round((1 - product.price / product.mrp) * 100);
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("article", { className: "card overflow-hidden border border-base-300 bg-base-100 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "grid h-40 place-items-center bg-primary/10 text-6xl", "aria-label": `${product.name} placeholder image`, children: product.icon }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "card-body gap-3 p-4", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex items-start justify-between gap-2", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h3", { className: "font-bold leading-tight", children: product.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "badge badge-success badge-sm whitespace-nowrap", children: [
-            discount,
-            "% off"
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("article", { className: "product-card", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "product-image-wrap", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("img", { src: PRODUCT_IMAGES[product.id], alt: product.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "discount-pill", children: [
+          discount,
+          "% OFF"
+        ] }),
+        product.featured && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "bestseller", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Star, { size: 12, fill: "currentColor" }),
+          " Bestseller"
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "product-info", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "product-category", children: product.category }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h3", { children: product.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "product-description", children: product.description }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "product-meta", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { children: product.weight }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("i", { children: "\u2022" }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { children: [
+            "Serves ",
+            product.servings
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "line-clamp-2 text-sm text-base-content/60", children: product.description }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-wrap gap-2 text-xs text-base-content/60", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "badge badge-ghost", children: product.weight }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "inline-flex items-center gap-1", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Users, { size: 13 }),
-            product.servings,
-            " servings"
-          ] })
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "fresh-note", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Snowflake, { size: 13 }),
+          " Chilled & freshly packed"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex items-end justify-between gap-3", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "text-lg font-black", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "product-buy-row", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "price", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("strong", { children: [
               "\u20B9",
               product.price
             ] }),
-            " ",
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { className: "text-xs text-base-content/50 line-through", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("del", { children: [
               "\u20B9",
               product.mrp
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex items-center gap-1 text-xs text-success", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Clock3, { size: 12 }),
-              "Choose a delivery slot"
             ] })
           ] }),
-          quantity === 0 ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "btn btn-primary btn-sm", onClick: onAdd, disabled: product.stock === 0, children: "Add" }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "join", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "btn btn-sm join-item", onClick: onRemove, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Minus, { size: 14 }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "btn btn-sm join-item pointer-events-none", children: quantity }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "btn btn-primary btn-sm join-item", onClick: onAdd, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Plus, { size: 14 }) })
+          quantity === 0 ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { className: "add-button", onClick: onAdd, disabled: product.stock === 0, children: product.stock === 0 ? "Sold out" : "ADD" }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "quantity-control", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { onClick: onRemove, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Minus, { size: 15 }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { children: quantity }),
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { onClick: onAdd, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Plus, { size: 15 }) })
           ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("p", { className: "slot-note", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Clock3, { size: 13 }),
+          " Available in today\u2019s delivery slots"
         ] })
       ] })
     ] });
   };
 
-  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-06fd877b-0cf3-4817-a39e-d0dded6d8e5f/components/Storefront.tsx
+  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-fa95ee6b-98fd-4899-b197-cffa68b99650/components/Storefront.tsx
   var import_jsx_runtime3 = __toESM(require_jsx_runtime());
+  var CATEGORY_ICONS = { "All": "\u2726", "Chicken": "\u{1F357}", "Mutton": "\u{1F969}", "Fish & Seafood": "\u{1F41F}", "Eggs": "\u{1F95A}", "Ready to Cook": "\u{1F362}", "Combos": "\u{1F6CD}\uFE0F" };
   var Storefront = ({ products, cart, category, setCategory, search, setSearch, pincode, serviceable, onAdd, onRemove }) => {
     const filtered = products.filter((p) => (category === "All" || p.category === category) && `${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase()));
     return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("main", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("section", { className: "bg-primary text-primary-content", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-[1.25fr_.75fr] md:py-16", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "space-y-5", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "badge badge-lg border-primary-content/30 bg-primary-content/10 text-primary-content", children: "Fresh cuts \u2022 Ranchi delivery" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h1", { className: "max-w-2xl text-4xl font-black leading-tight md:text-6xl", children: "Fresh meat, made simple." }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "max-w-xl text-lg text-primary-content/80", children: "Clean cuts, careful packing and dependable slot-based delivery across selected Ranchi PIN codes." }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex flex-wrap gap-2", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "badge badge-lg bg-base-100 text-base-content", children: "\u20B9100 off first order" }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "badge badge-lg bg-base-100 text-base-content", children: "First 3 deliveries free" }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "badge badge-lg bg-base-100 text-base-content", children: "COD only" })
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "card self-center bg-base-100 text-base-content shadow-xl", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "card-body", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "text-5xl", children: "\u{1F969}" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { className: "card-title", children: "JabWeMeat\u2122 quality promise" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "text-sm text-base-content/60", children: "Transparent sourcing, hygienic handling and chilled delivery standards\u2014your own proof and lab reports will appear here." })
-        ] }) })
-      ] }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { className: "mx-auto max-w-7xl space-y-6 px-4 py-8", children: [
-        pincode.length === 6 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: `alert ${serviceable ? "alert-success" : "alert-warning"}`, children: serviceable ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Truck, { size: 20 }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
-            "Great\u2014we deliver to ",
-            pincode,
-            ". Select your slot at checkout."
-          ] })
-        ] }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Truck, { size: 20 }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
-            pincode,
-            " is outside the current service area. Launch PINs: 834002, 834003 and 834004."
-          ] })
-        ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { className: "input input-bordered flex items-center gap-2 sm:hidden", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Search, { size: 16, className: "opacity-60" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { className: "grow", value: search, onChange: (e) => setSearch(e.target.value), placeholder: "Search products\u2026" })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "flex gap-2 overflow-x-auto pb-2", children: CATEGORIES.map((c) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: `btn btn-sm whitespace-nowrap ${category === c ? "btn-primary" : "btn-ghost bg-base-200"}`, onClick: () => setCategory(c), children: c }, c)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "flex items-end justify-between", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "text-sm font-semibold text-primary", children: "SHOP FRESH" }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { className: "text-2xl font-black", children: "Popular in Ranchi" })
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { className: "hero-section", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "hero-glow hero-glow-one" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "hero-glow hero-glow-two" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "hero-inner", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "hero-copy", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { className: "eyebrow", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Sparkles, { size: 14 }),
+              " Ranchi\u2019s fresh meat destination"
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("h1", { children: [
+              "Fresh cuts.",
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("br", {}),
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("em", { children: "Honest goodness." })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "Carefully selected, hygienically packed and delivered fresh to your doorstep\u2014right when you choose." }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "hero-cta-row", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("button", { className: "primary-cta", onClick: () => document.getElementById("shop")?.scrollIntoView(), children: [
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "Shop fresh cuts" }),
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArrowRight, { size: 18 })
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "rating", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: "4.9" }),
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "\u2605\u2605\u2605\u2605\u2605" }),
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: "Early customer love" })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "hero-trust", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ShieldCheck, { size: 17 }),
+                " Quality checked"
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Snowflake, { size: 17 }),
+                " Chilled delivery"
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Clock3, { size: 17 }),
+                " Your chosen slot"
+              ] })
+            ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { className: "text-sm text-base-content/60", children: [
-            filtered.length,
-            " products"
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "hero-visual", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "hero-image", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("img", { src: "https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?auto=format&fit=crop&w=1200&q=88", alt: "Fresh premium cuts" }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "floating-card freshness", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "100%" }),
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+                "Freshness",
+                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("br", {}),
+                "promise"
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "floating-card offer", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("b", { children: "\u20B9100 OFF" }),
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: "on your first order" })
+            ] })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("section", { className: "quick-benefits", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "quick-benefits-inner", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "benefit-icon", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Truck, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: "Free delivery" }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: "On your first 3 orders" })
           ] })
         ] }),
-        filtered.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "grid gap-5 sm:grid-cols-2 lg:grid-cols-4", children: filtered.map((p) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ProductCard, { product: p, quantity: cart.find((i) => i.id === p.id)?.quantity || 0, onAdd: () => onAdd(p), onRemove: () => onRemove(p.id) }, p.id)) }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "card bg-base-200", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "card-body items-center py-12", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Search, { size: 36, className: "opacity-40" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "No matching products found." })
-        ] }) })
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "benefit-icon", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(BadgeIndianRupee, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: "Pay at your door" }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: "Cash on delivery" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "benefit-icon", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Clock3, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: "Four daily slots" }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: "Delivery on your schedule" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "benefit-icon", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(MapPin, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: "Made for Ranchi" }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: "Local, dependable service" })
+          ] })
+        ] })
+      ] }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { className: "store-container", id: "shop", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: `service-banner ${serviceable ? "available" : "unavailable"}`, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(MapPin, { size: 19 }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: serviceable ? `We deliver to ${pincode}` : `We\u2019re not at ${pincode} yet` }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: serviceable ? "Fresh delivery slots are available today." : "Currently serving 834002, 834003 and 834004." })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("button", { children: [
+            "Change PIN ",
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ChevronRight, { size: 15 })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { className: "mobile-search", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Search, { size: 18 }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { value: search, onChange: (e) => setSearch(e.target.value), placeholder: "Search fresh products\u2026" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "section-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "SHOP BY CATEGORY" }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "What are you craving today?" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "Freshly prepared after you order" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "category-strip", children: CATEGORIES.map((c) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("button", { className: category === c ? "selected" : "", onClick: () => setCategory(c), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: CATEGORY_ICONS[c] }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("b", { children: c })
+        ] }, c)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "section-heading products-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "HANDPICKED FOR YOU" }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: category === "All" ? "Ranchi favourites" : category })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+            filtered.length,
+            " fresh selections"
+          ] })
+        ] }),
+        filtered.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "product-grid", children: filtered.map((p) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ProductCard, { product: p, quantity: cart.find((i) => i.id === p.id)?.quantity || 0, onAdd: () => onAdd(p), onRemove: () => onRemove(p.id) }, p.id)) }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "empty-products", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Search, { size: 36 }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: "No matching products" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "Try another search or category." })
+        ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("section", { className: "bg-base-200", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "mx-auto grid max-w-7xl gap-4 px-4 py-10 md:grid-cols-4", children: [[ShieldCheck, "Quality checks", "Document sourcing and hygiene standards."], [Snowflake, "Chilled handling", "Temperature-aware packing and dispatch."], [BadgeIndianRupee, "Fair value", "Clear weight, price and discounts."], [Truck, "Ranchi slots", "Four scheduled windows every day."]].map(([Icon2, title, body]) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "card bg-base-100", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "card-body p-5", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Icon2, { className: "text-primary" }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { className: "font-bold", children: title }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "text-sm text-base-content/60", children: body })
-      ] }) }, title)) }) })
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("section", { className: "promise-section", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "promise-inner", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "promise-title", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "THE JABWEMEAT PROMISE" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("h2", { children: [
+            "Good food begins with",
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("br", {}),
+            "ingredients you can trust."
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "From thoughtful sourcing to chilled doorstep delivery, every step is designed around freshness, hygiene and your confidence." })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "promise-grid", children: [[ShieldCheck, "Hygiene first", "Careful handling and clean preparation standards."], [Snowflake, "Always chilled", "Temperature-aware packing from us to your door."], [BadgeIndianRupee, "Honest value", "Clear weights, fair prices and no hidden surprises."], [Truck, "Reliable slots", "Choose from four convenient windows every day."]].map(([Icon2, title, body]) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "promise-card", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Icon2, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: title }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: body })
+        ] }, title)) })
+      ] }) })
     ] });
   };
 
-  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-06fd877b-0cf3-4817-a39e-d0dded6d8e5f/components/CartDrawer.tsx
+  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-fa95ee6b-98fd-4899-b197-cffa68b99650/components/CartDrawer.tsx
   var import_react3 = __toESM(require_react());
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
   var CartDrawer = ({ open, onClose, cart, pincode, setPincode, onRemoveAll }) => {
@@ -24436,7 +24646,7 @@
     ] }) });
   };
 
-  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-06fd877b-0cf3-4817-a39e-d0dded6d8e5f/components/AdminDashboard.tsx
+  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-fa95ee6b-98fd-4899-b197-cffa68b99650/components/AdminDashboard.tsx
   var import_react4 = __toESM(require_react());
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var AdminDashboard = ({ products, setProducts }) => {
@@ -24540,7 +24750,7 @@
     ] });
   };
 
-  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-06fd877b-0cf3-4817-a39e-d0dded6d8e5f/app.tsx
+  // ../../../tmp/tasklet-app-builds/jabwemeat-store-c7223c5a48c3-fa95ee6b-98fd-4899-b197-cffa68b99650/app.tsx
   var import_jsx_runtime6 = __toESM(require_jsx_runtime());
   var App = () => {
     const [view, setView] = (0, import_react5.useState)("store");
@@ -24557,14 +24767,64 @@
     const remove = (id) => setCart((prev) => prev.flatMap((i) => i.id !== id ? [i] : i.quantity > 1 ? [{ ...i, quantity: i.quantity - 1 }] : []));
     const removeAll = (id) => setCart((prev) => prev.filter((i) => i.id !== id));
     const count = (0, import_react5.useMemo)(() => cart.reduce((s, i) => s + i.quantity, 0), [cart]);
-    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "min-h-screen bg-base-100 text-base-content", children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "app-shell", children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Header, { view, setView, pincode, setPincode, search, setSearch, cartCount: count, onCart: () => setCartOpen(true) }),
       view === "store" ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Storefront, { products, cart, category, setCategory, search, setSearch, pincode, serviceable: SERVICEABLE_PINS.includes(pincode), onAdd: add, onRemove: remove }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(AdminDashboard, { products, setProducts }),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(CartDrawer, { open: cartOpen, onClose: () => setCartOpen(false), cart, pincode, setPincode, onRemoveAll: removeAll }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("footer", { className: "border-t border-base-300 bg-base-100", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "mx-auto flex max-w-7xl flex-col justify-between gap-3 px-4 py-6 text-sm text-base-content/60 sm:flex-row", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\xA9 2026 JabWeMeat\u2122 \xB7 Ranchi, Jharkhand" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Service PINs: 834002 \xB7 834003 \xB7 834004" })
-      ] }) })
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("footer", { className: "site-footer", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "footer-inner", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "footer-brand", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "brand inverted", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "brand-mark", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "J" }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "brand-copy", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("b", { children: [
+                  "JabWeMeat",
+                  /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("sup", { children: "\u2122" })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("small", { children: "FRESH \xB7 CLEAN \xB7 TRUSTED" })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "Fresh, hygienic cuts delivered across select Ranchi neighbourhoods in your chosen time slot." }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "socials", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Instagram, {}) }),
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Facebook, {}) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h4", { children: "Shop" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("a", { children: "Chicken" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("a", { children: "Mutton" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("a", { children: "Fish & Seafood" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("a", { children: "Ready to Cook" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h4", { children: "Help" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("a", { children: "About us" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("a", { children: "FAQs" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("a", { children: "Contact" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("a", { children: "Privacy policy" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("h4", { children: "Ranchi service" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(MapPin, {}),
+              " PINs 834002, 834003, 834004"
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Phone, {}),
+              " Customer care coming soon"
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Mail, {}),
+              " hello@jabwemeat.com"
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "footer-bottom", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\xA9 2026 JabWeMeat\u2122. All rights reserved." }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Prototype storefront \xB7 COD only" })
+        ] })
+      ] })
     ] });
   };
   (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime6.jsx)(App, {}));
@@ -24658,7 +24918,31 @@ lucide-react/dist/esm/createLucideIcon.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 
+lucide-react/dist/esm/icons/arrow-right.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
 lucide-react/dist/esm/icons/badge-indian-rupee.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/icons/chevron-down.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/icons/chevron-right.js:
   (**
    * @license lucide-react v0.523.0 - ISC
    *
@@ -24682,7 +24966,23 @@ lucide-react/dist/esm/icons/ellipsis.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 
+lucide-react/dist/esm/icons/facebook.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
 lucide-react/dist/esm/icons/indian-rupee.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/icons/instagram.js:
   (**
    * @license lucide-react v0.523.0 - ISC
    *
@@ -24698,7 +24998,23 @@ lucide-react/dist/esm/icons/layout-dashboard.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 
+lucide-react/dist/esm/icons/mail.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
 lucide-react/dist/esm/icons/map-pin.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/icons/menu.js:
   (**
    * @license lucide-react v0.523.0 - ISC
    *
@@ -24715,6 +25031,14 @@ lucide-react/dist/esm/icons/minus.js:
    *)
 
 lucide-react/dist/esm/icons/package.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/icons/phone.js:
   (**
    * @license lucide-react v0.523.0 - ISC
    *
@@ -24754,7 +25078,7 @@ lucide-react/dist/esm/icons/shopping-bag.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 
-lucide-react/dist/esm/icons/shopping-cart.js:
+lucide-react/dist/esm/icons/snowflake.js:
   (**
    * @license lucide-react v0.523.0 - ISC
    *
@@ -24762,7 +25086,15 @@ lucide-react/dist/esm/icons/shopping-cart.js:
    * See the LICENSE file in the root directory of this source tree.
    *)
 
-lucide-react/dist/esm/icons/snowflake.js:
+lucide-react/dist/esm/icons/sparkles.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/icons/star.js:
   (**
    * @license lucide-react v0.523.0 - ISC
    *
@@ -24803,6 +25135,14 @@ lucide-react/dist/esm/icons/triangle-alert.js:
    *)
 
 lucide-react/dist/esm/icons/truck.js:
+  (**
+   * @license lucide-react v0.523.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide-react/dist/esm/icons/user-round.js:
   (**
    * @license lucide-react v0.523.0 - ISC
    *
