@@ -1,32 +1,29 @@
 import React from 'react';
-import { MapPin, Search, ShoppingBag, Store, LayoutDashboard, UserRound, ChevronDown, Menu } from 'lucide-react';
+import { MapPin, Search, ShoppingCart, Store, LayoutDashboard, UserRound, Menu, Phone } from 'lucide-react';
 import type { AppView } from '../types';
 
 type Props = { view: AppView; setView:(v:AppView)=>void; pincode:string; setPincode:(v:string)=>void; search:string; setSearch:(v:string)=>void; cartCount:number; onCart:()=>void };
+const links=['Home','Shop All','Chicken','Mutton','Fish & Seafood','Ready to Cook','Combos'];
 
 export const Header: React.FC<Props> = ({view,setView,pincode,setPincode,search,setSearch,cartCount,onCart}) => (
   <>
-    <div className="offer-bar">Freshness delivered in Ranchi · ₹100 off your first order · COD available</div>
+    <div className="offer-bar">₹100 off your first order · First 3 deliveries free · Cash on delivery</div>
     <header className="site-header">
-      <div className="header-inner">
+      <div className="header-main">
         <button className="mobile-menu" aria-label="Open menu"><Menu size={23}/></button>
-        <button className="brand" onClick={()=>setView('store')} aria-label="JabWeMeat home">
-          <span className="brand-mark"><span>J</span></span>
-          <span className="brand-copy"><b>JabWeMeat<sup>™</sup></b><small>FRESH · CLEAN · TRUSTED</small></span>
+        <button className="brand" onClick={()=>setView('store')}>
+          <span className="brand-mark"><span>J</span><i/></span>
+          <span className="brand-copy"><b>JAB<span>WE</span>MEAT<sup>™</sup></b><small>FRESHNESS YOU CAN TRUST</small></span>
         </button>
-        <div className="delivery-location">
-          <span className="location-icon"><MapPin size={18}/></span>
-          <label><small>Delivering to</small><span>Ranchi, {pincode || 'enter PIN'} <ChevronDown size={14}/></span></label>
-          <input aria-label="Delivery PIN" maxLength={6} value={pincode} onChange={e=>setPincode(e.target.value.replace(/\D/g,''))}/>
-        </div>
-        {view==='store' && <label className="desktop-search"><Search size={18}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search for chicken, fish, mutton…"/></label>}
+        <label className="desktop-search"><Search size={18}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search fresh chicken, mutton, fish…"/></label>
+        <div className="delivery-location"><MapPin size={18}/><div><small>Deliver to Ranchi</small><b>{pincode || 'Enter PIN'}</b></div><input aria-label="Delivery PIN" maxLength={6} value={pincode} onChange={e=>setPincode(e.target.value.replace(/\D/g,''))}/></div>
         <nav className="header-actions">
-          <button className={`nav-action ${view==='store'?'active':''}`} onClick={()=>setView('store')}><Store size={20}/><span>Shop</span></button>
-          <button className={`nav-action admin-link ${view==='admin'?'active':''}`} onClick={()=>setView('admin')}><LayoutDashboard size={20}/><span>Admin</span></button>
-          <button className="nav-action"><UserRound size={20}/><span>Profile</span></button>
-          {view==='store' && <button className="cart-button" onClick={onCart}><ShoppingBag size={21}/><span>Cart</span>{cartCount>0&&<b>{cartCount}</b>}</button>}
+          <button className="nav-action"><UserRound/><span>Account</span></button>
+          <button className={`nav-action admin-link ${view==='admin'?'active':''}`} onClick={()=>setView('admin')}><LayoutDashboard/><span>Admin</span></button>
+          {view==='store'&&<button className="cart-button" onClick={onCart}><ShoppingCart/><span>Cart</span>{cartCount>0&&<b>{cartCount}</b>}</button>}
         </nav>
       </div>
+      <div className="category-nav"><nav>{links.map((link,i)=><button key={link} onClick={()=>{setView('store'); if(i>1) document.getElementById('shop')?.scrollIntoView()}} className={i===0?'active':''}>{link}</button>)}</nav><span><Phone size={13}/> Ranchi delivery</span></div>
     </header>
   </>
 );
