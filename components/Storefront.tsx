@@ -4,22 +4,15 @@ import { CATEGORIES } from '../data';
 import { ProductCard } from './ProductCard';
 import type { CartItem, Product } from '../types';
 
-const CATEGORY_IMAGES:Record<string,string>={
- 'All':'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=600&q=84',
- 'Chicken':'https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=600&q=84',
- 'Mutton':'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=600&q=84',
- 'Fish & Seafood':'https://images.unsplash.com/photo-1534948216015-843149f72be3?auto=format&fit=crop&w=600&q=84',
- 'Eggs':'https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=600&q=84',
- 'Ready to Cook':'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=600&q=84',
- 'Combos':'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=84'
-};
+const CATEGORY_IMAGES:Record<string,string>={'All':'assets/family-combo.webp','Chicken':'assets/chicken-curry.webp','Mutton':'assets/mutton.webp','Fish & Seafood':'assets/rohu.webp','Eggs':'assets/eggs.webp','Ready to Cook':'assets/tikka.webp','Combos':'assets/family-combo.webp'};
 type Props={products:Product[]; cart:CartItem[]; category:string; setCategory:(v:string)=>void; search:string; setSearch:(v:string)=>void; pincode:string; serviceable:boolean; onAdd:(p:Product)=>void; onRemove:(id:string)=>void};
 export const Storefront: React.FC<Props> = ({products,cart,category,setCategory,search,setSearch,pincode,serviceable,onAdd,onRemove}) => {
  const filtered=products.filter(p=>(category==='All'||p.category===category)&&(`${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase())));
- return <main>
+ const explore=(cat:string)=>{setCategory(cat);requestAnimationFrame(()=>document.getElementById('shop')?.scrollIntoView({behavior:'smooth'}))};
+ return <main id="top">
   <section className="hero-section">
-   <img className="hero-bg" src="https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?auto=format&fit=crop&w=1800&q=90" alt="Premium fresh cuts"/>
-   <div className="hero-overlay"/><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">FRESHLY PREPARED IN RANCHI</span><h1>Premium cuts,<br/>delivered <em>fresh.</em></h1><p>Clean cuts. Careful packing. Dependable slot-based delivery from our kitchen to yours.</p><button className="primary-cta" onClick={()=>document.getElementById('shop')?.scrollIntoView()}><span>SHOP NOW</span><ArrowRight size={17}/></button><div className="hero-badges"><span><ShieldCheck/>Quality checked</span><span><Snowflake/>Chilled handling</span><span><PackageCheck/>Cleanly packed</span></div></div></div>
+   <img className="hero-bg" src="assets/hero-chicken.webp" alt="Fresh whole chicken with vegetables"/>
+   <div className="hero-overlay"/><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">FRESHLY PREPARED IN RANCHI</span><h1>Premium cuts,<br/>delivered <em>fresh.</em></h1><p>Clean cuts. Careful packing. Dependable slot-based delivery from our kitchen to yours.</p><div className="hero-actions"><button className="primary-cta" onClick={()=>explore('All')}><span>SHOP ALL</span><ArrowRight size={17}/></button><div className="hero-category-options"><button onClick={()=>explore('Chicken')}>Chicken</button><button onClick={()=>explore('Mutton')}>Mutton</button><button onClick={()=>explore('Fish & Seafood')}>Fish</button><button onClick={()=>explore('Ready to Cook')}>Ready to Cook</button></div></div><div className="hero-badges"><span><ShieldCheck/>Quality checked</span><span><Snowflake/>Chilled handling</span><span><PackageCheck/>Cleanly packed</span></div></div></div>
   </section>
 
   <section className="quick-benefits"><div className="quick-benefits-inner">
