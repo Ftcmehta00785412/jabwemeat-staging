@@ -18,6 +18,8 @@ export const CartDrawer: React.FC<Props> = ({open,onClose,cart,pincode,setPincod
  const set=(key:keyof Form,value:string)=>setForm(f=>({...f,[key]:value}));
  const selectedSlot=availableSlots.find(s=>(s.id||s.label)===form.slot);
  const submit=async(e:React.FormEvent)=>{e.preventDefault();setError('');
+  const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if(cart.some(item=>!uuid.test(item.id))){setError('Your cart contains an older prototype item. Please close the cart, wait a moment for the live catalogue to load, then add the item again.');return;}
   if(!/^[6-9]\d{9}$/.test(form.mobile.replace(/\D/g,''))){setError('Enter a valid 10-digit mobile number.');return;}
   if(!valid){setError(subtotal<99?'Minimum cart value is ₹99.':'Enter a serviceable PIN code.');return;}
   if(!selectedSlot?.id){setError('Live delivery slots are not available right now. Please try again shortly.');return;}
