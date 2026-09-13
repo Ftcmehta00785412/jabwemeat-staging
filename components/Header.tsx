@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Search, ShoppingCart, LayoutDashboard, UserRound, Menu, Phone } from 'lucide-react';
+import { MapPin, Search, ShoppingCart, UserRound, Menu, Phone } from 'lucide-react';
 import type { AppView } from '../types';
 
 type Props = { view: AppView; setView:(v:AppView)=>void; onCategory:(v:string)=>void; pincode:string; setPincode:(v:string)=>void; search:string; setSearch:(v:string)=>void; cartCount:number; onCart:()=>void };
@@ -15,7 +15,7 @@ export const Header: React.FC<Props> = ({view,setView,onCategory,pincode,setPinc
     <button className="brand" onClick={()=>explore('All',true)}><span className="brand-mark"><span>J</span><i/></span><span className="brand-copy"><b>JAB<span>WE</span>MEAT<sup>™</sup></b><small>FRESHNESS YOU CAN TRUST</small></span></button>
     <label className="desktop-search"><Search size={18}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search fresh chicken, mutton, fish…"/></label>
     <div className="delivery-location"><MapPin size={18}/><div><small>Deliver to Ranchi</small><b>{pincode||'Enter PIN'}</b></div><input aria-label="Delivery PIN" maxLength={6} value={pincode} onChange={e=>setPincode(e.target.value.replace(/\D/g,''))}/></div>
-    <nav className="header-actions"><button className="nav-action"><UserRound/><span>Account</span></button><button className={`nav-action admin-link ${view==='admin'?'active':''}`} onClick={()=>setView('admin')}><LayoutDashboard/><span>Admin</span></button>{view==='store'&&<button className="cart-button" onClick={onCart}><ShoppingCart/><span>Cart</span>{cartCount>0&&<b>{cartCount}</b>}</button>}</nav>
+    <nav className="header-actions"><button className="nav-action"><UserRound/><span>Account</span></button><button className="cart-button" onClick={onCart}><ShoppingCart/><span>Cart</span>{cartCount>0&&<b>{cartCount}</b>}</button></nav>
    </div>
    <div className="category-nav"><nav>{links.map(([label,cat],i)=><button key={label} onClick={()=>explore(cat,i===0)} className={i===0?'active':''}>{label}</button>)}</nav><span><Phone size={13}/> Ranchi delivery</span></div>
   </header>
