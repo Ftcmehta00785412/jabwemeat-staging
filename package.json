@@ -1,6 +1,6 @@
 {
   "private": true,
-  "scripts": {"build":"node -e \"console.log('Using committed browser bundle')\""},
+  "scripts": {"build":"node build.mjs"},
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
