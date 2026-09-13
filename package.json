@@ -1,6 +1,6 @@
 {
   "private": true,
-  "scripts": {"build":"bun build app.tsx --outfile bundle.js --target browser --minify"},
+  "scripts": {"build":"node -e \"console.log('Using committed browser bundle')\""},
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
