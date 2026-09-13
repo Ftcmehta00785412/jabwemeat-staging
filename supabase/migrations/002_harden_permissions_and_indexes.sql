@@ -1,0 +1,13 @@
+alter function public.set_updated_at() set search_path = public;
+revoke all on function public.handle_new_user() from public, anon, authenticated;
+revoke all on function public.is_admin() from public, anon, authenticated;
+grant execute on function public.is_admin() to authenticated;
+create index if not exists products_category_id_idx on public.products(category_id);
+create index if not exists addresses_user_id_idx on public.addresses(user_id);
+create index if not exists carts_user_id_idx on public.carts(user_id);
+create index if not exists carts_status_updated_idx on public.carts(status,updated_at desc);
+create index if not exists orders_user_id_idx on public.orders(user_id);
+create index if not exists orders_slot_id_idx on public.orders(slot_id);
+create index if not exists orders_status_created_idx on public.orders(status,created_at desc);
+create index if not exists order_items_order_id_idx on public.order_items(order_id);
+create index if not exists order_items_product_id_idx on public.order_items(product_id);
