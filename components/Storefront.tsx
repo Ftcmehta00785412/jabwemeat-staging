@@ -5,8 +5,10 @@ import { ProductCard } from './ProductCard';
 import type { CartItem, Product } from '../types';
 
 const CATEGORY_IMAGES:Record<string,string>={'All':'assets/family-combo.webp','Chicken':'assets/chicken-curry.webp','Mutton':'assets/mutton.webp','Fish & Seafood':'assets/rohu.webp','Eggs':'assets/eggs.webp','Ready to Cook':'assets/tikka.webp','Combos':'assets/family-combo.webp'};
-type Props={products:Product[]; cart:CartItem[]; category:string; setCategory:(v:string)=>void; search:string; setSearch:(v:string)=>void; pincode:string; serviceable:boolean; onAdd:(p:Product)=>void; onRemove:(id:string)=>void};
-export const Storefront: React.FC<Props> = ({products,cart,category,setCategory,search,setSearch,pincode,serviceable,onAdd,onRemove}) => {
+type Props={products:Product[]; cart:CartItem[]; category:string; setCategory:(v:string)=>void; search:string; setSearch:(v:string)=>void; pincode:string; serviceable:boolean; onAdd:(p:Product)=>void; onRemove:(id:string)=>void; categories?:string[]};
+export const Storefront: React.FC<Props> = ({products,cart,category,setCategory,search,setSearch,pincode,serviceable,onAdd,onRemove,categories=CATEGORIES as unknown as string[]}) => {
+ const categoryImages:Record<string,string>={...CATEGORY_IMAGES};
+ const categoryList=['All',...categories.filter(c=>c!=='All')];
  const filtered=products.filter(p=>(category==='All'||p.category===category)&&(`${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase())));
  const explore=(cat:string)=>{setCategory(cat);requestAnimationFrame(()=>document.getElementById('shop')?.scrollIntoView({behavior:'smooth'}))};
  return <main id="top">
@@ -27,7 +29,7 @@ export const Storefront: React.FC<Props> = ({products,cart,category,setCategory,
    <label className="mobile-search"><Search/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search fresh products…"/></label>
 
    <div className="section-heading centered"><span>EXPLORE OUR RANGE</span><h2>Shop by category</h2><i/></div>
-   <div className="category-strip">{CATEGORIES.map(c=><button key={c} className={category===c?'selected':''} onClick={()=>setCategory(c)}><img src={CATEGORY_IMAGES[c]} alt=""/><span/><b>{c==='All'?'All Products':c}</b><small>SHOP NOW</small></button>)}</div>
+   <div className="category-strip">{categoryList.map(c=><button key={c} className={category===c?'selected':''} onClick={()=>setCategory(c)}><img src={categoryImages[c] || 'assets/family-combo.webp'} alt=""/><span/><b>{c==='All'?'All Products':c}</b><small>SHOP NOW</small></button>)}</div>
 
    <div className="section-heading centered products-heading"><span>FRESH PICKS</span><h2>{category==='All'?'Our best sellers':category}</h2><i/></div>
    {filtered.length?<div className="product-grid">{filtered.map(p=><ProductCard key={p.id} product={p} quantity={cart.find(i=>i.id===p.id)?.quantity||0} onAdd={()=>onAdd(p)} onRemove={()=>onRemove(p.id)}/>)}</div>:<div className="empty-products"><Search/><h3>No matching products</h3><p>Try another search or category.</p></div>}

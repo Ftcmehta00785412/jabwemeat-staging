@@ -1,10 +1,8 @@
-export type Category = 'Chicken' | 'Mutton' | 'Fish & Seafood' | 'Eggs' | 'Ready to Cook' | 'Combos';
-
 export interface Product {
   id: string;
   sku: string;
   name: string;
-  category: Category;
+  category: string;
   description: string;
   weight: string;
   servings: string;
@@ -12,11 +10,10 @@ export interface Product {
   mrp: number;
   stock: number;
   icon: string;
+  imageUrl?: string;
   featured?: boolean;
+  active?: boolean;
 }
 
-export interface CartItem extends Product {
-  quantity: number;
-}
-
+export interface CartItem extends Product { quantity: number; }
 export type AppView = 'store' | 'admin';

@@ -1,32 +1,34 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import { Header } from './components/Header';
 import { Storefront } from './components/Storefront';
 import { CartDrawer } from './components/CartDrawer';
-import { PRODUCTS, SERVICEABLE_PINS } from './data';
+import { PRODUCTS, SERVICEABLE_PINS, SLOTS } from './data';
+import { supabase } from './supabase';
 import type { AppView, CartItem, Product } from './types';
 import './styles.css';
 
+type Slot={id:string;label:string};
+const sessionKey=()=>{const key='jwm-session-key';let value=localStorage.getItem(key);if(!value){value=`jwm-${crypto.randomUUID()}-${Date.now()}`;localStorage.setItem(key,value);}return value;};
+const iconFor=(category:string)=>({Chicken:'🍗',Mutton:'🍖','Fish & Seafood':'🐟',Eggs:'🥚','Ready to Cook':'🔥',Combos:'🛍️'} as Record<string,string>)[category]||'🥩';
+const adaptProduct=(p:any):Product=>{const category=p.categories?.name||p.category||'Chicken';return {id:p.id,sku:p.sku,name:p.name,category,description:p.description||'',weight:p.weight||'',servings:p.servings||'',price:Number(p.price),mrp:Number(p.mrp),stock:Number(p.stock||0),icon:iconFor(category),imageUrl:p.image_url||undefined,featured:!!p.featured,active:p.active!==false};};
 const App: React.FC = () => {
-  const [view,setView]=useState<AppView>('store');
-  const [products,setProducts]=useState<Product[]>(PRODUCTS);
-  const [cart,setCart]=useState<CartItem[]>([]);
-  const [cartOpen,setCartOpen]=useState(false);
-  const [pincode,setPincode]=useState('834002');
-  const [category,setCategory]=useState('All');
-  const [search,setSearch]=useState('');
-  const add=(product:Product)=>setCart(prev=>{const existing=prev.find(i=>i.id===product.id);return existing?prev.map(i=>i.id===product.id?{...i,quantity:Math.min(i.quantity+1,product.stock)}:i):[...prev,{...product,quantity:1}]});
-  const remove=(id:string)=>setCart(prev=>prev.flatMap(i=>i.id!==id?[i]:i.quantity>1?[{...i,quantity:i.quantity-1}]:[]));
-  const removeAll=(id:string)=>setCart(prev=>prev.filter(i=>i.id!==id));
-  const count=useMemo(()=>cart.reduce((s,i)=>s+i.quantity,0),[cart]);
-
-  return <div className="app-shell">
-    <Header view={view} setView={setView} onCategory={setCategory} pincode={pincode} setPincode={setPincode} search={search} setSearch={setSearch} cartCount={count} onCart={()=>setCartOpen(true)}/>
-    <Storefront products={products} cart={cart} category={category} setCategory={setCategory} search={search} setSearch={setSearch} pincode={pincode} serviceable={SERVICEABLE_PINS.includes(pincode)} onAdd={add} onRemove={remove}/>
-    <CartDrawer open={cartOpen} onClose={()=>setCartOpen(false)} cart={cart} pincode={pincode} setPincode={setPincode} onRemoveAll={removeAll}/>
-    <footer className="site-footer"><div className="footer-inner"><div className="footer-brand"><div className="brand inverted"><span className="brand-mark"><span>J</span></span><span className="brand-copy"><b>JabWeMeat<sup>™</sup></b><small>FRESH · CLEAN · TRUSTED</small></span></div><p>Fresh, hygienic cuts delivered across select Ranchi neighbourhoods in your chosen time slot.</p><div className="socials"><button><Instagram/></button><button><Facebook/></button></div></div><div><h4>Shop</h4><a>Chicken</a><a>Mutton</a><a>Fish & Seafood</a><a>Ready to Cook</a></div><div><h4>Help</h4><a>About us</a><a>FAQs</a><a>Contact</a><a>Privacy policy</a></div><div><h4>Ranchi service</h4><p><MapPin/> PINs 834002, 834003, 834004</p><p><Phone/> Customer care coming soon</p><p><Mail/> hello@jabwemeat.com</p></div></div><div className="footer-bottom"><span>© 2026 JabWeMeat™. All rights reserved.</span><span>Prototype storefront · COD only</span></div></footer>
-  </div>;
+ const [view,setView]=useState<AppView>('store'); const [products,setProducts]=useState<Product[]>(PRODUCTS); const [categories,setCategories]=useState<string[]>(['All','Chicken','Mutton','Fish & Seafood','Eggs','Ready to Cook','Combos']); const [slots,setSlots]=useState<Slot[]>(SLOTS.map(label=>({id:'',label}))); const [serviceablePins,setServiceablePins]=useState<string[]>(SERVICEABLE_PINS);
+ const [cart,setCart]=useState<CartItem[]>([]); const [cartOpen,setCartOpen]=useState(false); const [pincode,setPincode]=useState('834002'); const [category,setCategory]=useState('All'); const [search,setSearch]=useState(''); const [loading,setLoading]=useState(true); const [success,setSuccess]=useState<any>(null);
+ const key=useMemo(()=>sessionKey(),[]); const count=useMemo(()=>cart.reduce((s,i)=>s+i.quantity,0),[cart]);
+ useEffect(()=>{try{const saved=JSON.parse(localStorage.getItem('jwm-cart')||'[]');if(Array.isArray(saved))setCart(saved);}catch{}},[]);
+ useEffect(()=>{localStorage.setItem('jwm-cart',JSON.stringify(cart));if(!loading&&cart.length){supabase.rpc('save_cart',{p_session_key:key,p_customer_name:null,p_email:null,p_mobile:null,p_pincode:pincode,p_items:cart.map(i=>({product_id:i.id,quantity:i.quantity}))}).then(({error})=>{if(error)console.warn('Cart sync unavailable',error.message);});}},[cart,pincode,key,loading]);
+ useEffect(()=>{let alive=true;const load=async()=>{const [p,c,s,settings]=await Promise.all([supabase.from('products').select('*,categories(name)').eq('active',true).order('created_at'),supabase.from('categories').select('name').eq('active',true).order('sort_order'),supabase.from('delivery_slots').select('id,label').eq('active',true).order('sort_order'),supabase.from('store_settings').select('key,value')]);if(!alive)return;if(!p.error&&p.data?.length)setProducts(p.data.map(adaptProduct));if(!c.error&&c.data?.length)setCategories(['All',...c.data.map((x:any)=>x.name)]);if(!s.error&&s.data?.length)setSlots(s.data as Slot[]);if(!settings.error){const pin=(settings.data||[]).find((x:any)=>x.key==='serviceable_pins');if(Array.isArray(pin?.value)&&pin.value.length){setServiceablePins(pin.value.map(String));setPincode(prev=>pin.value.includes(prev)?prev:String(pin.value[0]));}}setLoading(false);};load();
+  const channel=supabase.channel('store-live').on('postgres_changes',{event:'*',schema:'public',table:'products'},load).on('postgres_changes',{event:'*',schema:'public',table:'delivery_slots'},load).subscribe();return()=>{alive=false;supabase.removeChannel(channel);};},[]);
+ const add=(product:Product)=>setCart(prev=>{const existing=prev.find(i=>i.id===product.id);return existing?prev.map(i=>i.id===product.id?{...i,quantity:Math.min(i.quantity+1,product.stock)}:i):[...prev,{...product,quantity:1}]});
+ const remove=(id:string)=>setCart(prev=>prev.flatMap(i=>i.id!==id?[i]:i.quantity>1?[{...i,quantity:i.quantity-1}]:[])); const removeAll=(id:string)=>setCart(prev=>prev.filter(i=>i.id!==id));
+ const onSuccess=(result:any)=>{setCart([]);setCartOpen(false);setSuccess(result);supabase.from('products').select('*,categories(name)').eq('active',true).order('created_at').then(({data})=>{if(data?.length)setProducts(data.map(adaptProduct));});};
+ return <div className="app-shell"><Header view={view} setView={setView} onCategory={setCategory} pincode={pincode} setPincode={setPincode} search={search} setSearch={setSearch} cartCount={count} onCart={()=>setCartOpen(true)}/>
+  {success&&<div className="order-success"><b>Order confirmed · {success.order_number||'JWM'}</b><span>COD order placed for ₹{success.total||0}.</span><button onClick={()=>setSuccess(null)}>×</button></div>}
+  <Storefront products={products} cart={cart} categories={categories} category={category} setCategory={setCategory} search={search} setSearch={setSearch} pincode={pincode} serviceable={serviceablePins.includes(pincode)} onAdd={add} onRemove={remove}/>
+  <CartDrawer open={cartOpen} onClose={()=>setCartOpen(false)} cart={cart} pincode={pincode} setPincode={setPincode} onRemoveAll={removeAll} slots={slots} serviceablePins={serviceablePins} sessionKey={key} onSuccess={onSuccess}/>
+  <footer className="site-footer"><div className="footer-inner"><div className="footer-brand"><div className="brand inverted"><span className="brand-mark"><span>J</span></span><span className="brand-copy"><b>JabWeMeat<sup>™</sup></b><small>FRESH · CLEAN · TRUSTED</small></span></div><p>Fresh, hygienic cuts delivered across select Ranchi neighbourhoods in your chosen time slot.</p><div className="socials"><button><Instagram/></button><button><Facebook/></button></div></div><div><h4>Shop</h4><a>Chicken</a><a>Mutton</a><a>Fish & Seafood</a><a>Ready to Cook</a></div><div><h4>Help</h4><a>About us</a><a>FAQs</a><a>Contact</a><a>Privacy policy</a></div><div><h4>Ranchi service</h4><p><MapPin/> PINs 834002, 834003, 834004</p><p><Phone/> Customer care coming soon</p><p><Mail/> hello@jabwemeat.com</p></div></div><div className="footer-bottom"><span>© 2026 JabWeMeat™. All rights reserved.</span><span>{loading?'Loading live catalogue…':'Live staging storefront · COD only'}</span></div></footer>
+ </div>;
 };
-
 createRoot(document.getElementById('root')!).render(<App/>);
