@@ -84,7 +84,7 @@ function App() {
 
   const loadAll = async () => {
     const [p, c, o, ca, s, t] = await Promise.all([
-      supabase.from('products').select('*,categories(id,name)').order('created_at'),
+      supabase.from('products').select('*').order('created_at'),
       supabase.from('categories').select('*').order('sort_order'),
       supabase.from('orders').select('*,delivery_slots(id,label,start_time,end_time),payments(id,status,method,transaction_id),order_assignments(executive_id,delivery_executives(id,name,mobile,area)),order_items(id,product_name,quantity,ordered_weight,ordered_weight_unit,order_item_preparation(actual_weight))').order('created_at', { ascending: false }),
       supabase.from('carts').select('*').eq('status', 'active').order('updated_at', { ascending: false }),
