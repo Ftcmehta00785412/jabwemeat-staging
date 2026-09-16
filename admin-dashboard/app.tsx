@@ -10,18 +10,18 @@ import {
 import { supabase } from './supabase';
 import './styles.css';
 
-type Tab = 'Dashboard' | 'Orders' | 'Inventory' | 'Customers' | 'Invoices' | 'Delivery slots' | 'Team';
+type Tab = 'Dashboard' | 'Orders' | 'Inventory' | 'Customers' | 'Invoices' | 'Delivery slots' | 'Team' | 'Abandoned Carts';
 type Area = Tab;
 type Permission = 'Full' | 'Edit' | 'View' | 'No Access';
 type Role = 'Owner' | 'Admin' | 'Manager' | 'Staff';
 type PermissionMap = Record<Role, Record<Area, Permission>>;
 
-const areas: Area[] = ['Dashboard', 'Orders', 'Inventory', 'Customers', 'Invoices', 'Delivery slots', 'Team'];
+const areas: Area[] = ['Dashboard', 'Orders', 'Inventory', 'Customers', 'Invoices', 'Delivery slots', 'Team', 'Abandoned Carts'];
 const roles: Role[] = ['Owner', 'Admin', 'Manager', 'Staff'];
 const permissionChoices: Permission[] = ['Full', 'Edit', 'View', 'No Access'];
 const nav: [Tab, any][] = [
   ['Dashboard', LayoutDashboard], ['Orders', ShoppingBag], ['Inventory', Package],
-  ['Customers', Users], ['Invoices', ReceiptText], ['Delivery slots', Truck], ['Team', UserRoundCog]
+  ['Customers', Users], ['Abandoned Carts', ShoppingBag], ['Invoices', ReceiptText], ['Delivery slots', Truck], ['Team', UserRoundCog]
 ];
 const statuses = ['new', 'confirmed', 'preparing', 'ready_for_dispatch', 'out_for_delivery', 'delivered', 'cancelled', 'failed', 'returned_undelivered'];
 const nextStatuses: Record<string, string[]> = { new: ['confirmed', 'cancelled'], confirmed: ['preparing', 'cancelled'], preparing: ['ready_for_dispatch', 'cancelled'], ready_for_dispatch: ['out_for_delivery', 'cancelled'], out_for_delivery: ['delivered', 'failed', 'returned_undelivered'], failed: ['out_for_delivery', 'returned_undelivered'], delivered: [], cancelled: [], returned_undelivered: [] };
@@ -195,7 +195,7 @@ function App() {
     {mobile && <div className="scrim" onClick={() => setMobile(false)} />}<main><header><button className="menu" onClick={() => setMobile(true)}><Menu /></button><div><h1>{tab}</h1><p>Live staging · {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p></div><label><Search /><input placeholder="Search orders, SKU, customers…" /></label><button className="bell"><Bell /><i /></button><button className="store" onClick={() => window.open('../apps/jabwemeat-store/index.html', '_blank')}>View store <ArrowUpRight /></button></header>
       <section className="content">{error && <div className="error-banner page-error">{error}<button onClick={() => { setError(''); loadAll(); }}><RefreshCw /> Retry</button></div>}{loading && <div className="sync-note">Syncing live data…</div>}
         {tab === 'Dashboard' && <Overview active={activeOrders.length} value={todayValue} products={products.length} carts={carts.length} low={low} orders={orders} onTab={setTab} profileName={profileName} canInventoryEdit={canEdit('Inventory')} canOrdersView={canView('Orders')} />}
-        {tab === 'Orders' && <Orders orders={orders} refresh={loadAll} editable={canEdit('Orders')} fullAccess={role === 'Owner' || role === 'Admin'} slots={slots} />}
+        {tab === 'Abandoned Carts' && <AbandonedCarts carts={carts} orders={orders} />}{tab === 'Orders' && <Orders orders={orders} refresh={loadAll} editable={canEdit('Orders')} fullAccess={role === 'Owner' || role === 'Admin'} slots={slots} />}
         {tab === 'Inventory' && <Inventory products={products} categories={categories} refresh={loadAll} editable={canEdit('Inventory')} />}
         {tab === 'Delivery slots' && <Slots slots={slots} refresh={loadAll} editable={canEdit('Delivery slots')} />}
         {tab === 'Team' && <Team members={team} refresh={loadAll} rolePermissions={rolePermissions} canManageRoles={role === 'Owner' || role === 'Admin'} canManageTeam={role === 'Owner' || role === 'Admin'} onPermissionsSaved={editRolePermissions} />}
@@ -206,6 +206,13 @@ function App() {
 const Metric = ({ icon: Icon, label, value, note, tone }: any) => <div className="metric"><span className={tone}><Icon /></span><p><small>{label}</small><b>{value}</b><i>{note}</i></p></div>;
 function Overview({ active, value, products, carts, low, orders, onTab, profileName, canInventoryEdit, canOrdersView }: any) { return <><div className="welcome"><div><span>RANCHI OPERATIONS · LIVE</span><h2>Good afternoon, {profileName.split(/\s+/)[0]}.</h2><p>Here’s what is happening with JabWeMeat today.</p></div>{canInventoryEdit && <button className="primary" onClick={() => onTab('Inventory')}><Plus /> Manage products</button>}</div><div className="metrics"><Metric icon={ShoppingBag} label="Live orders" value={active} note="Needs attention in pipeline" tone="green" /><Metric icon={IndianRupee} label="Today’s COD value" value={`₹${value.toLocaleString('en-IN')}`} note="From live orders" tone="gold" /><Metric icon={Package} label="Active SKUs" value={products} note={`${low} low-stock items`} tone="blue" /><Metric icon={ShoppingBag} label="Abandoned carts" value={carts} note="Active baskets" tone="rose" /></div><div className="grid"><Panel title="Live order pipeline" action={canOrdersView ? 'View all orders' : undefined} onAction={canOrdersView ? () => onTab('Orders') : undefined}><div className="pipeline">{[['new', 'New'], ['confirmed', 'Confirmed'], ['preparing', 'Preparing'], ['out_for_delivery', 'Out for delivery']].map(([a, b], i) => <div key={a}><span className={`dot d${i}`} /><p><b>{orders.filter((o: any) => o.status === a).length}</b><small>{b}</small></p></div>)}</div><OrderTable orders={orders.slice(0, 5)} compact /></Panel><Panel title="Attention needed" action={canInventoryEdit ? 'Manage inventory' : undefined} onAction={canInventoryEdit ? () => onTab('Inventory') : undefined}><div className="alerts"><div><AlertTriangle /><p><b>{low} products are running low</b><small>Review stock before the next slot opens.</small></p></div><div><Clock3 /><p><b>{orders.filter((o: any) => o.status === 'new').length} new orders need confirmation</b><small>Keep today’s slots moving.</small></p></div><div><ShoppingBag /><p><b>{carts} abandoned carts</b><small>Active baskets available for recovery.</small></p></div></div></Panel></div></>; }
 const Panel = ({ title, action, onAction, children }: any) => <article className="panel"><div className="panel-head"><h3>{title}</h3>{action && <button onClick={onAction}>{action}<ArrowUpRight /></button>}</div>{children}</article>;
+
+function AbandonedCarts({ carts, orders }: any) {
+  const [selected, setSelected] = useState<any>(null);
+  const rows = carts.filter((c:any) => c.status !== 'converted');
+  if (selected) return <Page title={`Cart ${selected.id.slice(0,8)}`} sub="Saved cart details and delivery information."><button className="outline" onClick={() => setSelected(null)}><ArrowLeft /> Back</button><div className="detail-grid"><Panel title="Customer"><p><b>{selected.customer_name || 'Guest'}</b><br/>{selected.mobile || '—'} · {selected.email || '—'}</p></Panel><Panel title="Cart summary"><p><b>₹{Number(selected.subtotal || 0).toLocaleString('en-IN')}</b> · {selected.items?.length || 0} products</p><ul>{(selected.items || []).map((i:any) => <li key={i.product_id}>{i.name || i.product_name || i.product_id} × {i.quantity}</li>)}</ul></Panel><Panel title="Saved delivery info"><p>{selected.pincode || 'No pincode saved'}</p></Panel><Panel title="Timeline"><p>Created: {new Date(selected.created_at).toLocaleString('en-IN')}<br/>Last activity: {new Date(selected.updated_at).toLocaleString('en-IN')}<br/>Status: <Status value={selected.status} /></p></Panel></div></Page>;
+  return <Page title="Abandoned carts" sub="Review cart activity without sending reminders or promotions."><div className="table-wrap"><table><thead><tr><th>Cart ID</th><th>Customer</th><th>Mobile / email</th><th>Items</th><th>Cart value</th><th>Created</th><th>Last activity</th><th>Time since abandoned</th><th>Action</th></tr></thead><tbody>{rows.map((c:any) => <tr key={c.id}><td><b>{c.id.slice(0,8)}</b></td><td>{c.customer_name || 'Guest'}</td><td>{c.mobile || '—'}<br/>{c.email || '—'}</td><td>{c.items?.length || 0}</td><td>₹{Number(c.subtotal || 0).toLocaleString('en-IN')}</td><td>{new Date(c.created_at).toLocaleDateString('en-IN')}</td><td>{new Date(c.updated_at).toLocaleString('en-IN')}</td><td>{Math.max(0, Math.floor((Date.now()-new Date(c.updated_at).getTime())/3600000))}h</td><td><button className="view-order" onClick={() => setSelected(c)}><Eye /> View</button></td></tr>)}</tbody></table></div></Page>;
+}
 
 function Orders({ orders, refresh, editable, fullAccess, slots }: any) {
   const [selected, setSelected] = useState<any>(null);
