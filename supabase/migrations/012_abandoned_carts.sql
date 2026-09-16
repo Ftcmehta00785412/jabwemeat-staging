@@ -1,12 +1,7 @@
--- Abandoned cart lifecycle and automatic recovery on completed orders.
+-- Abandoned cart lifecycle and dashboard permissions.
 alter type public.cart_status add value if not exists 'abandoned';
-create or replace function public.mark_cart_recovered() returns trigger language plpgsql security definer set search_path=public as $$
-begin
-  update public.carts set status='recovered', updated_at=now()
-  where status in ('active','abandoned') and ((user_id is not null and user_id=NEW.user_id) or (lower(email)=lower(NEW.email) and regexp_replace(mobile,'\\D','','g')=regexp_replace(NEW.mobile,'\\D','','g')));
-  return NEW;
-end; $$;
-drop trigger if exists orders_recover_cart on public.orders;
-create trigger orders_recover_cart after insert or update of status on public.orders for each row when (NEW.status <> 'cancelled') execute function public.mark_cart_recovered();
--- Existing carts become abandoned after 24 hours without activity; no outbound marketing is performed.
-update public.carts set status='abandoned' where status='active' and updated_at < now() - interval '24 hours';
+alter table public.role_permissions drop constraint if exists role_permissions_area_check;
+alter table public.role_permissions add constraint role_permissions_area_check check (area in ('Dashboard','Orders','Inventory','Customers','Abandoned Carts','Invoices','Delivery slots','Team'));
+insert into public.role_permissions(role, area, permission) values
+ ('Owner','Abandoned Carts','Full'), ('Admin','Abandoned Carts','Full'), ('Manager','Abandoned Carts','Edit'), ('Staff','Abandoned Carts','View')
+on conflict (role, area) do nothing;
