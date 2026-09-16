@@ -315,27 +315,34 @@ function Customers() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const load = async () => {
-    setLoading(true);
-    const { data, error } = await supabase.from('customer_directory').select('*').order('last_order_at', { ascending: false });
+    setLoading(true); setError('');
+    const { data, error: loadError } = await supabase.from('customer_directory').select('*').order('last_order_at', { ascending: false, nullsFirst: false });
     // The directory is a derived view added by the customers migration. Keep the module usable
     // while that migration is being applied (or when an empty staging database is connected).
-    setRows(error ? [] : (data || []));
+    setRows(loadError ? [] : (data || []));
+    if (loadError) setError(loadError.message);
     setLoading(false);
   };
   useEffect(() => { load(); }, []);
 
   const open = async (customer: any) => {
-    setSelected(customer);
-    setDetail(null);
-    setDetailLoading(true);
-    const orderFilter = customer.id ? `user_id.eq.${customer.id},email.eq.${customer.email || ''}` : `email.eq.${customer.email || ''}`;
-    const [ordersResult, addressesResult] = await Promise.all([
-      supabase.from('orders').select('id,order_number,created_at,total,payment_method,status,delivery_date').or(orderFilter).order('created_at', { ascending: false }),
-      customer.id ? supabase.from('addresses').select('*').eq('user_id', customer.id).order('is_default', { ascending: false }) : Promise.resolve({ data: [], error: null } as any)
-    ]);
-    setDetail({ orders: ordersResult.data || [], addresses: addressesResult.data || [] });
+    setSelected(customer); setDetail(null); setDetailLoading(true);
+    const orderSelect = 'id,order_number,created_at,total,payment_method,status,delivery_date,email,mobile,payments(status,method)';
+    const queries = [
+      customer.id ? supabase.from('orders').select(orderSelect).eq('user_id', customer.id) : null,
+      customer.email ? supabase.from('orders').select(orderSelect).eq('email', customer.email) : null,
+      customer.mobile ? supabase.from('orders').select(orderSelect).eq('mobile', customer.mobile) : null,
+      customer.id ? supabase.from('addresses').select('*').eq('user_id', customer.id).order('is_default', { ascending: false }) : null
+    ].filter(Boolean) as any[];
+    const results = await Promise.all(queries);
+    const orders = results.slice(0, customer.id ? 3 : 2).flatMap(result => result.data || []);
+    const uniqueOrders = Array.from(new Map(orders.map((order: any) => [order.id, order])).values())
+      .sort((a: any, b: any) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+    const addressesResult = customer.id ? results[results.length - 1] : { data: [] };
+    setDetail({ orders: uniqueOrders, addresses: addressesResult.data || [] });
     setDetailLoading(false);
   };
 
@@ -347,21 +354,22 @@ function Customers() {
     const totalSpent = Number(selected.total_spent ?? orders.filter((o: any) => o.status !== 'cancelled').reduce((sum: number, o: any) => sum + Number(o.total || 0), 0));
     return <Page title="Customer detail" sub="Account, saved addresses and preserved order history.">
       <button className="outline" onClick={() => { setSelected(null); setDetail(null); }}>← Back to customers</button>
-      <div className="detail-summary">
+      <div className="detail-summary customer-summary">
         <article><Users /><div><small>Customer</small><b>{selected.name || 'Unnamed customer'}</b><span>{selected.mobile || '—'}</span><span>{selected.email || '—'}</span></div></article>
         <article><ClipboardList /><div><small>Summary</small><b>{totalOrders} total orders</b><span>₹{totalSpent.toLocaleString('en-IN')} total spent</span><span>Last order: {selected.last_order_at ? new Date(selected.last_order_at).toLocaleDateString('en-IN') : '—'}</span></div></article>
         <article><ShieldCheck /><div><small>Account status</small><b>{selected.active ? 'Active' : 'Inactive'}</b><span>{selected.email_verified ? 'Email verified' : 'Email not verified'}</span><span>{selected.mobile_verified ? 'Mobile verified' : 'Mobile not verified'}</span></div></article>
       </div>
-      <div className="grid">
-        <Panel title="Saved addresses">{detail.addresses.length ? detail.addresses.map((a: any) => <p key={a.id}><b>{a.label || 'Address'}</b>{a.is_default && <span className="muted"> · Default</span>}<br />{a.recipient_name}, {a.line1}{a.line2 ? `, ${a.line2}` : ''}, {a.city} {a.pincode}</p>) : <p className="muted">No saved addresses</p>}</Panel>
-        <Panel title="Order history">{orders.length ? <div className="table-wrap"><table><thead><tr><th>ID</th><th>Date</th><th>Amount</th><th>Payment status</th><th>Order status</th><th>Delivery status</th></tr></thead><tbody>{orders.map((o: any) => { const paymentStatus = o.payment_status || (o.payment_method === 'COD' ? 'Pending' : '—'); const deliveryStatus = o.delivery_status || (o.status === 'delivered' ? 'Delivered' : o.status === 'out_for_delivery' ? 'Out for delivery' : 'Not dispatched'); return <tr key={o.id}><td><b>{o.order_number}</b></td><td>{o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN') : '—'}</td><td>₹{Number(o.total || 0).toLocaleString('en-IN')}</td><td>{paymentStatus}</td><td><Status value={o.status} /></td><td>{deliveryStatus}</td></tr>; })}</tbody></table></div> : <p className="muted">No orders found for this customer.</p>}</Panel>
+      <div className="customer-detail-grid">
+        <Panel title="Saved addresses" ><div className="customer-addresses">{detail.addresses.length ? detail.addresses.map((a: any) => <p key={a.id}><b>{a.label || 'Address'}</b>{a.is_default && <span className="muted"> · Default</span>}<br />{a.recipient_name}, {a.line1}{a.line2 ? `, ${a.line2}` : ''}, {a.city} {a.pincode}</p>) : <p className="muted">No saved addresses</p>}</div></Panel>
+        <Panel title="Order history">{orders.length ? <div className="table-wrap customer-orders"><table><thead><tr><th>ID</th><th>Date</th><th>Amount</th><th>Payment status</th><th>Order status</th><th>Delivery status</th></tr></thead><tbody>{orders.map((o: any) => { const payment = Array.isArray(o.payments) ? o.payments[0] : o.payments; const paymentStatus = payment?.status || (o.payment_method === 'COD' ? 'COD' : 'Pending'); const deliveryStatus = o.status === 'delivered' ? 'Delivered' : o.status === 'out_for_delivery' ? 'Out for delivery' : o.status === 'failed' || o.status === 'returned_undelivered' ? 'Delivery exception' : 'Not dispatched'; return <tr key={o.id}><td><b>{o.order_number}</b></td><td>{o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN') : '—'}</td><td>₹{Number(o.total || 0).toLocaleString('en-IN')}</td><td>{paymentStatus}</td><td><Status value={o.status} /></td><td>{deliveryStatus}</td></tr>; })}</tbody></table></div> : <p className="muted">No orders found for this customer.</p>}</Panel>
       </div>
     </Page>;
   }
 
   return <Page title="Customers" sub="Derived from accounts and orders; order history is preserved.">
-    <label className="order-search"><Search /><input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search name, mobile or email" /></label>
-    <div className="table-wrap"><table><thead><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Total Orders</th><th>Total Spent</th><th>Last Order Date</th><th>Status</th><th>View Customer</th></tr></thead><tbody>{filtered.map(c => <tr key={`${c.id || c.email}-${c.mobile}`}><td><b>{c.name || 'Unnamed customer'}</b></td><td>{c.mobile || '—'}</td><td>{c.email || '—'}</td><td>{Number(c.total_orders || 0)}</td><td>₹{Number(c.total_spent || 0).toLocaleString('en-IN')}</td><td>{c.last_order_at ? new Date(c.last_order_at).toLocaleDateString('en-IN') : '—'}</td><td><span className={'member-status ' + (c.active ? 'active' : 'inactive')}><i />{c.active ? 'Active' : 'Inactive'}</span></td><td><button className="view-order" onClick={() => open(c)}><Eye /> View Customer</button></td></tr>)}</tbody></table>{loading ? <div className="empty-state"><RefreshCw /> Loading customers…</div> : !filtered.length && <Empty text={query ? 'No customers match your search' : 'No customers yet'} />}</div>
+    <label className="order-search customer-search"><Search /><input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search name, mobile or email" /></label>
+    {error && <div className="error-banner customer-error">Unable to load customers: {error} <button onClick={load}>Retry</button></div>}
+    <div className="table-wrap"><table><thead><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Total Orders</th><th>Total Spent</th><th>Last Order Date</th><th>Status</th><th>View Customer</th></tr></thead><tbody>{filtered.map(c => <tr key={`${c.id || c.email}-${c.mobile}`}><td><b>{c.name || 'Unnamed customer'}</b></td><td>{c.mobile || '—'}</td><td>{c.email || '—'}</td><td>{Number(c.total_orders || 0)}</td><td>₹{Number(c.total_spent || 0).toLocaleString('en-IN')}</td><td>{c.last_order_at ? new Date(c.last_order_at).toLocaleDateString('en-IN') : '—'}</td><td><span className={'member-status ' + (c.active ? 'active' : 'inactive')}><i />{c.active ? 'Active' : 'Inactive'}</span></td><td><button className="view-order" onClick={() => open(c)}><Eye /> View Customer</button></td></tr>)}</tbody></table>{loading ? <div className="empty-state"><RefreshCw /> Loading customers…</div> : !filtered.length && !error && <Empty text={query ? 'No customers match your search' : 'No customers yet'} />}</div>
   </Page>;
 }
 function Team({ members, refresh, rolePermissions, canManageRoles, canManageTeam, onPermissionsSaved }: any) {
