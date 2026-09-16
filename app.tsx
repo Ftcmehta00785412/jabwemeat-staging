@@ -8,7 +8,7 @@ import { AccountPanel } from './components/AccountPanel';
 import type { User } from '@supabase/supabase-js';
 import { PRODUCTS, SERVICEABLE_PINS, SLOTS } from './data';
 import { supabase } from './supabase';
-import type { AppView, CartItem, Product } from './types';
+import type { AppView, CartItem, Product, Language } from './types';
 import './styles.css';
 
 type Slot={id:string;label:string};
@@ -17,6 +17,7 @@ const iconFor=(category:string)=>({Chicken:'🍗',Mutton:'🍖','Fish & Seafood'
 const adaptProduct=(p:any):Product=>{const category=p.categories?.name||p.category||'Chicken';return {id:p.id,sku:p.sku,name:p.name,category,description:p.description||'',weight:p.weight||'',servings:p.servings||'',price:Number(p.price),mrp:Number(p.mrp),stock:Number(p.stock||0),icon:iconFor(category),imageUrl:p.image_url||undefined,featured:!!p.featured,active:p.active!==false};};
 const App: React.FC = () => {
  const [view,setView]=useState<AppView>('store'); const [products,setProducts]=useState<Product[]>(PRODUCTS); const [categories,setCategories]=useState<string[]>(['All','Chicken','Mutton','Fish & Seafood','Eggs','Ready to Cook','Combos']); const [slots,setSlots]=useState<Slot[]>(SLOTS.map(label=>({id:'',label}))); const [serviceablePins,setServiceablePins]=useState<string[]>(SERVICEABLE_PINS);
+ const [language,setLanguage]=useState<Language>('en');
  const [cart,setCart]=useState<CartItem[]>([]); const [cartOpen,setCartOpen]=useState(false); const [accountOpen,setAccountOpen]=useState(false); const [user,setUser]=useState<User|null>(null); const [pincode,setPincode]=useState('834002'); const [category,setCategory]=useState('All'); const [search,setSearch]=useState(''); const [loading,setLoading]=useState(true); const [success,setSuccess]=useState<any>(null);
  const key=useMemo(()=>sessionKey(),[]); const count=useMemo(()=>cart.reduce((s,i)=>s+i.quantity,0),[cart]);
  useEffect(()=>{try{const saved=JSON.parse(localStorage.getItem('jwm-cart')||'[]');if(Array.isArray(saved))setCart(saved);}catch{}},[]);
@@ -27,9 +28,9 @@ const App: React.FC = () => {
  const add=(product:Product)=>setCart(prev=>{const existing=prev.find(i=>i.id===product.id);return existing?prev.map(i=>i.id===product.id?{...i,quantity:Math.min(i.quantity+1,product.stock)}:i):[...prev,{...product,quantity:1}]});
  const remove=(id:string)=>setCart(prev=>prev.flatMap(i=>i.id!==id?[i]:i.quantity>1?[{...i,quantity:i.quantity-1}]:[])); const removeAll=(id:string)=>setCart(prev=>prev.filter(i=>i.id!==id));
  const onSuccess=(result:any)=>{setCart([]);setCartOpen(false);setSuccess(result);supabase.from('products').select('*,categories(name)').eq('active',true).order('created_at').then(({data})=>{if(data?.length)setProducts(data.map(adaptProduct));});};
- return <div className="app-shell"><Header view={view} setView={setView} onCategory={setCategory} pincode={pincode} setPincode={setPincode} search={search} setSearch={setSearch} cartCount={count} onCart={()=>setCartOpen(true)} onAccount={()=>setAccountOpen(true)} accountEmail={user?.email}/><AccountPanel open={accountOpen} user={user} onClose={()=>setAccountOpen(false)} onSignedOut={()=>setAccountOpen(false)}/>
+ return <div className="app-shell"><Header language={language} setLanguage={setLanguage} view={view} setView={setView} onCategory={setCategory} pincode={pincode} setPincode={setPincode} search={search} setSearch={setSearch} cartCount={count} onCart={()=>setCartOpen(true)} onAccount={()=>setAccountOpen(true)} accountEmail={user?.email}/><AccountPanel open={accountOpen} user={user} onClose={()=>setAccountOpen(false)} onSignedOut={()=>setAccountOpen(false)}/>
   {success&&<div className="order-success"><b>Order confirmed · {success.order_number||'JWM'}</b><span>COD order placed for ₹{success.total||0}.</span><button onClick={()=>setSuccess(null)}>×</button></div>}
-  <Storefront loading={loading} products={products} cart={cart} categories={categories} category={category} setCategory={setCategory} search={search} setSearch={setSearch} pincode={pincode} serviceable={serviceablePins.includes(pincode)} onAdd={add} onRemove={remove}/>
+  <Storefront language={language} products={products} cart={cart} categories={categories} category={category} setCategory={setCategory} search={search} setSearch={setSearch} pincode={pincode} serviceable={serviceablePins.includes(pincode)} onAdd={add} onRemove={remove}/>
   <CartDrawer open={cartOpen} onClose={()=>setCartOpen(false)} cart={cart} pincode={pincode} setPincode={setPincode} onRemoveAll={removeAll} slots={slots} serviceablePins={serviceablePins} sessionKey={key} onSuccess={onSuccess}/>
   <footer className="site-footer"><div className="footer-inner"><div className="footer-brand"><div className="brand inverted"><span className="brand-mark"><span>J</span></span><span className="brand-copy"><b>JabWeMeat<sup>™</sup></b><small>FRESH · CLEAN · TRUSTED</small></span></div><p>Fresh, hygienic cuts delivered across select Ranchi neighbourhoods in your chosen time slot.</p><div className="socials"><button><Instagram/></button><button><Facebook/></button></div></div><div><h4>Shop</h4><a>Chicken</a><a>Mutton</a><a>Fish & Seafood</a><a>Ready to Cook</a></div><div><h4>Help</h4><a>About us</a><a>FAQs</a><a>Contact</a><a>Privacy policy</a></div><div><h4>Ranchi service</h4><p><MapPin/> PINs 834002, 834003, 834004</p><p><Phone/> Customer care coming soon</p><p><Mail/> hello@jabwemeat.com</p></div></div><div className="footer-bottom"><span>© 2026 JabWeMeat™. All rights reserved.</span><span>{loading?'Loading live catalogue…':'Live staging storefront · COD only'}</span></div></footer>
  </div>;
