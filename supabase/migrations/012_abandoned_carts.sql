@@ -1,4 +1,5 @@
 -- Abandoned cart lifecycle and automatic recovery on completed orders.
+alter type public.cart_status add value if not exists 'abandoned';
 create or replace function public.mark_cart_recovered() returns trigger language plpgsql security definer set search_path=public as $$
 begin
   update public.carts set status='recovered', updated_at=now()
