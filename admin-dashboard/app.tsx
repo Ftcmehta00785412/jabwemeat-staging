@@ -31,19 +31,62 @@ const emptyProduct = { name: '', sku: '', description: '', price: '', mrp: '', s
 const nice = (s: string) => s.replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
 const blankPermissionMap = (): PermissionMap => Object.fromEntries(roles.map(role => [role, Object.fromEntries(areas.map(area => [area, 'No Access']))])) as PermissionMap;
 
+const DEVICE_TOKEN_KEY = 'jabwemeat.admin.device-token';
+
+function getDeviceToken() {
+  const existing = window.localStorage.getItem(DEVICE_TOKEN_KEY);
+  if (existing) return existing;
+  const token = crypto.randomUUID();
+  window.localStorage.setItem(DEVICE_TOKEN_KEY, token);
+  return token;
+}
+
 function AuthScreen({ message }: { message?: string }) {
   const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault(); setBusy(true); setError('');
-    const { error } = await supabase.auth.signInWithOtp({ email: email.trim().toLowerCase(), options: { emailRedirectTo: window.location.href } });
-    setBusy(false); if (error) setError(error.message); else setSent(true);
+  const [cooldownUntil, setCooldownUntil] = useState(0);
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    if (!cooldownUntil) return;
+    const update = () => setCooldown(Math.max(0, Math.ceil((cooldownUntil - Date.now()) / 1000)));
+    update();
+    const timer = window.setInterval(update, 1000);
+    return () => window.clearInterval(timer);
+  }, [cooldownUntil]);
+
+  const normalizedEmail = email.trim().toLowerCase();
+  const describeError = (raw: string) => /rate limit|too many|limit exceeded/i.test(raw)
+    ? 'Too many code requests. Please wait a minute before trying again.'
+    : raw;
+
+  const sendCode = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (cooldown > 0) return;
+    setBusy(true); setError('');
+    const { error: sendError } = await supabase.auth.signInWithOtp({
+      email: normalizedEmail,
+      options: { shouldCreateUser: false }
+    });
+    setBusy(false);
+    if (sendError) { setError(describeError(sendError.message)); return; }
+    setSent(true); setCode(''); setCooldownUntil(Date.now() + 60_000);
   };
+
+  const verifyCode = async (e: React.FormEvent) => {
+    e.preventDefault(); setBusy(true); setError('');
+    const { error: verifyError } = await supabase.auth.verifyOtp({ email: normalizedEmail, token: code.trim(), type: 'email' });
+    setBusy(false);
+    if (verifyError) setError(describeError(verifyError.message));
+    else getDeviceToken();
+  };
+
   return <div className="auth-shell"><div className="auth-card"><div className="auth-mark">J</div><span className="auth-kicker">JABWEMEAT · RANCHI OPERATIONS</span><h1>Admin console</h1><p>Sign in with the authorised email to manage the live staging store.</p>
     {message && <div className="error-banner">{message}</div>}
-    {sent ? <div className="sent-card"><Mail /><b>Check your inbox</b><span>A magic link was sent to <strong>{email}</strong>. Open it in this browser to continue.</span><button onClick={() => setSent(false)}>Use another email</button></div> : <form onSubmit={submit}><label>Administrator email<input type="email" required value={email} onChange={e => setEmail(e.target.value)} /></label>{error && <div className="error-banner">{error}</div>}<button className="primary wide" disabled={busy}>{busy ? 'Sending link…' : 'Send magic sign-in link'}<ArrowUpRight /></button></form>}
+    {sent ? <form onSubmit={verifyCode}><div className="sent-card"><Mail /><b>Check your inbox</b><span>Enter the 6-digit code sent to <strong>{normalizedEmail}</strong>.</span></div><label>Email verification code<input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required value={code} onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))} /></label>{error && <div className="error-banner">{error}</div>}<button className="primary wide" disabled={busy || code.length !== 6}>{busy ? 'Verifying…' : 'Verify code'}<ArrowUpRight /></button><button type="button" className="auth-secondary" disabled={busy || cooldown > 0} onClick={() => void sendCode()}>{cooldown > 0 ? `Resend code in ${cooldown}s` : 'Resend code'}</button><button type="button" className="auth-secondary" disabled={busy} onClick={() => { setSent(false); setCode(''); setError(''); }}>Use another email</button></form> : <form onSubmit={sendCode}><label>Administrator email<input type="email" required value={email} onChange={e => setEmail(e.target.value)} /></label>{error && <div className="error-banner">{error}</div>}<button className="primary wide" disabled={busy}>{busy ? 'Sending code…' : 'Send email code'}<ArrowUpRight /></button></form>}
     <small className="auth-note">Only approved active team accounts can access this console.</small></div></div>;
 }
 
@@ -101,6 +144,9 @@ function App() {
     let active = true;
     const check = async () => {
       setLoading(true); setAuthError('');
+      // Keep a stable device token for this browser, but never treat it as authorization.
+      // The server-side active-team-account check below remains mandatory.
+      getDeviceToken();
       const { data, error: accessError } = await supabase.rpc('is_admin');
       if (accessError || data !== true) { setAuthError(accessError?.message || 'This account is not listed as an active team member.'); setAllowed(false); setLoading(false); return; }
       try { await loadAccess(String(session.user.email || '').trim().toLowerCase()); setAllowed(true); await loadAll(); if (active) setLoading(false); }
