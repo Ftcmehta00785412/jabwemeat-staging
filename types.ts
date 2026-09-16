@@ -17,3 +17,4 @@ export interface Product {
 
 export interface CartItem extends Product { quantity: number; }
 export type AppView = 'store' | 'admin';
+export type Language = 'en' | 'hi' | 'bn';
