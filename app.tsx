@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import { Header } from './components/Header';
 import { Storefront } from './components/Storefront';
