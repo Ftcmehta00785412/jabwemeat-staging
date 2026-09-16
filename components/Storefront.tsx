@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useMemo,useState} from 'react';
 import { ShieldCheck, Snowflake, BadgeIndianRupee, Truck, Search, ArrowRight, MapPin, Clock3, Leaf, PackageCheck, ChevronRight } from 'lucide-react';
 import { CATEGORIES } from '../data';
 import { ProductCard } from './ProductCard';
@@ -12,7 +12,10 @@ type Props={language:Language; products:Product[]; cart:CartItem[]; category:str
 export const Storefront: React.FC<Props> = ({language,products,cart,category,setCategory,search,setSearch,pincode,serviceable,onAdd,onRemove,categories=CATEGORIES as unknown as string[]}) => {
  const categoryImages:Record<string,string>={...CATEGORY_IMAGES};
  const categoryList=['All',...categories.filter(c=>c!=='All')];
- const filtered=products.filter(p=>(category==='All'||p.category===category)&&(`${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase())));
+ const [filters,setFilters]=useState<string[]>([]);
+ const toggleFilter=(filter:string)=>setFilters(current=>current.includes(filter)?current.filter(item=>item!==filter):[...current,filter]);
+ const filterOptions=['bone-in','boneless','skinless','marinated','curry cut','fillet','steaks','chops'];
+ const filtered=useMemo(()=>products.filter(p=>(category==='All'||p.category===category)&&(`${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase()))&&(filters.length===0||filters.some(filter=>p.attributes?.includes(filter)||p.cutTypes?.includes(filter)))),[products,category,search,filters]);
  const explore=(cat:string)=>{setCategory(cat);requestAnimationFrame(()=>document.getElementById('shop')?.scrollIntoView({behavior:'smooth'}))};
  return <main id="top">
   <section className="hero-section">
@@ -35,6 +38,7 @@ export const Storefront: React.FC<Props> = ({language,products,cart,category,set
    <div className="category-strip">{categoryList.map(c=><button key={c} className={category===c?'selected':''} onClick={()=>setCategory(c)}><img src={categoryImages[c] || 'assets/family-combo.webp'} alt=""/><span/><b>{c==='All'?'All Products':c}</b><small>SHOP NOW</small></button>)}</div>
 
    <div className="section-heading centered products-heading"><span>FRESH PICKS</span><h2>{category==='All'?'Our best sellers':category}</h2><i/></div>
+   <div className="discovery-toolbar"><div className="filter-heading"><strong>Filter cuts</strong><small>{filtered.length} products</small></div><div className="filter-options">{filterOptions.map(filter=><button key={filter} className={filters.includes(filter)?'selected':''} onClick={()=>toggleFilter(filter)}>{filter}</button>)}</div>{filters.length>0&&<button className="clear-filters" onClick={()=>setFilters([])}>Clear filters</button>}</div>
    {filtered.length?<div className="product-grid">{filtered.map(p=><ProductCard key={p.id} language={language} product={p} quantity={cart.find(i=>i.id===p.id)?.quantity||0} onAdd={()=>onAdd(p)} onRemove={()=>onRemove(p.id)}/>)}</div>:<div className="empty-products"><Search/><h3>No matching products</h3><p>Try another search or category.</p></div>}
   </section>
 
