@@ -1,0 +1,3 @@
+-- Migration 007 is intentionally a no-op reconciliation marker.
+-- The original 007 change was applied outside the repository history.
+-- Later migrations (008+) remain authoritative and are not re-run here.
