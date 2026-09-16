@@ -5,8 +5,8 @@ import { ProductCard } from './ProductCard';
 import type { CartItem, Product } from '../types';
 
 const CATEGORY_IMAGES:Record<string,string>={'All':'assets/family-combo.webp','Chicken':'assets/chicken-curry.webp','Mutton':'assets/mutton.webp','Fish & Seafood':'assets/rohu.webp','Eggs':'assets/eggs.webp','Ready to Cook':'assets/tikka.webp','Combos':'assets/family-combo.webp'};
-type Props={products:Product[]; cart:CartItem[]; category:string; setCategory:(v:string)=>void; search:string; setSearch:(v:string)=>void; pincode:string; serviceable:boolean; onAdd:(p:Product)=>void; onRemove:(id:string)=>void; categories?:string[]};
-export const Storefront: React.FC<Props> = ({products,cart,category,setCategory,search,setSearch,pincode,serviceable,onAdd,onRemove,categories=CATEGORIES as unknown as string[]}) => {
+type Props={loading?:boolean; products:Product[]; cart:CartItem[]; category:string; setCategory:(v:string)=>void; search:string; setSearch:(v:string)=>void; pincode:string; serviceable:boolean; onAdd:(p:Product)=>void; onRemove:(id:string)=>void; categories?:string[]};
+export const Storefront: React.FC<Props> = ({loading=false,products,cart,category,setCategory,search,setSearch,pincode,serviceable,onAdd,onRemove,categories=CATEGORIES as unknown as string[]}) => {
  const categoryImages:Record<string,string>={...CATEGORY_IMAGES};
  const categoryList=['All',...categories.filter(c=>c!=='All')];
  const filtered=products.filter(p=>(category==='All'||p.category===category)&&(`${p.name} ${p.description}`.toLowerCase().includes(search.toLowerCase())));
@@ -32,7 +32,7 @@ export const Storefront: React.FC<Props> = ({products,cart,category,setCategory,
    <div className="category-strip">{categoryList.map(c=><button key={c} className={category===c?'selected':''} onClick={()=>setCategory(c)}><img src={categoryImages[c] || 'assets/family-combo.webp'} alt=""/><span/><b>{c==='All'?'All Products':c}</b><small>SHOP NOW</small></button>)}</div>
 
    <div className="section-heading centered products-heading"><span>FRESH PICKS</span><h2>{category==='All'?'Our best sellers':category}</h2><i/></div>
-   {filtered.length?<div className="product-grid">{filtered.map(p=><ProductCard key={p.id} product={p} quantity={cart.find(i=>i.id===p.id)?.quantity||0} onAdd={()=>onAdd(p)} onRemove={()=>onRemove(p.id)}/>)}</div>:<div className="empty-products"><Search/><h3>No matching products</h3><p>Try another search or category.</p></div>}
+   {loading?<div className="product-grid product-grid-loading" aria-label="Loading products">{Array.from({length:8},(_,i)=><div className="product-skeleton" key={i}><span/><div/><div/><b/></div>)}</div>:filtered.length?<div className="product-grid">{filtered.map(p=><ProductCard key={p.id} product={p} quantity={cart.find(i=>i.id===p.id)?.quantity||0} onAdd={()=>onAdd(p)} onRemove={()=>onRemove(p.id)}/>)}</div>:<div className="empty-products"><Search/><h3>No matching products</h3><p>Try another search or category.</p></div>}
   </section>
 
   <section className="launch-offer"><div><span>WELCOME TO JABWEMEAT™</span><h2>₹100 off your very first order</h2><p>Discover better freshness without paying a third-party marketing premium.</p></div><div><b>₹100</b><small>FIRST ORDER<br/>SAVINGS</small></div></section>
