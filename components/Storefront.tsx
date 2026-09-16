@@ -17,11 +17,11 @@ export const Storefront: React.FC<Props> = ({products,cart,category,setCategory,
    <div className="hero-overlay"/><div className="hero-inner"><div className="hero-copy"><span className="eyebrow">FRESHLY PREPARED IN RANCHI</span><h1>Premium cuts,<br/>delivered <em>fresh.</em></h1><p>Clean cuts. Careful packing. Dependable slot-based delivery from our kitchen to yours.</p><div className="hero-actions"><button className="primary-cta" onClick={()=>explore('All')}><span>SHOP ALL</span><ArrowRight size={17}/></button><div className="hero-category-options"><button onClick={()=>explore('Chicken')}>Chicken</button><button onClick={()=>explore('Mutton')}>Mutton</button><button onClick={()=>explore('Fish & Seafood')}>Fish</button><button onClick={()=>explore('Ready to Cook')}>Ready to Cook</button></div></div><div className="hero-badges"><span><ShieldCheck/>Quality checked</span><span><Snowflake/>Chilled handling</span><span><PackageCheck/>Cleanly packed</span></div></div></div>
   </section>
 
-  <section className="quick-benefits"><div className="quick-benefits-inner">
-   <div><span className="benefit-icon"><ShieldCheck/></span><p><strong>HYGIENE CHECKED</strong><small>Carefully handled cuts</small></p></div>
-   <div><span className="benefit-icon"><Leaf/></span><p><strong>FARM FRESH QUALITY</strong><small>Selected for freshness</small></p></div>
-   <div><span className="benefit-icon"><Truck/></span><p><strong>RELIABLE DELIVERY</strong><small>Four daily time slots</small></p></div>
-   <div><span className="benefit-icon"><BadgeIndianRupee/></span><p><strong>HONEST VALUE</strong><small>Transparent prices & weight</small></p></div>
+  <section className="quick-benefits" aria-label="JabWeMeat trust promises"><div className="quick-benefits-inner">
+   <div><span className="benefit-icon"><ShieldCheck/></span><p><strong>QUALITY CHECKED</strong><small>Every cut inspected before packing</small></p></div>
+   <div><span className="benefit-icon"><Snowflake/></span><p><strong>CHILLED HANDLING</strong><small>Temperature-aware from kitchen to door</small></p></div>
+   <div><span className="benefit-icon"><PackageCheck/></span><p><strong>CLEANLY PACKED</strong><small>Sealed fresh for your delivery slot</small></p></div>
+   <div className="fssai-placeholder"><span className="benefit-icon"><BadgeIndianRupee/></span><p><strong>FSSAI DETAILS</strong><small>Registration information coming soon</small></p></div>
   </div></section>
 
   <section className="store-container" id="shop">
