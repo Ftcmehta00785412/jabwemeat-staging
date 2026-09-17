@@ -61,5 +61,7 @@ export const PrivacyPolicy:React.FC<Props>=({onClose})=><div className="policy-b
     <section><h2>8. Children’s privacy</h2><p>The Platform is not intended for individuals under the age of 18. We do not knowingly collect personal data from children. If we learn that a minor has created an account or provided personal data, we will delete that data and close the account. If you believe a child has shared personal data with us, please contact us at [CONTACT EMAIL].</p></section>
     <section><h2>9. Changes to this Policy</h2><p>We may update this Privacy Policy from time to time — for instance, as we roll out new features like full WhatsApp ordering automation or online payment. We’ll post the updated version here with a new “Last updated” date, and where a change is significant, we’ll notify you directly.</p></section>
     <section><h2>10. Contact us</h2><p>For any questions about this Privacy Policy or how we handle your data:</p><div className="policy-contact"><b>Urbancrave Venture LLP (operating JabWeMeat)</b><br/>Email: [CONTACT EMAIL — e.g. privacy@jabwemeat.com]<br/>Registered address: [REGISTERED ADDRESS]<br/>LLPIN: [ ]</div></section>
+
+    <section className="policy-legal-disclaimer"><h2>Legal Disclaimer</h2><p>This document is an electronic record generated in accordance with the provisions of the Information Technology Act, 2000, including applicable rules and amendments. As this document is generated electronically, it does not require any physical or digital signatures.</p></section>
   </article>
 </div>;
