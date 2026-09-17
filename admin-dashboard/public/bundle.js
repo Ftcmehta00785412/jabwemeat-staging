@@ -23551,62 +23551,37 @@ var require_client = __commonJS({
 });
 
 // app.tsx
-var import_react4 = __toESM(require_react(), 1);
-var import_client = __toESM(require_client(), 1);
+var import_react3 = __toESM(require_react());
+var import_client = __toESM(require_client());
 
-// node_modules/lucide-react/dist/esm/createLucideIcon.mjs
-var import_react3 = __toESM(require_react(), 1);
+// node_modules/lucide-react/dist/esm/createLucideIcon.js
+var import_react2 = __toESM(require_react());
 
-// node_modules/lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs
-var toKebabCase = (string) => string?.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-
-// node_modules/lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs
-function toLucideIconData(iconName, iconNode, aliases = []) {
-  if (iconNode == null) {
-    throw new Error("[lucide]: iconNode is required when icon name is used");
-  }
-  return {
-    name: toKebabCase(iconName),
-    size: 24,
-    node: iconNode,
-    ...aliases.length > 0 ? { aliases } : {}
-  };
-}
-
-// node_modules/lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs
-var toCamelCase = (string) => {
-  let out = "";
-  let upperNext = false;
-  for (const ch of string) {
-    if (ch === "-" || ch === "_" || ch <= " ") {
-      upperNext = out.length > 0;
-      continue;
-    }
-    if (out.length === 0) {
-      out += ch.toLowerCase();
-    } else {
-      out += upperNext ? ch.toUpperCase() : ch;
-    }
-    upperNext = false;
-  }
-  return out;
-};
-
-// node_modules/lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs
+// node_modules/lucide-react/dist/esm/shared/src/utils.js
+var toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+var toCamelCase = (string) => string.replace(
+  /^([A-Z])|[\s-_]+(\w)/g,
+  (match, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase()
+);
 var toPascalCase = (string) => {
   const camelCase = toCamelCase(string);
   return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
 };
-
-// node_modules/lucide-react/dist/esm/Icon.mjs
-var import_react2 = __toESM(require_react(), 1);
-
-// node_modules/lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs
 var mergeClasses = (...classes) => classes.filter((className, index, array) => {
   return Boolean(className) && className.trim() !== "" && array.indexOf(className) === index;
 }).join(" ").trim();
+var hasA11yProp = (props) => {
+  for (const prop in props) {
+    if (prop.startsWith("aria-") || prop === "role" || prop === "title") {
+      return true;
+    }
+  }
+};
 
-// node_modules/lucide-react/dist/esm/shared/src/build/defaultAttributes.mjs
+// node_modules/lucide-react/dist/esm/Icon.js
+var import_react = __toESM(require_react());
+
+// node_modules/lucide-react/dist/esm/defaultAttributes.js
 var defaultAttributes = {
   xmlns: "http://www.w3.org/2000/svg",
   width: 24,
@@ -23614,751 +23589,440 @@ var defaultAttributes = {
   viewBox: "0 0 24 24",
   fill: "none",
   stroke: "currentColor",
-  "stroke-width": 2,
-  "stroke-linecap": "round",
-  "stroke-linejoin": "round"
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
 };
 
-// node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs
-function isDefined(value) {
-  return value !== null && value !== void 0;
-}
-function buildLucideIconNode(icon, params = {}) {
-  const attributeNames = params.attributeNames ?? {};
-  const getAttributeName = (attributeName) => attributeNames[attributeName] ?? attributeName;
-  const viewBoxWidth = icon.size ?? icon.width ?? defaultAttributes["width"];
-  const viewBoxHeight = icon.size ?? icon.height ?? defaultAttributes["height"];
-  const aliasClassNames = icon.aliases?.filter((alias) => typeof alias === "string" && alias.trim() !== "").map((alias) => `lucide-${alias}`) ?? [];
-  const iconClassNames = [...icon.name ? [`lucide-${icon.name}`] : [], ...aliasClassNames];
-  const classNamesFromClassName = params.className?.split(" ").filter(Boolean) ?? [];
-  const className = params.includeDefaultClasses === false ? mergeClasses(...classNamesFromClassName) : mergeClasses("lucide", ...iconClassNames, ...classNamesFromClassName);
-  const calculatedStrokeWidth = params.absoluteStrokeWidth ? Number(params.strokeWidth ?? defaultAttributes["stroke-width"]) * Number(icon.size ?? icon.width ?? defaultAttributes["width"]) / Number(params.size ?? params.width ?? defaultAttributes["width"]) : params.strokeWidth ?? defaultAttributes["stroke-width"];
-  const attributes = {
-    ...Object.entries(defaultAttributes).reduce((attrs, [attrName, value]) => {
-      attrs[getAttributeName(attrName)] = value;
-      return attrs;
-    }, {}),
-    ..."color" in params && params.color && {
-      [getAttributeName("stroke")]: params.color
-    },
-    ..."size" in params && isDefined(params.size) && {
-      [getAttributeName("width")]: params.size,
-      [getAttributeName("height")]: params.size
-    },
-    ..."width" in params && isDefined(params.width) && {
-      [getAttributeName("width")]: params.width
-    },
-    ..."height" in params && isDefined(params.height) && {
-      [getAttributeName("height")]: params.height
-    },
-    [getAttributeName("stroke-width")]: calculatedStrokeWidth,
-    ...className && {
-      [getAttributeName("class")]: className
-    },
-    [getAttributeName("viewBox")]: `0 0 ${viewBoxWidth} ${viewBoxHeight}`,
-    ...params.hasA11yProp === false ? {
-      [getAttributeName("aria-hidden")]: "true"
-    } : {},
-    ..."attributes" in params && params.attributes
-  };
-  return [
-    "svg",
-    attributes,
-    icon.node.map((child) => {
-      const [name, attrs, children] = child;
-      const nextAttrs = params.nonScalingStroke ? { [getAttributeName("vector-effect")]: "non-scaling-stroke", ...attrs } : attrs;
-      return children ? [name, nextAttrs, children] : [name, nextAttrs];
-    })
-  ];
-}
-
-// node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconForReact.mjs
-function buildLucideIconForReact(icon, params = {}) {
-  return buildLucideIconNode(icon, {
-    ...params,
-    attributeNames: {
-      ...params.attributeNames,
-      class: "className",
-      "stroke-width": "strokeWidth",
-      "stroke-linecap": "strokeLinecap",
-      "stroke-linejoin": "strokeLinejoin",
-      "vector-effect": "vectorEffect"
-    }
-  });
-}
-
-// node_modules/lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs
-var hasA11yProp = (props) => {
-  for (const prop in props) {
-    if (prop.startsWith("aria-") || prop === "role" || prop === "title") {
-      return true;
-    }
-  }
-  return false;
-};
-
-// node_modules/lucide-react/dist/esm/context.mjs
-var import_react = __toESM(require_react(), 1);
-var LucideContext = (0, import_react.createContext)({});
-var useLucideContext = () => (0, import_react.useContext)(LucideContext);
-
-// node_modules/lucide-react/dist/esm/Icon.mjs
-var Icon = (0, import_react2.forwardRef)(
+// node_modules/lucide-react/dist/esm/Icon.js
+var Icon = (0, import_react.forwardRef)(
   ({
-    color,
-    size,
-    width,
-    height,
-    strokeWidth,
+    color = "currentColor",
+    size = 24,
+    strokeWidth = 2,
     absoluteStrokeWidth,
-    nonScalingStroke,
     className = "",
     children,
-    iconNode = [],
-    icon = {
-      node: iconNode,
-      aliases: [],
-      size: 24
-    },
+    iconNode,
     ...rest
-  }, ref) => {
-    const {
-      size: contextSize = 24,
-      strokeWidth: contextStrokeWidth = 2,
-      absoluteStrokeWidth: contextAbsoluteStrokeWidth = false,
-      nonScalingStroke: contextNonScalingStroke = false,
-      color: contextColor = "currentColor",
-      className: contextClass = ""
-    } = useLucideContext() ?? {};
-    const hasAccessibleProp = Boolean(children) || hasA11yProp(rest);
-    const [name, svgAttributes, builtIconNode = []] = buildLucideIconForReact(icon, {
-      color: color ?? contextColor,
-      width: width ?? size ?? contextSize,
-      height: height ?? size ?? contextSize,
-      strokeWidth: strokeWidth ?? contextStrokeWidth,
-      absoluteStrokeWidth: absoluteStrokeWidth ?? contextAbsoluteStrokeWidth,
-      nonScalingStroke: nonScalingStroke ?? contextNonScalingStroke,
-      className: mergeClasses(contextClass, className),
-      hasA11yProp: hasAccessibleProp,
-      attributes: rest
-    });
-    return (0, import_react2.createElement)(
-      name,
-      {
-        ref,
-        ...svgAttributes
-      },
-      [
-        ...builtIconNode.map(([tag, attrs]) => (0, import_react2.createElement)(tag, attrs)),
-        ...Array.isArray(children) ? children : [children]
-      ]
-    );
-  }
+  }, ref) => (0, import_react.createElement)(
+    "svg",
+    {
+      ref,
+      ...defaultAttributes,
+      width: size,
+      height: size,
+      stroke: color,
+      strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size) : strokeWidth,
+      className: mergeClasses("lucide", className),
+      ...!children && !hasA11yProp(rest) && { "aria-hidden": "true" },
+      ...rest
+    },
+    [
+      ...iconNode.map(([tag, attrs]) => (0, import_react.createElement)(tag, attrs)),
+      ...Array.isArray(children) ? children : [children]
+    ]
+  )
 );
 
-// node_modules/lucide-react/dist/esm/createLucideIcon.mjs
-function createLucideIcon(iconDataOrName, iconNode = [], aliases = []) {
-  const iconData = typeof iconDataOrName === "string" ? toLucideIconData(iconDataOrName, iconNode, aliases) : iconDataOrName;
-  const Component = (0, import_react3.forwardRef)(
-    ({ className, ...props }, ref) => (0, import_react3.createElement)(Icon, {
+// node_modules/lucide-react/dist/esm/createLucideIcon.js
+var createLucideIcon = (iconName, iconNode) => {
+  const Component = (0, import_react2.forwardRef)(
+    ({ className, ...props }, ref) => (0, import_react2.createElement)(Icon, {
       ref,
-      icon: iconData,
-      className,
+      iconNode,
+      className: mergeClasses(
+        `lucide-${toKebabCase(toPascalCase(iconName))}`,
+        `lucide-${iconName}`,
+        className
+      ),
       ...props
     })
   );
-  if (iconData.name) {
-    Component.displayName = toPascalCase(iconData.name);
-  }
+  Component.displayName = toPascalCase(iconName);
   return Component;
-}
-
-// node_modules/lucide-react/dist/esm/icons/arrow-left.mjs
-var __iconData = {
-  name: "arrow-left",
-  size: 24,
-  node: [
-    ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
-    ["path", { d: "M19 12H5", key: "x3x0zl" }]
-  ]
 };
-__iconData.node;
-var ArrowLeft = createLucideIcon(__iconData);
 
-// node_modules/lucide-react/dist/esm/icons/arrow-up-right.mjs
-var __iconData2 = {
-  name: "arrow-up-right",
-  size: 24,
-  node: [
-    ["path", { d: "M7 7h10v10", key: "1tivn9" }],
-    ["path", { d: "M7 17 17 7", key: "1vkiza" }]
+// node_modules/lucide-react/dist/esm/icons/arrow-left.js
+var __iconNode = [
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
+];
+var ArrowLeft = createLucideIcon("arrow-left", __iconNode);
+
+// node_modules/lucide-react/dist/esm/icons/arrow-up-right.js
+var __iconNode2 = [
+  ["path", { d: "M7 7h10v10", key: "1tivn9" }],
+  ["path", { d: "M7 17 17 7", key: "1vkiza" }]
+];
+var ArrowUpRight = createLucideIcon("arrow-up-right", __iconNode2);
+
+// node_modules/lucide-react/dist/esm/icons/bell.js
+var __iconNode3 = [
+  ["path", { d: "M10.268 21a2 2 0 0 0 3.464 0", key: "vwvbt9" }],
+  [
+    "path",
+    {
+      d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
+      key: "11g9vi"
+    }
   ]
-};
-__iconData2.node;
-var ArrowUpRight = createLucideIcon(__iconData2);
+];
+var Bell = createLucideIcon("bell", __iconNode3);
 
-// node_modules/lucide-react/dist/esm/icons/bell.mjs
-var __iconData3 = {
-  name: "bell",
-  size: 24,
-  node: [
-    ["path", { d: "M10.268 21a2 2 0 0 0 3.464 0", key: "vwvbt9" }],
-    [
-      "path",
-      {
-        d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
-        key: "11g9vi"
-      }
-    ]
-  ]
-};
-__iconData3.node;
-var Bell = createLucideIcon(__iconData3);
-
-// node_modules/lucide-react/dist/esm/icons/box.mjs
-var __iconData4 = {
-  name: "box",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z",
-        key: "hh9hay"
-      }
-    ],
-    ["path", { d: "m3.3 7 8.7 5 8.7-5", key: "g66t2b" }],
-    ["path", { d: "M12 22V12", key: "d0xqtd" }]
-  ]
-};
-__iconData4.node;
-var Box = createLucideIcon(__iconData4);
-
-// node_modules/lucide-react/dist/esm/icons/calendar-clock.mjs
-var __iconData5 = {
-  name: "calendar-clock",
-  size: 24,
-  node: [
-    ["path", { d: "M16 14v2.2l1.6 1", key: "fo4ql5" }],
-    ["path", { d: "M16 2v3", key: "otl347" }],
-    ["path", { d: "M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338", key: "7hb8p4" }],
-    ["path", { d: "M3 9h5.859", key: "numkqi" }],
-    ["path", { d: "M8 2v3", key: "1ioesn" }],
-    ["circle", { cx: "16", cy: "16", r: "6", key: "qoo3c4" }]
-  ]
-};
-__iconData5.node;
-var CalendarClock = createLucideIcon(__iconData5);
-
-// node_modules/lucide-react/dist/esm/icons/circle-check.mjs
-var __iconData6 = {
-  name: "circle-check",
-  size: 24,
-  node: [
-    ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-    ["path", { d: "m16 9-5.5 5.5L8 12", key: "xofnsj" }]
+// node_modules/lucide-react/dist/esm/icons/box.js
+var __iconNode4 = [
+  [
+    "path",
+    {
+      d: "M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z",
+      key: "hh9hay"
+    }
   ],
-  aliases: ["check-circle-2"]
-};
-__iconData6.node;
-var CircleCheck = createLucideIcon(__iconData6);
+  ["path", { d: "m3.3 7 8.7 5 8.7-5", key: "g66t2b" }],
+  ["path", { d: "M12 22V12", key: "d0xqtd" }]
+];
+var Box = createLucideIcon("box", __iconNode4);
 
-// node_modules/lucide-react/dist/esm/icons/circle-x.mjs
-var __iconData7 = {
-  name: "circle-x",
-  size: 24,
-  node: [
-    ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-    ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
-    ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+// node_modules/lucide-react/dist/esm/icons/calendar-clock.js
+var __iconNode5 = [
+  ["path", { d: "M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5", key: "1osxxc" }],
+  ["path", { d: "M16 2v4", key: "4m81vk" }],
+  ["path", { d: "M8 2v4", key: "1cmpym" }],
+  ["path", { d: "M3 10h5", key: "r794hk" }],
+  ["path", { d: "M17.5 17.5 16 16.3V14", key: "akvzfd" }],
+  ["circle", { cx: "16", cy: "16", r: "6", key: "qoo3c4" }]
+];
+var CalendarClock = createLucideIcon("calendar-clock", __iconNode5);
+
+// node_modules/lucide-react/dist/esm/icons/circle-check.js
+var __iconNode6 = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+var CircleCheck = createLucideIcon("circle-check", __iconNode6);
+
+// node_modules/lucide-react/dist/esm/icons/circle-x.js
+var __iconNode7 = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
+  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+];
+var CircleX = createLucideIcon("circle-x", __iconNode7);
+
+// node_modules/lucide-react/dist/esm/icons/clipboard-list.js
+var __iconNode8 = [
+  ["rect", { width: "8", height: "4", x: "8", y: "2", rx: "1", ry: "1", key: "tgr4d6" }],
+  [
+    "path",
+    {
+      d: "M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2",
+      key: "116196"
+    }
   ],
-  aliases: ["x-circle"]
-};
-__iconData7.node;
-var CircleX = createLucideIcon(__iconData7);
+  ["path", { d: "M12 11h4", key: "1jrz19" }],
+  ["path", { d: "M12 16h4", key: "n85exb" }],
+  ["path", { d: "M8 11h.01", key: "1dfujw" }],
+  ["path", { d: "M8 16h.01", key: "18s6g9" }]
+];
+var ClipboardList = createLucideIcon("clipboard-list", __iconNode8);
 
-// node_modules/lucide-react/dist/esm/icons/clipboard-list.mjs
-var __iconData8 = {
-  name: "clipboard-list",
-  size: 24,
-  node: [
-    ["rect", { width: "8", height: "4", x: "8", y: "2", rx: "1", ry: "1", key: "tgr4d6" }],
-    [
-      "path",
-      {
-        d: "M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2",
-        key: "116196"
-      }
-    ],
-    ["path", { d: "M12 11h4", key: "1jrz19" }],
-    ["path", { d: "M12 16h4", key: "n85exb" }],
-    ["path", { d: "M8 11h.01", key: "1dfujw" }],
-    ["path", { d: "M8 16h.01", key: "18s6g9" }]
-  ]
-};
-__iconData8.node;
-var ClipboardList = createLucideIcon(__iconData8);
+// node_modules/lucide-react/dist/esm/icons/clock-3.js
+var __iconNode9 = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["polyline", { points: "12 6 12 12 16.5 12", key: "1aq6pp" }]
+];
+var Clock3 = createLucideIcon("clock-3", __iconNode9);
 
-// node_modules/lucide-react/dist/esm/icons/clock-3.mjs
-var __iconData9 = {
-  name: "clock-3",
-  size: 24,
-  node: [
-    ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-    ["path", { d: "M12 6v6h4", key: "135r8i" }]
-  ]
-};
-__iconData9.node;
-var Clock3 = createLucideIcon(__iconData9);
+// node_modules/lucide-react/dist/esm/icons/credit-card.js
+var __iconNode10 = [
+  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
+  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
+];
+var CreditCard = createLucideIcon("credit-card", __iconNode10);
 
-// node_modules/lucide-react/dist/esm/icons/credit-card.mjs
-var __iconData10 = {
-  name: "credit-card",
-  size: 24,
-  node: [
-    ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
-    ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }],
-    ["path", { d: "M6 14h2", key: "mk7k0u" }]
-  ]
-};
-__iconData10.node;
-var CreditCard = createLucideIcon(__iconData10);
+// node_modules/lucide-react/dist/esm/icons/download.js
+var __iconNode11 = [
+  ["path", { d: "M12 15V3", key: "m9g1x1" }],
+  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
+  ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
+];
+var Download = createLucideIcon("download", __iconNode11);
 
-// node_modules/lucide-react/dist/esm/icons/download.mjs
-var __iconData11 = {
-  name: "download",
-  size: 24,
-  node: [
-    ["path", { d: "M12 15V3", key: "m9g1x1" }],
-    ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
-    ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
-  ]
-};
-__iconData11.node;
-var Download = createLucideIcon(__iconData11);
-
-// node_modules/lucide-react/dist/esm/icons/eye.mjs
-var __iconData12 = {
-  name: "eye",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
-        key: "1nclc0"
-      }
-    ],
-    ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
-  ]
-};
-__iconData12.node;
-var Eye = createLucideIcon(__iconData12);
-
-// node_modules/lucide-react/dist/esm/icons/file-check.mjs
-var __iconData13 = {
-  name: "file-check",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
-        key: "1oefj6"
-      }
-    ],
-    ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
-    ["path", { d: "m9 15 2 2 4-4", key: "1grp1n" }]
-  ]
-};
-__iconData13.node;
-var FileCheck = createLucideIcon(__iconData13);
-
-// node_modules/lucide-react/dist/esm/icons/indian-rupee.mjs
-var __iconData14 = {
-  name: "indian-rupee",
-  size: 24,
-  node: [
-    ["path", { d: "M6 3h12", key: "ggurg9" }],
-    ["path", { d: "M6 8h12", key: "6g4wlu" }],
-    ["path", { d: "m6 13 8.5 8", key: "u1kupk" }],
-    ["path", { d: "M6 13h3", key: "wdp6ag" }],
-    ["path", { d: "M9 13c6.667 0 6.667-10 0-10", key: "1nkvk2" }]
-  ]
-};
-__iconData14.node;
-var IndianRupee = createLucideIcon(__iconData14);
-
-// node_modules/lucide-react/dist/esm/icons/layout-dashboard.mjs
-var __iconData15 = {
-  name: "layout-dashboard",
-  size: 24,
-  node: [
-    ["rect", { width: "7", height: "9", x: "3", y: "3", rx: "1", key: "10lvy0" }],
-    ["rect", { width: "7", height: "5", x: "14", y: "3", rx: "1", key: "16une8" }],
-    ["rect", { width: "7", height: "9", x: "14", y: "12", rx: "1", key: "1hutg5" }],
-    ["rect", { width: "7", height: "5", x: "3", y: "16", rx: "1", key: "ldoo1y" }]
-  ]
-};
-__iconData15.node;
-var LayoutDashboard = createLucideIcon(__iconData15);
-
-// node_modules/lucide-react/dist/esm/icons/lock-keyhole.mjs
-var __iconData16 = {
-  name: "lock-keyhole",
-  size: 24,
-  node: [
-    ["circle", { cx: "12", cy: "16", r: "1", key: "1au0dj" }],
-    ["rect", { x: "3", y: "10", width: "18", height: "12", rx: "2", key: "6s8ecr" }],
-    ["path", { d: "M7 10V7a5 5 0 0 1 10 0v3", key: "1pqi11" }]
-  ]
-};
-__iconData16.node;
-var LockKeyhole = createLucideIcon(__iconData16);
-
-// node_modules/lucide-react/dist/esm/icons/log-out.mjs
-var __iconData17 = {
-  name: "log-out",
-  size: 24,
-  node: [
-    ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
-    ["path", { d: "M21 12H9", key: "dn1m92" }],
-    ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
-  ]
-};
-__iconData17.node;
-var LogOut = createLucideIcon(__iconData17);
-
-// node_modules/lucide-react/dist/esm/icons/mail.mjs
-var __iconData18 = {
-  name: "mail",
-  size: 24,
-  node: [
-    ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
-    ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
-  ]
-};
-__iconData18.node;
-var Mail = createLucideIcon(__iconData18);
-
-// node_modules/lucide-react/dist/esm/icons/map-pin.mjs
-var __iconData19 = {
-  name: "map-pin",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0",
-        key: "1r0f0z"
-      }
-    ],
-    ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
-  ]
-};
-__iconData19.node;
-var MapPin = createLucideIcon(__iconData19);
-
-// node_modules/lucide-react/dist/esm/icons/menu.mjs
-var __iconData20 = {
-  name: "menu",
-  size: 24,
-  node: [
-    ["path", { d: "M4 5h16", key: "1tepv9" }],
-    ["path", { d: "M4 12h16", key: "1lakjw" }],
-    ["path", { d: "M4 19h16", key: "1djgab" }]
-  ]
-};
-__iconData20.node;
-var Menu = createLucideIcon(__iconData20);
-
-// node_modules/lucide-react/dist/esm/icons/message-square.mjs
-var __iconData21 = {
-  name: "message-square",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z",
-        key: "18887p"
-      }
-    ]
-  ]
-};
-__iconData21.node;
-var MessageSquare = createLucideIcon(__iconData21);
-
-// node_modules/lucide-react/dist/esm/icons/package.mjs
-var __iconData22 = {
-  name: "package",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z",
-        key: "1a0edw"
-      }
-    ],
-    ["path", { d: "M12 22V12", key: "d0xqtd" }],
-    ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
-    ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
-  ]
-};
-__iconData22.node;
-var Package = createLucideIcon(__iconData22);
-
-// node_modules/lucide-react/dist/esm/icons/pencil.mjs
-var __iconData23 = {
-  name: "pencil",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
-        key: "1a8usu"
-      }
-    ],
-    ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
-  ]
-};
-__iconData23.node;
-var Pencil = createLucideIcon(__iconData23);
-
-// node_modules/lucide-react/dist/esm/icons/plus.mjs
-var __iconData24 = {
-  name: "plus",
-  size: 24,
-  node: [
-    ["path", { d: "M5 12h14", key: "1ays0h" }],
-    ["path", { d: "M12 5v14", key: "s699le" }]
-  ]
-};
-__iconData24.node;
-var Plus = createLucideIcon(__iconData24);
-
-// node_modules/lucide-react/dist/esm/icons/receipt-text.mjs
-var __iconData25 = {
-  name: "receipt-text",
-  size: 24,
-  node: [
-    ["path", { d: "M13 16H8", key: "wsln4y" }],
-    ["path", { d: "M14 8H8", key: "1l3xfs" }],
-    ["path", { d: "M16 12H8", key: "1fr5h0" }],
-    [
-      "path",
-      {
-        d: "M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z",
-        key: "ycz6yz"
-      }
-    ]
-  ]
-};
-__iconData25.node;
-var ReceiptText = createLucideIcon(__iconData25);
-
-// node_modules/lucide-react/dist/esm/icons/refresh-cw.mjs
-var __iconData26 = {
-  name: "refresh-cw",
-  size: 24,
-  node: [
-    ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
-    ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
-    ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
-    ["path", { d: "M8 16H3v5", key: "1cv678" }]
-  ]
-};
-__iconData26.node;
-var RefreshCw = createLucideIcon(__iconData26);
-
-// node_modules/lucide-react/dist/esm/icons/rotate-ccw-clock.mjs
-var __iconData27 = {
-  name: "rotate-ccw-clock",
-  size: 24,
-  node: [
-    ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
-    ["path", { d: "M3 3v5h5", key: "1xhq8a" }],
-    ["path", { d: "M12 7v5l4 2", key: "1fdv2h" }]
+// node_modules/lucide-react/dist/esm/icons/eye.js
+var __iconNode12 = [
+  [
+    "path",
+    {
+      d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
+      key: "1nclc0"
+    }
   ],
-  aliases: ["history"]
-};
-__iconData27.node;
-var RotateCcwClock = createLucideIcon(__iconData27);
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+];
+var Eye = createLucideIcon("eye", __iconNode12);
 
-// node_modules/lucide-react/dist/esm/icons/scale.mjs
-var __iconData28 = {
-  name: "scale",
-  size: 24,
-  node: [
-    ["path", { d: "M12 3v18", key: "108xh3" }],
-    ["path", { d: "m19 8 3 8a5 5 0 0 1-6 0zV7", key: "zcdpyk" }],
-    ["path", { d: "M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1", key: "1yorad" }],
-    ["path", { d: "m5 8 3 8a5 5 0 0 1-6 0zV7", key: "eua70x" }],
-    ["path", { d: "M7 21h10", key: "1b0cd5" }]
-  ]
-};
-__iconData28.node;
-var Scale = createLucideIcon(__iconData28);
+// node_modules/lucide-react/dist/esm/icons/file-check.js
+var __iconNode13 = [
+  ["path", { d: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z", key: "1rqfz7" }],
+  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
+  ["path", { d: "m9 15 2 2 4-4", key: "1grp1n" }]
+];
+var FileCheck = createLucideIcon("file-check", __iconNode13);
 
-// node_modules/lucide-react/dist/esm/icons/search.mjs
-var __iconData29 = {
-  name: "search",
-  size: 24,
-  node: [
-    ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-    ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
-  ]
-};
-__iconData29.node;
-var Search = createLucideIcon(__iconData29);
+// node_modules/lucide-react/dist/esm/icons/history.js
+var __iconNode14 = [
+  ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
+  ["path", { d: "M3 3v5h5", key: "1xhq8a" }],
+  ["path", { d: "M12 7v5l4 2", key: "1fdv2h" }]
+];
+var History = createLucideIcon("history", __iconNode14);
 
-// node_modules/lucide-react/dist/esm/icons/shield-check.mjs
-var __iconData30 = {
-  name: "shield-check",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-        key: "oel41y"
-      }
-    ],
-    ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
-  ]
-};
-__iconData30.node;
-var ShieldCheck = createLucideIcon(__iconData30);
+// node_modules/lucide-react/dist/esm/icons/indian-rupee.js
+var __iconNode15 = [
+  ["path", { d: "M6 3h12", key: "ggurg9" }],
+  ["path", { d: "M6 8h12", key: "6g4wlu" }],
+  ["path", { d: "m6 13 8.5 8", key: "u1kupk" }],
+  ["path", { d: "M6 13h3", key: "wdp6ag" }],
+  ["path", { d: "M9 13c6.667 0 6.667-10 0-10", key: "1nkvk2" }]
+];
+var IndianRupee = createLucideIcon("indian-rupee", __iconNode15);
 
-// node_modules/lucide-react/dist/esm/icons/shopping-bag.mjs
-var __iconData31 = {
-  name: "shopping-bag",
-  size: 24,
-  node: [
-    ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }],
-    ["path", { d: "M3.103 6.034h17.794", key: "awc11p" }],
-    [
-      "path",
-      {
-        d: "M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z",
-        key: "o988cm"
-      }
-    ]
-  ]
-};
-__iconData31.node;
-var ShoppingBag = createLucideIcon(__iconData31);
+// node_modules/lucide-react/dist/esm/icons/layout-dashboard.js
+var __iconNode16 = [
+  ["rect", { width: "7", height: "9", x: "3", y: "3", rx: "1", key: "10lvy0" }],
+  ["rect", { width: "7", height: "5", x: "14", y: "3", rx: "1", key: "16une8" }],
+  ["rect", { width: "7", height: "9", x: "14", y: "12", rx: "1", key: "1hutg5" }],
+  ["rect", { width: "7", height: "5", x: "3", y: "16", rx: "1", key: "ldoo1y" }]
+];
+var LayoutDashboard = createLucideIcon("layout-dashboard", __iconNode16);
 
-// node_modules/lucide-react/dist/esm/icons/triangle-alert.mjs
-var __iconData32 = {
-  name: "triangle-alert",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
-        key: "wmoenq"
-      }
-    ],
-    ["path", { d: "M12 9v4", key: "juzpu7" }],
-    ["path", { d: "M12 17h.01", key: "p32p05" }]
+// node_modules/lucide-react/dist/esm/icons/lock-keyhole.js
+var __iconNode17 = [
+  ["circle", { cx: "12", cy: "16", r: "1", key: "1au0dj" }],
+  ["rect", { x: "3", y: "10", width: "18", height: "12", rx: "2", key: "6s8ecr" }],
+  ["path", { d: "M7 10V7a5 5 0 0 1 10 0v3", key: "1pqi11" }]
+];
+var LockKeyhole = createLucideIcon("lock-keyhole", __iconNode17);
+
+// node_modules/lucide-react/dist/esm/icons/log-out.js
+var __iconNode18 = [
+  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
+  ["path", { d: "M21 12H9", key: "dn1m92" }],
+  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
+];
+var LogOut = createLucideIcon("log-out", __iconNode18);
+
+// node_modules/lucide-react/dist/esm/icons/mail.js
+var __iconNode19 = [
+  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
+  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
+];
+var Mail = createLucideIcon("mail", __iconNode19);
+
+// node_modules/lucide-react/dist/esm/icons/map-pin.js
+var __iconNode20 = [
+  [
+    "path",
+    {
+      d: "M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0",
+      key: "1r0f0z"
+    }
   ],
-  aliases: ["alert-triangle"]
-};
-__iconData32.node;
-var TriangleAlert = createLucideIcon(__iconData32);
+  ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
+];
+var MapPin = createLucideIcon("map-pin", __iconNode20);
 
-// node_modules/lucide-react/dist/esm/icons/truck.mjs
-var __iconData33 = {
-  name: "truck",
-  size: 24,
-  node: [
-    ["path", { d: "M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2", key: "wrbu53" }],
-    ["path", { d: "M15 18H9", key: "1lyqi6" }],
-    [
-      "path",
-      {
-        d: "M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14",
-        key: "lysw3i"
-      }
-    ],
-    ["circle", { cx: "17", cy: "18", r: "2", key: "332jqn" }],
-    ["circle", { cx: "7", cy: "18", r: "2", key: "19iecd" }]
-  ]
-};
-__iconData33.node;
-var Truck = createLucideIcon(__iconData33);
+// node_modules/lucide-react/dist/esm/icons/menu.js
+var __iconNode21 = [
+  ["path", { d: "M4 12h16", key: "1lakjw" }],
+  ["path", { d: "M4 18h16", key: "19g7jn" }],
+  ["path", { d: "M4 6h16", key: "1o0s65" }]
+];
+var Menu = createLucideIcon("menu", __iconNode21);
 
-// node_modules/lucide-react/dist/esm/icons/user-check.mjs
-var __iconData34 = {
-  name: "user-check",
-  size: 24,
-  node: [
-    ["path", { d: "m16 11 2 2 4-4", key: "9rsbq5" }],
-    ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
-    ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }]
-  ]
-};
-__iconData34.node;
-var UserCheck = createLucideIcon(__iconData34);
+// node_modules/lucide-react/dist/esm/icons/message-square.js
+var __iconNode22 = [
+  ["path", { d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z", key: "1lielz" }]
+];
+var MessageSquare = createLucideIcon("message-square", __iconNode22);
 
-// node_modules/lucide-react/dist/esm/icons/user-round-cog.mjs
-var __iconData35 = {
-  name: "user-round-cog",
-  size: 24,
-  node: [
-    ["path", { d: "m14.305 19.53.923-.382", key: "3m78fa" }],
-    ["path", { d: "m15.228 16.852-.923-.383", key: "npixar" }],
-    ["path", { d: "m16.852 15.228-.383-.923", key: "5xggr7" }],
-    ["path", { d: "m16.852 20.772-.383.924", key: "dpfhf9" }],
-    ["path", { d: "m19.148 15.228.383-.923", key: "1reyyz" }],
-    ["path", { d: "m19.53 21.696-.382-.924", key: "1goivc" }],
-    ["path", { d: "M2 21a8 8 0 0 1 10.434-7.62", key: "1yezr2" }],
-    ["path", { d: "m20.772 16.852.924-.383", key: "htqkph" }],
-    ["path", { d: "m20.772 19.148.924.383", key: "9w9pjp" }],
-    ["circle", { cx: "10", cy: "8", r: "5", key: "o932ke" }],
-    ["circle", { cx: "18", cy: "18", r: "3", key: "1xkwt0" }]
+// node_modules/lucide-react/dist/esm/icons/package.js
+var __iconNode23 = [
+  [
+    "path",
+    {
+      d: "M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z",
+      key: "1a0edw"
+    }
   ],
-  aliases: ["user-cog-2"]
-};
-__iconData35.node;
-var UserRoundCog = createLucideIcon(__iconData35);
+  ["path", { d: "M12 22V12", key: "d0xqtd" }],
+  ["polyline", { points: "3.29 7 12 12 20.71 7", key: "ousv84" }],
+  ["path", { d: "m7.5 4.27 9 5.15", key: "1c824w" }]
+];
+var Package = createLucideIcon("package", __iconNode23);
 
-// node_modules/lucide-react/dist/esm/icons/users.mjs
-var __iconData36 = {
-  name: "users",
-  size: 24,
-  node: [
-    ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
-    ["path", { d: "M16 3.128a4 4 0 0 1 0 7.744", key: "16gr8j" }],
-    ["path", { d: "M22 21v-2a4 4 0 0 0-3-3.87", key: "kshegd" }],
-    ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }]
-  ]
-};
-__iconData36.node;
-var Users = createLucideIcon(__iconData36);
+// node_modules/lucide-react/dist/esm/icons/pencil.js
+var __iconNode24 = [
+  [
+    "path",
+    {
+      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+      key: "1a8usu"
+    }
+  ],
+  ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
+];
+var Pencil = createLucideIcon("pencil", __iconNode24);
 
-// node_modules/lucide-react/dist/esm/icons/wallet-cards.mjs
-var __iconData37 = {
-  name: "wallet-cards",
-  size: 24,
-  node: [
-    [
-      "path",
-      {
-        d: "M3 11h3.75a2 2 0 0 1 1.6.8l.45.6a4 4 0 0 0 6.4 0l.45-.6a2 2 0 0 1 1.6-.8H21",
-        key: "1vwh6y"
-      }
-    ],
-    ["path", { d: "M3 7h18", key: "1uiuf2" }],
-    ["rect", { x: "3", y: "3", width: "18", height: "18", rx: "2", key: "h1oib" }]
+// node_modules/lucide-react/dist/esm/icons/plus.js
+var __iconNode25 = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
+];
+var Plus = createLucideIcon("plus", __iconNode25);
+
+// node_modules/lucide-react/dist/esm/icons/receipt-text.js
+var __iconNode26 = [
+  [
+    "path",
+    { d: "M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z", key: "q3az6g" }
+  ],
+  ["path", { d: "M14 8H8", key: "1l3xfs" }],
+  ["path", { d: "M16 12H8", key: "1fr5h0" }],
+  ["path", { d: "M13 16H8", key: "wsln4y" }]
+];
+var ReceiptText = createLucideIcon("receipt-text", __iconNode26);
+
+// node_modules/lucide-react/dist/esm/icons/refresh-cw.js
+var __iconNode27 = [
+  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
+  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
+  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
+  ["path", { d: "M8 16H3v5", key: "1cv678" }]
+];
+var RefreshCw = createLucideIcon("refresh-cw", __iconNode27);
+
+// node_modules/lucide-react/dist/esm/icons/scale.js
+var __iconNode28 = [
+  ["path", { d: "m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z", key: "7g6ntu" }],
+  ["path", { d: "m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z", key: "ijws7r" }],
+  ["path", { d: "M7 21h10", key: "1b0cd5" }],
+  ["path", { d: "M12 3v18", key: "108xh3" }],
+  ["path", { d: "M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2", key: "3gwbw2" }]
+];
+var Scale = createLucideIcon("scale", __iconNode28);
+
+// node_modules/lucide-react/dist/esm/icons/search.js
+var __iconNode29 = [
+  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+];
+var Search = createLucideIcon("search", __iconNode29);
+
+// node_modules/lucide-react/dist/esm/icons/shield-check.js
+var __iconNode30 = [
+  [
+    "path",
+    {
+      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
+      key: "oel41y"
+    }
+  ],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+var ShieldCheck = createLucideIcon("shield-check", __iconNode30);
+
+// node_modules/lucide-react/dist/esm/icons/shopping-bag.js
+var __iconNode31 = [
+  ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }],
+  ["path", { d: "M3.103 6.034h17.794", key: "awc11p" }],
+  [
+    "path",
+    {
+      d: "M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z",
+      key: "o988cm"
+    }
   ]
-};
-__iconData37.node;
-var WalletCards = createLucideIcon(__iconData37);
+];
+var ShoppingBag = createLucideIcon("shopping-bag", __iconNode31);
+
+// node_modules/lucide-react/dist/esm/icons/triangle-alert.js
+var __iconNode32 = [
+  [
+    "path",
+    {
+      d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
+      key: "wmoenq"
+    }
+  ],
+  ["path", { d: "M12 9v4", key: "juzpu7" }],
+  ["path", { d: "M12 17h.01", key: "p32p05" }]
+];
+var TriangleAlert = createLucideIcon("triangle-alert", __iconNode32);
+
+// node_modules/lucide-react/dist/esm/icons/truck.js
+var __iconNode33 = [
+  ["path", { d: "M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2", key: "wrbu53" }],
+  ["path", { d: "M15 18H9", key: "1lyqi6" }],
+  [
+    "path",
+    {
+      d: "M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14",
+      key: "lysw3i"
+    }
+  ],
+  ["circle", { cx: "17", cy: "18", r: "2", key: "332jqn" }],
+  ["circle", { cx: "7", cy: "18", r: "2", key: "19iecd" }]
+];
+var Truck = createLucideIcon("truck", __iconNode33);
+
+// node_modules/lucide-react/dist/esm/icons/user-check.js
+var __iconNode34 = [
+  ["path", { d: "m16 11 2 2 4-4", key: "9rsbq5" }],
+  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
+  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }]
+];
+var UserCheck = createLucideIcon("user-check", __iconNode34);
+
+// node_modules/lucide-react/dist/esm/icons/user-round-cog.js
+var __iconNode35 = [
+  ["path", { d: "m14.305 19.53.923-.382", key: "3m78fa" }],
+  ["path", { d: "m15.228 16.852-.923-.383", key: "npixar" }],
+  ["path", { d: "m16.852 15.228-.383-.923", key: "5xggr7" }],
+  ["path", { d: "m16.852 20.772-.383.924", key: "dpfhf9" }],
+  ["path", { d: "m19.148 15.228.383-.923", key: "1reyyz" }],
+  ["path", { d: "m19.53 21.696-.382-.924", key: "1goivc" }],
+  ["path", { d: "M2 21a8 8 0 0 1 10.434-7.62", key: "1yezr2" }],
+  ["path", { d: "m20.772 16.852.924-.383", key: "htqkph" }],
+  ["path", { d: "m20.772 19.148.924.383", key: "9w9pjp" }],
+  ["circle", { cx: "10", cy: "8", r: "5", key: "o932ke" }],
+  ["circle", { cx: "18", cy: "18", r: "3", key: "1xkwt0" }]
+];
+var UserRoundCog = createLucideIcon("user-round-cog", __iconNode35);
+
+// node_modules/lucide-react/dist/esm/icons/users.js
+var __iconNode36 = [
+  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
+  ["path", { d: "M16 3.128a4 4 0 0 1 0 7.744", key: "16gr8j" }],
+  ["path", { d: "M22 21v-2a4 4 0 0 0-3-3.87", key: "kshegd" }],
+  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }]
+];
+var Users = createLucideIcon("users", __iconNode36);
+
+// node_modules/lucide-react/dist/esm/icons/wallet-cards.js
+var __iconNode37 = [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
+  ["path", { d: "M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2", key: "4125el" }],
+  [
+    "path",
+    {
+      d: "M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21",
+      key: "1dpki6"
+    }
+  ]
+];
+var WalletCards = createLucideIcon("wallet-cards", __iconNode37);
 
 // node_modules/@supabase/supabase-js/dist/tracingRegistry.mjs
 var EXTRACTOR_KEY = /* @__PURE__ */ Symbol.for("@supabase/supabase-js.traceContextExtractor");
@@ -45156,14 +44820,14 @@ function getDeviceToken() {
   return token;
 }
 function AuthScreen({ message }) {
-  const [email, setEmail] = (0, import_react4.useState)("");
-  const [code, setCode] = (0, import_react4.useState)("");
-  const [sent, setSent] = (0, import_react4.useState)(false);
-  const [busy, setBusy] = (0, import_react4.useState)(false);
-  const [error, setError] = (0, import_react4.useState)("");
-  const [cooldownUntil, setCooldownUntil] = (0, import_react4.useState)(0);
-  const [cooldown, setCooldown] = (0, import_react4.useState)(0);
-  (0, import_react4.useEffect)(() => {
+  const [email, setEmail] = (0, import_react3.useState)("");
+  const [code, setCode] = (0, import_react3.useState)("");
+  const [sent, setSent] = (0, import_react3.useState)(false);
+  const [busy, setBusy] = (0, import_react3.useState)(false);
+  const [error, setError] = (0, import_react3.useState)("");
+  const [cooldownUntil, setCooldownUntil] = (0, import_react3.useState)(0);
+  const [cooldown, setCooldown] = (0, import_react3.useState)(0);
+  (0, import_react3.useEffect)(() => {
     if (!cooldownUntil) return;
     const update = () => setCooldown(Math.max(0, Math.ceil((cooldownUntil - Date.now()) / 1e3)));
     update();
@@ -45199,29 +44863,29 @@ function AuthScreen({ message }) {
     if (verifyError) setError(describeError(verifyError.message));
     else getDeviceToken();
   };
-  return /* @__PURE__ */ import_react4.default.createElement("div", { className: "auth-shell" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "auth-card" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "auth-mark" }, "J"), /* @__PURE__ */ import_react4.default.createElement("span", { className: "auth-kicker" }, "JABWEMEAT \xB7 RANCHI OPERATIONS"), /* @__PURE__ */ import_react4.default.createElement("h1", null, "Admin console"), /* @__PURE__ */ import_react4.default.createElement("p", null, "Sign in with the authorised email to manage the live staging store."), message && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner" }, message), sent ? /* @__PURE__ */ import_react4.default.createElement("form", { onSubmit: verifyCode }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "sent-card" }, /* @__PURE__ */ import_react4.default.createElement(Mail, null), /* @__PURE__ */ import_react4.default.createElement("b", null, "Check your inbox"), /* @__PURE__ */ import_react4.default.createElement("span", null, "Enter the 6-digit code sent to ", /* @__PURE__ */ import_react4.default.createElement("strong", null, normalizedEmail), ".")), /* @__PURE__ */ import_react4.default.createElement("label", null, "Email verification code", /* @__PURE__ */ import_react4.default.createElement("input", { inputMode: "numeric", autoComplete: "one-time-code", pattern: "[0-9]{6}", maxLength: 6, required: true, value: code, onChange: (e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6)) })), error && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner" }, error), /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary wide", disabled: busy || code.length !== 6 }, busy ? "Verifying\u2026" : "Verify code", /* @__PURE__ */ import_react4.default.createElement(ArrowUpRight, null)), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "auth-secondary", disabled: busy || cooldown > 0, onClick: () => void sendCode() }, cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"), /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "auth-secondary", disabled: busy, onClick: () => {
+  return /* @__PURE__ */ import_react3.default.createElement("div", { className: "auth-shell" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "auth-card" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "auth-mark" }, "J"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "auth-kicker" }, "JABWEMEAT \xB7 RANCHI OPERATIONS"), /* @__PURE__ */ import_react3.default.createElement("h1", null, "Admin console"), /* @__PURE__ */ import_react3.default.createElement("p", null, "Sign in with the authorised email to manage the live staging store."), message && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner" }, message), sent ? /* @__PURE__ */ import_react3.default.createElement("form", { onSubmit: verifyCode }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "sent-card" }, /* @__PURE__ */ import_react3.default.createElement(Mail, null), /* @__PURE__ */ import_react3.default.createElement("b", null, "Check your inbox"), /* @__PURE__ */ import_react3.default.createElement("span", null, "Enter the 6-digit code sent to ", /* @__PURE__ */ import_react3.default.createElement("strong", null, normalizedEmail), ".")), /* @__PURE__ */ import_react3.default.createElement("label", null, "Email verification code", /* @__PURE__ */ import_react3.default.createElement("input", { inputMode: "numeric", autoComplete: "one-time-code", pattern: "[0-9]{6}", maxLength: 6, required: true, value: code, onChange: (e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6)) })), error && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner" }, error), /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary wide", disabled: busy || code.length !== 6 }, busy ? "Verifying\u2026" : "Verify code", /* @__PURE__ */ import_react3.default.createElement(ArrowUpRight, null)), /* @__PURE__ */ import_react3.default.createElement("button", { type: "button", className: "auth-secondary", disabled: busy || cooldown > 0, onClick: () => void sendCode() }, cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"), /* @__PURE__ */ import_react3.default.createElement("button", { type: "button", className: "auth-secondary", disabled: busy, onClick: () => {
     setSent(false);
     setCode("");
     setError("");
-  } }, "Use another email")) : /* @__PURE__ */ import_react4.default.createElement("form", { onSubmit: sendCode }, /* @__PURE__ */ import_react4.default.createElement("label", null, "Administrator email", /* @__PURE__ */ import_react4.default.createElement("input", { type: "email", required: true, value: email, onChange: (e) => setEmail(e.target.value) })), error && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner" }, error), /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary wide", disabled: busy }, busy ? "Sending code\u2026" : "Send email code", /* @__PURE__ */ import_react4.default.createElement(ArrowUpRight, null))), /* @__PURE__ */ import_react4.default.createElement("small", { className: "auth-note" }, "Only approved active team accounts can access this console.")));
+  } }, "Use another email")) : /* @__PURE__ */ import_react3.default.createElement("form", { onSubmit: sendCode }, /* @__PURE__ */ import_react3.default.createElement("label", null, "Administrator email", /* @__PURE__ */ import_react3.default.createElement("input", { type: "email", required: true, value: email, onChange: (e) => setEmail(e.target.value) })), error && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner" }, error), /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary wide", disabled: busy }, busy ? "Sending code\u2026" : "Send email code", /* @__PURE__ */ import_react3.default.createElement(ArrowUpRight, null))), /* @__PURE__ */ import_react3.default.createElement("small", { className: "auth-note" }, "Only approved active team accounts can access this console.")));
 }
 function App() {
-  const [session, setSession] = (0, import_react4.useState)(void 0);
-  const [authError, setAuthError] = (0, import_react4.useState)("");
-  const [allowed, setAllowed] = (0, import_react4.useState)(null);
-  const [role, setRole] = (0, import_react4.useState)(null);
-  const [rolePermissions, setRolePermissions] = (0, import_react4.useState)(blankPermissionMap());
-  const [tab, setTab] = (0, import_react4.useState)("Dashboard");
-  const [mobile, setMobile] = (0, import_react4.useState)(false);
-  const [products, setProducts] = (0, import_react4.useState)([]);
-  const [categories2, setCategories] = (0, import_react4.useState)([]);
-  const [orders, setOrders] = (0, import_react4.useState)([]);
-  const [carts, setCarts] = (0, import_react4.useState)([]);
-  const [slots, setSlots] = (0, import_react4.useState)([]);
-  const [team, setTeam] = (0, import_react4.useState)([]);
-  const [loading, setLoading] = (0, import_react4.useState)(false);
-  const [error, setError] = (0, import_react4.useState)("");
-  (0, import_react4.useEffect)(() => {
+  const [session, setSession] = (0, import_react3.useState)(void 0);
+  const [authError, setAuthError] = (0, import_react3.useState)("");
+  const [allowed, setAllowed] = (0, import_react3.useState)(null);
+  const [role, setRole] = (0, import_react3.useState)(null);
+  const [rolePermissions, setRolePermissions] = (0, import_react3.useState)(blankPermissionMap());
+  const [tab, setTab] = (0, import_react3.useState)("Dashboard");
+  const [mobile, setMobile] = (0, import_react3.useState)(false);
+  const [products, setProducts] = (0, import_react3.useState)([]);
+  const [categories, setCategories] = (0, import_react3.useState)([]);
+  const [orders, setOrders] = (0, import_react3.useState)([]);
+  const [carts, setCarts] = (0, import_react3.useState)([]);
+  const [slots, setSlots] = (0, import_react3.useState)([]);
+  const [team, setTeam] = (0, import_react3.useState)([]);
+  const [loading, setLoading] = (0, import_react3.useState)(false);
+  const [error, setError] = (0, import_react3.useState)("");
+  (0, import_react3.useEffect)(() => {
     supabase.auth.getSession().then(({ data: data2 }) => setSession(data2.session));
     const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
@@ -45264,7 +44928,7 @@ function App() {
     setSlots(s.data || []);
     setTeam(t.data || []);
   };
-  (0, import_react4.useEffect)(() => {
+  (0, import_react3.useEffect)(() => {
     if (!session) return;
     let active = true;
     const check = async () => {
@@ -45294,7 +44958,7 @@ function App() {
       active = false;
     };
   }, [session]);
-  (0, import_react4.useEffect)(() => {
+  (0, import_react3.useEffect)(() => {
     if (allowed !== true) return;
     const channel = supabase.channel("admin-live").on("postgres_changes", { event: "*", schema: "public", table: "products" }, loadAll).on("postgres_changes", { event: "*", schema: "public", table: "orders" }, loadAll).on("postgres_changes", { event: "*", schema: "public", table: "carts" }, loadAll).on("postgres_changes", { event: "*", schema: "public", table: "delivery_slots" }, loadAll).on("postgres_changes", { event: "*", schema: "public", table: "team_members" }, async () => {
       await loadAll();
@@ -45309,14 +44973,14 @@ function App() {
   const permission = (area) => role === "Owner" ? "Full" : rolePermissions[role || "Staff"]?.[area] || "No Access";
   const canView = (area) => permission(area) !== "No Access";
   const canEdit = (area) => ["Full", "Edit"].includes(permission(area));
-  const visibleNav = (0, import_react4.useMemo)(() => nav.filter(([name]) => canView(name)), [role, rolePermissions]);
-  (0, import_react4.useEffect)(() => {
+  const visibleNav = (0, import_react3.useMemo)(() => nav.filter(([name]) => canView(name)), [role, rolePermissions]);
+  (0, import_react3.useEffect)(() => {
     if (allowed === true && !visibleNav.some(([name]) => name === tab)) setTab(visibleNav[0]?.[0] || "Dashboard");
   }, [allowed, visibleNav, tab]);
-  if (session === void 0) return /* @__PURE__ */ import_react4.default.createElement("div", { className: "loading-screen" }, "Loading secure admin\u2026");
-  if (!session) return /* @__PURE__ */ import_react4.default.createElement(AuthScreen, null);
-  if (allowed === null) return /* @__PURE__ */ import_react4.default.createElement("div", { className: "loading-screen" }, "Checking administrator access\u2026");
-  if (!allowed) return /* @__PURE__ */ import_react4.default.createElement(AuthScreen, { message: authError });
+  if (session === void 0) return /* @__PURE__ */ import_react3.default.createElement("div", { className: "loading-screen" }, "Loading secure admin\u2026");
+  if (!session) return /* @__PURE__ */ import_react3.default.createElement(AuthScreen, null);
+  if (allowed === null) return /* @__PURE__ */ import_react3.default.createElement("div", { className: "loading-screen" }, "Checking administrator access\u2026");
+  if (!allowed) return /* @__PURE__ */ import_react3.default.createElement(AuthScreen, { message: authError });
   const sessionEmail = String(session.user.email || "").trim().toLowerCase();
   const currentMember = team.find((member) => String(member.email || "").trim().toLowerCase() === sessionEmail);
   const profileName = currentMember?.name || session.user.user_metadata?.full_name || session.user.user_metadata?.name || sessionEmail.split("@")[0] || "Administrator";
@@ -45328,27 +44992,27 @@ function App() {
   const editRolePermissions = async (updated) => {
     setRolePermissions(updated);
   };
-  return /* @__PURE__ */ import_react4.default.createElement("div", { className: "shell" }, /* @__PURE__ */ import_react4.default.createElement("aside", { className: mobile ? "open" : "" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "logo" }, /* @__PURE__ */ import_react4.default.createElement("span", null, "J"), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("b", null, "JAB", /* @__PURE__ */ import_react4.default.createElement("span", null, "WE"), "MEAT", /* @__PURE__ */ import_react4.default.createElement("sup", null, "\u2122")), /* @__PURE__ */ import_react4.default.createElement("small", null, "ADMIN CONSOLE"))), /* @__PURE__ */ import_react4.default.createElement("nav", null, visibleNav.map(([name, Icon2]) => /* @__PURE__ */ import_react4.default.createElement("button", { className: tab === name ? "active" : "", onClick: () => {
+  return /* @__PURE__ */ import_react3.default.createElement("div", { className: "shell" }, /* @__PURE__ */ import_react3.default.createElement("aside", { className: mobile ? "open" : "" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "logo" }, /* @__PURE__ */ import_react3.default.createElement("span", null, "J"), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("b", null, "JAB", /* @__PURE__ */ import_react3.default.createElement("span", null, "WE"), "MEAT", /* @__PURE__ */ import_react3.default.createElement("sup", null, "\u2122")), /* @__PURE__ */ import_react3.default.createElement("small", null, "ADMIN CONSOLE"))), /* @__PURE__ */ import_react3.default.createElement("nav", null, visibleNav.map(([name, Icon2]) => /* @__PURE__ */ import_react3.default.createElement("button", { className: tab === name ? "active" : "", onClick: () => {
     setTab(name);
     setMobile(false);
-  }, key: name }, /* @__PURE__ */ import_react4.default.createElement(Icon2, null), name, name === "Orders" && activeOrders.length > 0 && /* @__PURE__ */ import_react4.default.createElement("i", null, activeOrders.length)))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "admin-user" }, /* @__PURE__ */ import_react4.default.createElement("div", null, profileInitials), /* @__PURE__ */ import_react4.default.createElement("p", null, /* @__PURE__ */ import_react4.default.createElement("b", null, profileName), /* @__PURE__ */ import_react4.default.createElement("small", null, session.user.email)), /* @__PURE__ */ import_react4.default.createElement("button", { title: "Sign out", onClick: () => supabase.auth.signOut() }, /* @__PURE__ */ import_react4.default.createElement(LogOut, null)))), mobile && /* @__PURE__ */ import_react4.default.createElement("div", { className: "scrim", onClick: () => setMobile(false) }), /* @__PURE__ */ import_react4.default.createElement("main", null, /* @__PURE__ */ import_react4.default.createElement("header", null, /* @__PURE__ */ import_react4.default.createElement("button", { className: "menu", onClick: () => setMobile(true) }, /* @__PURE__ */ import_react4.default.createElement(Menu, null)), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("h1", null, tab), /* @__PURE__ */ import_react4.default.createElement("p", null, "Live staging \xB7 ", (/* @__PURE__ */ new Date()).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }))), /* @__PURE__ */ import_react4.default.createElement("label", null, /* @__PURE__ */ import_react4.default.createElement(Search, null), /* @__PURE__ */ import_react4.default.createElement("input", { placeholder: "Search orders, SKU, customers\u2026" })), /* @__PURE__ */ import_react4.default.createElement("button", { className: "bell" }, /* @__PURE__ */ import_react4.default.createElement(Bell, null), /* @__PURE__ */ import_react4.default.createElement("i", null)), /* @__PURE__ */ import_react4.default.createElement("button", { className: "store", onClick: () => window.open("../apps/jabwemeat-store/index.html", "_blank") }, "View store ", /* @__PURE__ */ import_react4.default.createElement(ArrowUpRight, null))), /* @__PURE__ */ import_react4.default.createElement("section", { className: "content" }, error && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner page-error" }, error, /* @__PURE__ */ import_react4.default.createElement("button", { onClick: () => {
+  }, key: name }, /* @__PURE__ */ import_react3.default.createElement(Icon2, null), name, name === "Orders" && activeOrders.length > 0 && /* @__PURE__ */ import_react3.default.createElement("i", null, activeOrders.length)))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "admin-user" }, /* @__PURE__ */ import_react3.default.createElement("div", null, profileInitials), /* @__PURE__ */ import_react3.default.createElement("p", null, /* @__PURE__ */ import_react3.default.createElement("b", null, profileName), /* @__PURE__ */ import_react3.default.createElement("small", null, session.user.email)), /* @__PURE__ */ import_react3.default.createElement("button", { title: "Sign out", onClick: () => supabase.auth.signOut() }, /* @__PURE__ */ import_react3.default.createElement(LogOut, null)))), mobile && /* @__PURE__ */ import_react3.default.createElement("div", { className: "scrim", onClick: () => setMobile(false) }), /* @__PURE__ */ import_react3.default.createElement("main", null, /* @__PURE__ */ import_react3.default.createElement("header", null, /* @__PURE__ */ import_react3.default.createElement("button", { className: "menu", onClick: () => setMobile(true) }, /* @__PURE__ */ import_react3.default.createElement(Menu, null)), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("h1", null, tab), /* @__PURE__ */ import_react3.default.createElement("p", null, "Live staging \xB7 ", (/* @__PURE__ */ new Date()).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }))), /* @__PURE__ */ import_react3.default.createElement("label", null, /* @__PURE__ */ import_react3.default.createElement(Search, null), /* @__PURE__ */ import_react3.default.createElement("input", { placeholder: "Search orders, SKU, customers\u2026" })), /* @__PURE__ */ import_react3.default.createElement("button", { className: "bell" }, /* @__PURE__ */ import_react3.default.createElement(Bell, null), /* @__PURE__ */ import_react3.default.createElement("i", null)), /* @__PURE__ */ import_react3.default.createElement("button", { className: "store", onClick: () => window.open("../apps/jabwemeat-store/index.html", "_blank") }, "View store ", /* @__PURE__ */ import_react3.default.createElement(ArrowUpRight, null))), /* @__PURE__ */ import_react3.default.createElement("section", { className: "content" }, error && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner page-error" }, error, /* @__PURE__ */ import_react3.default.createElement("button", { onClick: () => {
     setError("");
     loadAll();
-  } }, /* @__PURE__ */ import_react4.default.createElement(RefreshCw, null), " Retry")), loading && /* @__PURE__ */ import_react4.default.createElement("div", { className: "sync-note" }, "Syncing live data\u2026"), tab === "Dashboard" && /* @__PURE__ */ import_react4.default.createElement(Overview, { active: activeOrders.length, value: todayValue, products: products.filter((p) => p.active !== false).length, carts: carts.length, low, orders, onTab: setTab, profileName, canInventoryEdit: canEdit("Inventory"), canOrdersView: canView("Orders") }), tab === "Orders" && /* @__PURE__ */ import_react4.default.createElement(Orders, { orders, refresh: loadAll, editable: canEdit("Orders"), fullAccess: role === "Owner" || role === "Admin", slots }), tab === "Inventory" && /* @__PURE__ */ import_react4.default.createElement(Inventory, { products, categories: categories2, refresh: loadAll, editable: canEdit("Inventory") }), tab === "Delivery slots" && /* @__PURE__ */ import_react4.default.createElement(Slots, { slots, refresh: loadAll, editable: canEdit("Delivery slots") }), tab === "Team" && /* @__PURE__ */ import_react4.default.createElement(Team, { members: team, refresh: loadAll, rolePermissions, canManageRoles: role === "Owner" || role === "Admin", canManageTeam: role === "Owner" || role === "Admin", onPermissionsSaved: editRolePermissions }), tab === "Customers" && /* @__PURE__ */ import_react4.default.createElement(Customers, null), tab === "Abandoned Carts" && /* @__PURE__ */ import_react4.default.createElement(AbandonedCarts, { carts, refresh: loadAll, editable: canEdit("Abandoned Carts") }), tab === "Invoices" && /* @__PURE__ */ import_react4.default.createElement(Upcoming, { title: "Invoices" }))));
+  } }, /* @__PURE__ */ import_react3.default.createElement(RefreshCw, null), " Retry")), loading && /* @__PURE__ */ import_react3.default.createElement("div", { className: "sync-note" }, "Syncing live data\u2026"), tab === "Dashboard" && /* @__PURE__ */ import_react3.default.createElement(Overview, { active: activeOrders.length, value: todayValue, products: products.filter((p) => p.active !== false).length, carts: carts.length, low, orders, onTab: setTab, profileName, canInventoryEdit: canEdit("Inventory"), canOrdersView: canView("Orders") }), tab === "Orders" && /* @__PURE__ */ import_react3.default.createElement(Orders, { orders, refresh: loadAll, editable: canEdit("Orders"), fullAccess: role === "Owner" || role === "Admin", slots }), tab === "Inventory" && /* @__PURE__ */ import_react3.default.createElement(Inventory, { products, categories, refresh: loadAll, editable: canEdit("Inventory") }), tab === "Delivery slots" && /* @__PURE__ */ import_react3.default.createElement(Slots, { slots, refresh: loadAll, editable: canEdit("Delivery slots") }), tab === "Team" && /* @__PURE__ */ import_react3.default.createElement(Team, { members: team, refresh: loadAll, rolePermissions, canManageRoles: role === "Owner" || role === "Admin", canManageTeam: role === "Owner" || role === "Admin", onPermissionsSaved: editRolePermissions }), tab === "Customers" && /* @__PURE__ */ import_react3.default.createElement(Customers, null), tab === "Abandoned Carts" && /* @__PURE__ */ import_react3.default.createElement(AbandonedCarts, { carts, refresh: loadAll, editable: canEdit("Abandoned Carts") }), tab === "Invoices" && /* @__PURE__ */ import_react3.default.createElement(Upcoming, { title: "Invoices" }))));
 }
-var Metric = ({ icon: Icon2, label, value, note, tone }) => /* @__PURE__ */ import_react4.default.createElement("div", { className: "metric" }, /* @__PURE__ */ import_react4.default.createElement("span", { className: tone }, /* @__PURE__ */ import_react4.default.createElement(Icon2, null)), /* @__PURE__ */ import_react4.default.createElement("p", null, /* @__PURE__ */ import_react4.default.createElement("small", null, label), /* @__PURE__ */ import_react4.default.createElement("b", null, value), /* @__PURE__ */ import_react4.default.createElement("i", null, note)));
+var Metric = ({ icon: Icon2, label, value, note, tone }) => /* @__PURE__ */ import_react3.default.createElement("div", { className: "metric" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: tone }, /* @__PURE__ */ import_react3.default.createElement(Icon2, null)), /* @__PURE__ */ import_react3.default.createElement("p", null, /* @__PURE__ */ import_react3.default.createElement("small", null, label), /* @__PURE__ */ import_react3.default.createElement("b", null, value), /* @__PURE__ */ import_react3.default.createElement("i", null, note)));
 function Overview({ active, value, products, carts, low, orders, onTab, profileName, canInventoryEdit, canOrdersView }) {
-  return /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement("div", { className: "welcome" }, /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("span", null, "RANCHI OPERATIONS \xB7 LIVE"), /* @__PURE__ */ import_react4.default.createElement("h2", null, "Good afternoon, ", profileName.split(/\s+/)[0], "."), /* @__PURE__ */ import_react4.default.createElement("p", null, "Here\u2019s what is happening with JabWeMeat today.")), canInventoryEdit && /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary", onClick: () => onTab("Inventory") }, /* @__PURE__ */ import_react4.default.createElement(Plus, null), " Manage products")), /* @__PURE__ */ import_react4.default.createElement("div", { className: "metrics" }, /* @__PURE__ */ import_react4.default.createElement(Metric, { icon: ShoppingBag, label: "Live orders", value: active, note: "Needs attention in pipeline", tone: "green" }), /* @__PURE__ */ import_react4.default.createElement(Metric, { icon: IndianRupee, label: "Today\u2019s COD value", value: `\u20B9${value.toLocaleString("en-IN")}`, note: "From live orders", tone: "gold" }), /* @__PURE__ */ import_react4.default.createElement(Metric, { icon: Package, label: "Active SKUs", value: products, note: `${low} low-stock items`, tone: "blue" }), /* @__PURE__ */ import_react4.default.createElement(Metric, { icon: ShoppingBag, label: "Abandoned carts", value: carts, note: "Active baskets", tone: "rose" })), /* @__PURE__ */ import_react4.default.createElement("div", { className: "grid" }, /* @__PURE__ */ import_react4.default.createElement(Panel, { title: "Live order pipeline", action: canOrdersView ? "View all orders" : void 0, onAction: canOrdersView ? () => onTab("Orders") : void 0 }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "pipeline" }, [["new", "New"], ["confirmed", "Confirmed"], ["preparing", "Preparing"], ["out_for_delivery", "Out for delivery"]].map(([a, b], i) => /* @__PURE__ */ import_react4.default.createElement("div", { key: a }, /* @__PURE__ */ import_react4.default.createElement("span", { className: `dot d${i}` }), /* @__PURE__ */ import_react4.default.createElement("p", null, /* @__PURE__ */ import_react4.default.createElement("b", null, orders.filter((o) => o.status === a).length), /* @__PURE__ */ import_react4.default.createElement("small", null, b))))), /* @__PURE__ */ import_react4.default.createElement(OrderTable, { orders: orders.slice(0, 5), compact: true })), /* @__PURE__ */ import_react4.default.createElement(Panel, { title: "Attention needed", action: canInventoryEdit ? "Manage inventory" : void 0, onAction: canInventoryEdit ? () => onTab("Inventory") : void 0 }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "alerts" }, /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement(TriangleAlert, null), /* @__PURE__ */ import_react4.default.createElement("p", null, /* @__PURE__ */ import_react4.default.createElement("b", null, low, " products are running low"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Review stock before the next slot opens."))), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement(Clock3, null), /* @__PURE__ */ import_react4.default.createElement("p", null, /* @__PURE__ */ import_react4.default.createElement("b", null, orders.filter((o) => o.status === "new").length, " new orders need confirmation"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Keep today\u2019s slots moving."))), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement(ShoppingBag, null), /* @__PURE__ */ import_react4.default.createElement("p", null, /* @__PURE__ */ import_react4.default.createElement("b", null, carts, " abandoned carts"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Active baskets available for recovery.")))))));
+  return /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "welcome" }, /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("span", null, "RANCHI OPERATIONS \xB7 LIVE"), /* @__PURE__ */ import_react3.default.createElement("h2", null, "Good afternoon, ", profileName.split(/\s+/)[0], "."), /* @__PURE__ */ import_react3.default.createElement("p", null, "Here\u2019s what is happening with JabWeMeat today.")), canInventoryEdit && /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary", onClick: () => onTab("Inventory") }, /* @__PURE__ */ import_react3.default.createElement(Plus, null), " Manage products")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "metrics" }, /* @__PURE__ */ import_react3.default.createElement(Metric, { icon: ShoppingBag, label: "Live orders", value: active, note: "Needs attention in pipeline", tone: "green" }), /* @__PURE__ */ import_react3.default.createElement(Metric, { icon: IndianRupee, label: "Today\u2019s COD value", value: `\u20B9${value.toLocaleString("en-IN")}`, note: "From live orders", tone: "gold" }), /* @__PURE__ */ import_react3.default.createElement(Metric, { icon: Package, label: "Active SKUs", value: products, note: `${low} low-stock items`, tone: "blue" }), /* @__PURE__ */ import_react3.default.createElement(Metric, { icon: ShoppingBag, label: "Abandoned carts", value: carts, note: "Active baskets", tone: "rose" })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "grid" }, /* @__PURE__ */ import_react3.default.createElement(Panel, { title: "Live order pipeline", action: canOrdersView ? "View all orders" : void 0, onAction: canOrdersView ? () => onTab("Orders") : void 0 }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "pipeline" }, [["new", "New"], ["confirmed", "Confirmed"], ["preparing", "Preparing"], ["out_for_delivery", "Out for delivery"]].map(([a, b], i) => /* @__PURE__ */ import_react3.default.createElement("div", { key: a }, /* @__PURE__ */ import_react3.default.createElement("span", { className: `dot d${i}` }), /* @__PURE__ */ import_react3.default.createElement("p", null, /* @__PURE__ */ import_react3.default.createElement("b", null, orders.filter((o) => o.status === a).length), /* @__PURE__ */ import_react3.default.createElement("small", null, b))))), /* @__PURE__ */ import_react3.default.createElement(OrderTable, { orders: orders.slice(0, 5), compact: true })), /* @__PURE__ */ import_react3.default.createElement(Panel, { title: "Attention needed", action: canInventoryEdit ? "Manage inventory" : void 0, onAction: canInventoryEdit ? () => onTab("Inventory") : void 0 }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "alerts" }, /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement(TriangleAlert, null), /* @__PURE__ */ import_react3.default.createElement("p", null, /* @__PURE__ */ import_react3.default.createElement("b", null, low, " products are running low"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Review stock before the next slot opens."))), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement(Clock3, null), /* @__PURE__ */ import_react3.default.createElement("p", null, /* @__PURE__ */ import_react3.default.createElement("b", null, orders.filter((o) => o.status === "new").length, " new orders need confirmation"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Keep today\u2019s slots moving."))), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement(ShoppingBag, null), /* @__PURE__ */ import_react3.default.createElement("p", null, /* @__PURE__ */ import_react3.default.createElement("b", null, carts, " abandoned carts"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Active baskets available for recovery.")))))));
 }
-var Panel = ({ title, action, onAction, children }) => /* @__PURE__ */ import_react4.default.createElement("article", { className: "panel" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "panel-head" }, /* @__PURE__ */ import_react4.default.createElement("h3", null, title), action && /* @__PURE__ */ import_react4.default.createElement("button", { onClick: onAction }, action, /* @__PURE__ */ import_react4.default.createElement(ArrowUpRight, null))), children);
+var Panel = ({ title, action, onAction, children }) => /* @__PURE__ */ import_react3.default.createElement("article", { className: "panel" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "panel-head" }, /* @__PURE__ */ import_react3.default.createElement("h3", null, title), action && /* @__PURE__ */ import_react3.default.createElement("button", { onClick: onAction }, action, /* @__PURE__ */ import_react3.default.createElement(ArrowUpRight, null))), children);
 function Orders({ orders, refresh, editable, fullAccess, slots }) {
-  const [selected, setSelected] = (0, import_react4.useState)(null);
-  const [detail, setDetail] = (0, import_react4.useState)({ items: [], payments: [], assignments: [], notes: [], timeline: [], executives: [], refunds: [], proofs: [] });
-  const [detailBusy, setDetailBusy] = (0, import_react4.useState)(false);
-  const [query, setQuery] = (0, import_react4.useState)("");
-  const [filters, setFilters] = (0, import_react4.useState)({ date: "all", status: "all", payment: "all", slot: "all", area: "all", executive: "all", orderType: "all", paymentMethod: "all" });
-  const [note, setNote] = (0, import_react4.useState)("");
-  const [actionError, setActionError] = (0, import_react4.useState)("");
+  const [selected, setSelected] = (0, import_react3.useState)(null);
+  const [detail, setDetail] = (0, import_react3.useState)({ items: [], payments: [], assignments: [], notes: [], timeline: [], executives: [], refunds: [], proofs: [] });
+  const [detailBusy, setDetailBusy] = (0, import_react3.useState)(false);
+  const [query, setQuery] = (0, import_react3.useState)("");
+  const [filters, setFilters] = (0, import_react3.useState)({ date: "all", status: "all", payment: "all", slot: "all", area: "all", executive: "all", orderType: "all", paymentMethod: "all" });
+  const [note, setNote] = (0, import_react3.useState)("");
+  const [actionError, setActionError] = (0, import_react3.useState)("");
   const loadDetail = async (order) => {
     setSelected(order);
     setDetailBusy(true);
@@ -45459,11 +45123,11 @@ function Orders({ orders, refresh, editable, fullAccess, slots }) {
   const setFilter = (name, value) => setFilters((f) => ({ ...f, [name]: value }));
   const countStatuses = ["new", "confirmed", "preparing", "ready_for_dispatch", "out_for_delivery", "delivered", "cancelled"];
   const statusCounts = countStatuses.map((status) => ({ status, count: orders.filter((o) => o.status === status).length }));
-  if (selected) return /* @__PURE__ */ import_react4.default.createElement(OrderDetails, { order: selected, detail, busy: detailBusy, editable, fullAccess, actionError, onBack: () => {
+  if (selected) return /* @__PURE__ */ import_react3.default.createElement(OrderDetails, { order: selected, detail, busy: detailBusy, editable, fullAccess, actionError, onBack: () => {
     setSelected(null);
     setActionError("");
   }, onStatus: changeStatus, onAssign: assign, onPrep: savePrep, onRefreshDetail: () => selected && loadDetail(selected), note, setNote, onAddNote: addNote });
-  return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Order management", sub: "Control fulfilment from confirmation through final delivery.", action: fullAccess ? /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", onClick: () => {
+  return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Order management", sub: "Control fulfilment from confirmation through final delivery.", action: fullAccess ? /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", onClick: () => {
     const cols = ["order_number", "created_at", "customer_name", "mobile", "status", "total", "payment_method", "delivery_date", "area"];
     const csv = [cols.join(","), ...filtered.map((o) => cols.map((k) => JSON.stringify(o[k] ?? "")).join(","))].join("\n");
     const a = document.createElement("a");
@@ -45471,7 +45135,7 @@ function Orders({ orders, refresh, editable, fullAccess, slots }) {
     a.download = "jabwemeat-orders.csv";
     a.click();
     URL.revokeObjectURL(a.href);
-  } }, /* @__PURE__ */ import_react4.default.createElement(Download, null), " Export CSV") : void 0 }, (approaching.length > 0 || overdue.length > 0 || paidUnconfirmed.length > 0 || readyUnassigned.length > 0 || paymentFailed.length > 0 || deliveryFailed.length > 0 || weightDifferences.length > 0) && /* @__PURE__ */ import_react4.default.createElement("div", { className: "ops-alerts" }, overdue.length > 0 && /* @__PURE__ */ import_react4.default.createElement("button", { onClick: () => setFilter("status", "all"), className: "overdue" }, /* @__PURE__ */ import_react4.default.createElement(TriangleAlert, null), /* @__PURE__ */ import_react4.default.createElement("span", null, /* @__PURE__ */ import_react4.default.createElement("b", null, overdue.length, " delivery slot", overdue.length === 1 ? "" : "s", " overdue"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Active orders have passed their delivery window."))), approaching.length > 0 && /* @__PURE__ */ import_react4.default.createElement("button", { onClick: () => setFilter("status", "all") }, /* @__PURE__ */ import_react4.default.createElement(CalendarClock, null), /* @__PURE__ */ import_react4.default.createElement("span", null, /* @__PURE__ */ import_react4.default.createElement("b", null, approaching.length, " delivery slot", approaching.length === 1 ? "" : "s", " approaching"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Delivery starts within the next hour."))), paidUnconfirmed.length > 0 && /* @__PURE__ */ import_react4.default.createElement("button", { onClick: () => setFilter("status", "new"), className: "overdue" }, /* @__PURE__ */ import_react4.default.createElement(CreditCard, null), /* @__PURE__ */ import_react4.default.createElement("span", null, /* @__PURE__ */ import_react4.default.createElement("b", null, paidUnconfirmed.length, " paid order", paidUnconfirmed.length === 1 ? "" : "s", " not confirmed"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Payment was received but confirmation is pending."))), readyUnassigned.length > 0 && /* @__PURE__ */ import_react4.default.createElement("button", { onClick: () => setFilter("status", "ready_for_dispatch") }, /* @__PURE__ */ import_react4.default.createElement(UserCheck, null), /* @__PURE__ */ import_react4.default.createElement("span", null, /* @__PURE__ */ import_react4.default.createElement("b", null, readyUnassigned.length, " ready order", readyUnassigned.length === 1 ? "" : "s", " unassigned"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Assign a delivery executive before dispatch."))), paymentFailed.length > 0 && /* @__PURE__ */ import_react4.default.createElement("button", { onClick: () => setFilter("payment", "Failed"), className: "overdue" }, /* @__PURE__ */ import_react4.default.createElement(CircleX, null), /* @__PURE__ */ import_react4.default.createElement("span", null, /* @__PURE__ */ import_react4.default.createElement("b", null, paymentFailed.length, " payment", paymentFailed.length === 1 ? "" : "s", " failed"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Payment action is required."))), deliveryFailed.length > 0 && /* @__PURE__ */ import_react4.default.createElement("button", { onClick: () => setFilter("status", "all"), className: "overdue" }, /* @__PURE__ */ import_react4.default.createElement(Truck, null), /* @__PURE__ */ import_react4.default.createElement("span", null, /* @__PURE__ */ import_react4.default.createElement("b", null, deliveryFailed.length, " delivery exception", deliveryFailed.length === 1 ? "" : "s"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Failed or undelivered orders need attention."))), weightDifferences.length > 0 && /* @__PURE__ */ import_react4.default.createElement("button", { onClick: () => setFilter("status", "all") }, /* @__PURE__ */ import_react4.default.createElement(Scale, null), /* @__PURE__ */ import_react4.default.createElement("span", null, /* @__PURE__ */ import_react4.default.createElement("b", null, weightDifferences.length, " weight difference", weightDifferences.length === 1 ? "" : "s"), /* @__PURE__ */ import_react4.default.createElement("small", null, "Actual packed weight differs from ordered weight.")))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "status-cards" }, /* @__PURE__ */ import_react4.default.createElement("button", { className: filters.status === "all" ? "active" : "", onClick: () => setFilter("status", "all") }, /* @__PURE__ */ import_react4.default.createElement("small", null, "All orders"), /* @__PURE__ */ import_react4.default.createElement("b", null, orders.length)), statusCounts.map((x) => /* @__PURE__ */ import_react4.default.createElement("button", { key: x.status, className: filters.status === x.status ? "active" : "", onClick: () => setFilter("status", x.status) }, /* @__PURE__ */ import_react4.default.createElement("small", null, nice(x.status)), /* @__PURE__ */ import_react4.default.createElement("b", null, x.count)))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "order-filters" }, /* @__PURE__ */ import_react4.default.createElement("label", { className: "order-search" }, /* @__PURE__ */ import_react4.default.createElement(Search, null), /* @__PURE__ */ import_react4.default.createElement("input", { value: query, onChange: (e) => setQuery(e.target.value), placeholder: "Order, customer, mobile, address or transaction ID" })), /* @__PURE__ */ import_react4.default.createElement("select", { value: filters.date, onChange: (e) => setFilter("date", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "all" }, "All dates"), /* @__PURE__ */ import_react4.default.createElement("option", { value: "today" }, "Today"), /* @__PURE__ */ import_react4.default.createElement("option", { value: "7d" }, "Last 7 days")), /* @__PURE__ */ import_react4.default.createElement("select", { value: filters.status, onChange: (e) => setFilter("status", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "all" }, "All statuses"), statuses.map((x) => /* @__PURE__ */ import_react4.default.createElement("option", { key: x, value: x }, nice(x)))), /* @__PURE__ */ import_react4.default.createElement("select", { value: filters.payment, onChange: (e) => setFilter("payment", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "all" }, "All payment states"), Array.from(new Set(orders.map((o) => one(o.payments)?.status).filter(Boolean))).map((x) => /* @__PURE__ */ import_react4.default.createElement("option", { key: x }, x))), /* @__PURE__ */ import_react4.default.createElement("select", { value: filters.slot, onChange: (e) => setFilter("slot", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "all" }, "All slots"), slots.map((x) => /* @__PURE__ */ import_react4.default.createElement("option", { key: x.id, value: x.id }, x.label))), /* @__PURE__ */ import_react4.default.createElement("select", { value: filters.area, onChange: (e) => setFilter("area", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "all" }, "All areas"), unique("area").map((x) => /* @__PURE__ */ import_react4.default.createElement("option", { key: x }, x))), /* @__PURE__ */ import_react4.default.createElement("select", { value: filters.executive, onChange: (e) => setFilter("executive", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "all" }, "All executives"), /* @__PURE__ */ import_react4.default.createElement("option", { value: "unassigned" }, "Unassigned"), Array.from(new Map(orders.map((o) => [one(o.order_assignments)?.executive_id, one(o.order_assignments)?.delivery_executives]).filter((x) => x[0])).values()).map((x) => /* @__PURE__ */ import_react4.default.createElement("option", { key: x.id, value: x.id }, x.name))), /* @__PURE__ */ import_react4.default.createElement("select", { value: filters.orderType, onChange: (e) => setFilter("orderType", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "all" }, "All order types"), unique("order_type").map((x) => /* @__PURE__ */ import_react4.default.createElement("option", { key: x }, x))), /* @__PURE__ */ import_react4.default.createElement("select", { value: filters.paymentMethod, onChange: (e) => setFilter("paymentMethod", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "all" }, "All payment methods"), unique("payment_method").map((x) => /* @__PURE__ */ import_react4.default.createElement("option", { key: x }, x)))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "filter-result" }, /* @__PURE__ */ import_react4.default.createElement("b", null, filtered.length), " of ", orders.length, " orders"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap order-list" }, /* @__PURE__ */ import_react4.default.createElement("table", null, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "Order / placed"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Customer"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Delivery"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Items"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Total"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Payment"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Executive"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Status"), /* @__PURE__ */ import_react4.default.createElement("th", null))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, filtered.map((o) => /* @__PURE__ */ import_react4.default.createElement("tr", { key: o.id }, /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, o.order_number), /* @__PURE__ */ import_react4.default.createElement("small", null, new Date(o.created_at).toLocaleString("en-IN")), /* @__PURE__ */ import_react4.default.createElement("em", null, o.order_type || "Standard")), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, o.customer_name), /* @__PURE__ */ import_react4.default.createElement("small", null, o.mobile)), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, o.delivery_slots?.label || "\u2014"), /* @__PURE__ */ import_react4.default.createElement("small", null, (/* @__PURE__ */ new Date(`${o.delivery_date}T00:00:00`)).toLocaleDateString("en-IN"), " \xB7 ", o.area || o.pincode)), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, o.order_items?.reduce((n, x) => n + Number(x.quantity || 0), 0) || 0), /* @__PURE__ */ import_react4.default.createElement("small", null, o.order_items?.map((x) => x.product_name).join(", ") || "\u2014")), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, "\u20B9", Number(o.total).toLocaleString("en-IN"))), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("span", { className: "payment-pill" }, one(o.payments)?.status || "Pending"), /* @__PURE__ */ import_react4.default.createElement("small", null, o.payment_method)), /* @__PURE__ */ import_react4.default.createElement("td", null, one(o.order_assignments)?.delivery_executives?.name || /* @__PURE__ */ import_react4.default.createElement("span", { className: "muted" }, "Unassigned")), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement(Status, { value: o.status })), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("button", { className: "view-order", onClick: () => loadDetail(o) }, /* @__PURE__ */ import_react4.default.createElement(Eye, null), " View")))))), !filtered.length && /* @__PURE__ */ import_react4.default.createElement(Empty, { text: "No matching orders" })));
+  } }, /* @__PURE__ */ import_react3.default.createElement(Download, null), " Export CSV") : void 0 }, (approaching.length > 0 || overdue.length > 0 || paidUnconfirmed.length > 0 || readyUnassigned.length > 0 || paymentFailed.length > 0 || deliveryFailed.length > 0 || weightDifferences.length > 0) && /* @__PURE__ */ import_react3.default.createElement("div", { className: "ops-alerts" }, overdue.length > 0 && /* @__PURE__ */ import_react3.default.createElement("button", { onClick: () => setFilter("status", "all"), className: "overdue" }, /* @__PURE__ */ import_react3.default.createElement(TriangleAlert, null), /* @__PURE__ */ import_react3.default.createElement("span", null, /* @__PURE__ */ import_react3.default.createElement("b", null, overdue.length, " delivery slot", overdue.length === 1 ? "" : "s", " overdue"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Active orders have passed their delivery window."))), approaching.length > 0 && /* @__PURE__ */ import_react3.default.createElement("button", { onClick: () => setFilter("status", "all") }, /* @__PURE__ */ import_react3.default.createElement(CalendarClock, null), /* @__PURE__ */ import_react3.default.createElement("span", null, /* @__PURE__ */ import_react3.default.createElement("b", null, approaching.length, " delivery slot", approaching.length === 1 ? "" : "s", " approaching"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Delivery starts within the next hour."))), paidUnconfirmed.length > 0 && /* @__PURE__ */ import_react3.default.createElement("button", { onClick: () => setFilter("status", "new"), className: "overdue" }, /* @__PURE__ */ import_react3.default.createElement(CreditCard, null), /* @__PURE__ */ import_react3.default.createElement("span", null, /* @__PURE__ */ import_react3.default.createElement("b", null, paidUnconfirmed.length, " paid order", paidUnconfirmed.length === 1 ? "" : "s", " not confirmed"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Payment was received but confirmation is pending."))), readyUnassigned.length > 0 && /* @__PURE__ */ import_react3.default.createElement("button", { onClick: () => setFilter("status", "ready_for_dispatch") }, /* @__PURE__ */ import_react3.default.createElement(UserCheck, null), /* @__PURE__ */ import_react3.default.createElement("span", null, /* @__PURE__ */ import_react3.default.createElement("b", null, readyUnassigned.length, " ready order", readyUnassigned.length === 1 ? "" : "s", " unassigned"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Assign a delivery executive before dispatch."))), paymentFailed.length > 0 && /* @__PURE__ */ import_react3.default.createElement("button", { onClick: () => setFilter("payment", "Failed"), className: "overdue" }, /* @__PURE__ */ import_react3.default.createElement(CircleX, null), /* @__PURE__ */ import_react3.default.createElement("span", null, /* @__PURE__ */ import_react3.default.createElement("b", null, paymentFailed.length, " payment", paymentFailed.length === 1 ? "" : "s", " failed"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Payment action is required."))), deliveryFailed.length > 0 && /* @__PURE__ */ import_react3.default.createElement("button", { onClick: () => setFilter("status", "all"), className: "overdue" }, /* @__PURE__ */ import_react3.default.createElement(Truck, null), /* @__PURE__ */ import_react3.default.createElement("span", null, /* @__PURE__ */ import_react3.default.createElement("b", null, deliveryFailed.length, " delivery exception", deliveryFailed.length === 1 ? "" : "s"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Failed or undelivered orders need attention."))), weightDifferences.length > 0 && /* @__PURE__ */ import_react3.default.createElement("button", { onClick: () => setFilter("status", "all") }, /* @__PURE__ */ import_react3.default.createElement(Scale, null), /* @__PURE__ */ import_react3.default.createElement("span", null, /* @__PURE__ */ import_react3.default.createElement("b", null, weightDifferences.length, " weight difference", weightDifferences.length === 1 ? "" : "s"), /* @__PURE__ */ import_react3.default.createElement("small", null, "Actual packed weight differs from ordered weight.")))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "status-cards" }, /* @__PURE__ */ import_react3.default.createElement("button", { className: filters.status === "all" ? "active" : "", onClick: () => setFilter("status", "all") }, /* @__PURE__ */ import_react3.default.createElement("small", null, "All orders"), /* @__PURE__ */ import_react3.default.createElement("b", null, orders.length)), statusCounts.map((x) => /* @__PURE__ */ import_react3.default.createElement("button", { key: x.status, className: filters.status === x.status ? "active" : "", onClick: () => setFilter("status", x.status) }, /* @__PURE__ */ import_react3.default.createElement("small", null, nice(x.status)), /* @__PURE__ */ import_react3.default.createElement("b", null, x.count)))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "order-filters" }, /* @__PURE__ */ import_react3.default.createElement("label", { className: "order-search" }, /* @__PURE__ */ import_react3.default.createElement(Search, null), /* @__PURE__ */ import_react3.default.createElement("input", { value: query, onChange: (e) => setQuery(e.target.value), placeholder: "Order, customer, mobile, address or transaction ID" })), /* @__PURE__ */ import_react3.default.createElement("select", { value: filters.date, onChange: (e) => setFilter("date", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "all" }, "All dates"), /* @__PURE__ */ import_react3.default.createElement("option", { value: "today" }, "Today"), /* @__PURE__ */ import_react3.default.createElement("option", { value: "7d" }, "Last 7 days")), /* @__PURE__ */ import_react3.default.createElement("select", { value: filters.status, onChange: (e) => setFilter("status", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "all" }, "All statuses"), statuses.map((x) => /* @__PURE__ */ import_react3.default.createElement("option", { key: x, value: x }, nice(x)))), /* @__PURE__ */ import_react3.default.createElement("select", { value: filters.payment, onChange: (e) => setFilter("payment", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "all" }, "All payment states"), Array.from(new Set(orders.map((o) => one(o.payments)?.status).filter(Boolean))).map((x) => /* @__PURE__ */ import_react3.default.createElement("option", { key: x }, x))), /* @__PURE__ */ import_react3.default.createElement("select", { value: filters.slot, onChange: (e) => setFilter("slot", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "all" }, "All slots"), slots.map((x) => /* @__PURE__ */ import_react3.default.createElement("option", { key: x.id, value: x.id }, x.label))), /* @__PURE__ */ import_react3.default.createElement("select", { value: filters.area, onChange: (e) => setFilter("area", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "all" }, "All areas"), unique("area").map((x) => /* @__PURE__ */ import_react3.default.createElement("option", { key: x }, x))), /* @__PURE__ */ import_react3.default.createElement("select", { value: filters.executive, onChange: (e) => setFilter("executive", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "all" }, "All executives"), /* @__PURE__ */ import_react3.default.createElement("option", { value: "unassigned" }, "Unassigned"), Array.from(new Map(orders.map((o) => [one(o.order_assignments)?.executive_id, one(o.order_assignments)?.delivery_executives]).filter((x) => x[0])).values()).map((x) => /* @__PURE__ */ import_react3.default.createElement("option", { key: x.id, value: x.id }, x.name))), /* @__PURE__ */ import_react3.default.createElement("select", { value: filters.orderType, onChange: (e) => setFilter("orderType", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "all" }, "All order types"), unique("order_type").map((x) => /* @__PURE__ */ import_react3.default.createElement("option", { key: x }, x))), /* @__PURE__ */ import_react3.default.createElement("select", { value: filters.paymentMethod, onChange: (e) => setFilter("paymentMethod", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "all" }, "All payment methods"), unique("payment_method").map((x) => /* @__PURE__ */ import_react3.default.createElement("option", { key: x }, x)))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "filter-result" }, /* @__PURE__ */ import_react3.default.createElement("b", null, filtered.length), " of ", orders.length, " orders"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap order-list" }, /* @__PURE__ */ import_react3.default.createElement("table", null, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "Order / placed"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Customer"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Delivery"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Items"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Total"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Payment"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Executive"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Status"), /* @__PURE__ */ import_react3.default.createElement("th", null))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, filtered.map((o) => /* @__PURE__ */ import_react3.default.createElement("tr", { key: o.id }, /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, o.order_number), /* @__PURE__ */ import_react3.default.createElement("small", null, new Date(o.created_at).toLocaleString("en-IN")), /* @__PURE__ */ import_react3.default.createElement("em", null, o.order_type || "Standard")), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, o.customer_name), /* @__PURE__ */ import_react3.default.createElement("small", null, o.mobile)), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, o.delivery_slots?.label || "\u2014"), /* @__PURE__ */ import_react3.default.createElement("small", null, (/* @__PURE__ */ new Date(`${o.delivery_date}T00:00:00`)).toLocaleDateString("en-IN"), " \xB7 ", o.area || o.pincode)), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, o.order_items?.reduce((n, x) => n + Number(x.quantity || 0), 0) || 0), /* @__PURE__ */ import_react3.default.createElement("small", null, o.order_items?.map((x) => x.product_name).join(", ") || "\u2014")), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, "\u20B9", Number(o.total).toLocaleString("en-IN"))), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("span", { className: "payment-pill" }, one(o.payments)?.status || "Pending"), /* @__PURE__ */ import_react3.default.createElement("small", null, o.payment_method)), /* @__PURE__ */ import_react3.default.createElement("td", null, one(o.order_assignments)?.delivery_executives?.name || /* @__PURE__ */ import_react3.default.createElement("span", { className: "muted" }, "Unassigned")), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement(Status, { value: o.status })), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("button", { className: "view-order", onClick: () => loadDetail(o) }, /* @__PURE__ */ import_react3.default.createElement(Eye, null), " View")))))), !filtered.length && /* @__PURE__ */ import_react3.default.createElement(Empty, { text: "No matching orders" })));
 }
 function OrderDetails({ order, detail, busy, editable, fullAccess, actionError, onBack, onStatus, onAssign, onPrep, note, setNote, onAddNote, onRefreshDetail }) {
   const payment = detail.payments[0];
@@ -45480,12 +45144,12 @@ function OrderDetails({ order, detail, busy, editable, fullAccess, actionError, 
   const addressText = [address.line1, address.line2, address.landmark, address.city, address.state, order.pincode].filter(Boolean).join(", ");
   const allowed = editable ? fullAccess ? statuses : [order.status, ...nextStatuses[order.status] || []] : [order.status];
   const locked = lockedStatuses.includes(order.status);
-  return /* @__PURE__ */ import_react4.default.createElement("div", { className: "order-detail" }, /* @__PURE__ */ import_react4.default.createElement("button", { className: "back-link", onClick: onBack }, /* @__PURE__ */ import_react4.default.createElement(ArrowLeft, null), " Back to orders"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-hero" }, /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("span", null, "ORDER DETAILS"), /* @__PURE__ */ import_react4.default.createElement("h2", null, order.order_number), /* @__PURE__ */ import_react4.default.createElement("p", null, "Placed ", new Date(order.created_at).toLocaleString("en-IN"), " \xB7 ", order.order_type || "Standard", " order")), /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-status" }, /* @__PURE__ */ import_react4.default.createElement(Status, { value: order.status }), /* @__PURE__ */ import_react4.default.createElement("select", { disabled: !editable, value: order.status, onChange: (e) => onStatus(order, e.target.value) }, allowed.map((s) => /* @__PURE__ */ import_react4.default.createElement("option", { key: s, value: s }, nice(s)))))), actionError && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner detail-error" }, actionError), locked && /* @__PURE__ */ import_react4.default.createElement("div", { className: "lock-banner" }, /* @__PURE__ */ import_react4.default.createElement(LockKeyhole, null), /* @__PURE__ */ import_react4.default.createElement("span", null, /* @__PURE__ */ import_react4.default.createElement("b", null, "Sensitive operations are locked."), " ", fullAccess ? "Admin/Owner changes require an explicit audited reason." : "Only Admin or Owner can override this lock.")), busy && /* @__PURE__ */ import_react4.default.createElement("div", { className: "sync-note" }, "Loading complete order record\u2026"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-summary" }, /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(Users, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Customer"), /* @__PURE__ */ import_react4.default.createElement("b", null, order.customer_name), /* @__PURE__ */ import_react4.default.createElement("span", null, order.mobile), /* @__PURE__ */ import_react4.default.createElement("span", null, order.email))), /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(MapPin, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Delivery"), /* @__PURE__ */ import_react4.default.createElement("b", null, (/* @__PURE__ */ new Date(`${order.delivery_date}T00:00:00`)).toLocaleDateString("en-IN"), " \xB7 ", order.delivery_slots?.label), /* @__PURE__ */ import_react4.default.createElement("span", null, addressText || order.area || order.pincode), /* @__PURE__ */ import_react4.default.createElement("span", null, order.area))), /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(CreditCard, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Payment"), /* @__PURE__ */ import_react4.default.createElement("b", null, payment?.method || order.payment_method, " \xB7 ", payment?.status || "Pending"), /* @__PURE__ */ import_react4.default.createElement("span", null, "\u20B9", Number(payment?.amount ?? order.total).toLocaleString("en-IN")), /* @__PURE__ */ import_react4.default.createElement("span", null, payment?.transaction_id ? `Txn: ${payment.transaction_id}` : "No transaction ID"))), /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(UserCheck, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Delivery executive"), /* @__PURE__ */ import_react4.default.createElement("b", null, assignment?.delivery_executives?.name || "Unassigned"), assignment?.delivery_executives?.mobile && /* @__PURE__ */ import_react4.default.createElement("span", null, assignment.delivery_executives.mobile), editable && /* @__PURE__ */ import_react4.default.createElement("select", { value: assignment?.executive_id || "", onChange: (e) => onAssign(e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "" }, "Choose executive\u2026"), detail.executives.map((x) => /* @__PURE__ */ import_react4.default.createElement("option", { key: x.id, value: x.id }, x.name, x.area ? ` \xB7 ${x.area}` : "")))))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-grid" }, /* @__PURE__ */ import_react4.default.createElement("section", { className: "detail-main" }, /* @__PURE__ */ import_react4.default.createElement("article", { className: "detail-card" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-card-head" }, /* @__PURE__ */ import_react4.default.createElement("h3", null, /* @__PURE__ */ import_react4.default.createElement(FileCheck, null), " Refund request & status"), /* @__PURE__ */ import_react4.default.createElement("span", null, "Only Owner/Admin can create or change refund decisions.")), /* @__PURE__ */ import_react4.default.createElement(RefundPanel, { order, refunds: detail.refunds, enabled: fullAccess, onSaved: onRefreshDetail })), /* @__PURE__ */ import_react4.default.createElement("article", { className: "detail-card" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-card-head" }, /* @__PURE__ */ import_react4.default.createElement("h3", null, /* @__PURE__ */ import_react4.default.createElement(WalletCards, null), " Delivery proof & COD collection"), /* @__PURE__ */ import_react4.default.createElement("span", null, "Record proof of delivery and COD collection after handover.")), /* @__PURE__ */ import_react4.default.createElement(ProofPanel, { order, proofs: detail.proofs, enabled: fullAccess, onSaved: onRefreshDetail })), /* @__PURE__ */ import_react4.default.createElement("article", { className: "detail-card" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-card-head" }, /* @__PURE__ */ import_react4.default.createElement("h3", null, /* @__PURE__ */ import_react4.default.createElement(ClipboardList, null), " Items & preparation"), /* @__PURE__ */ import_react4.default.createElement("span", null, "All four checks and actual weight are required for dispatch.")), /* @__PURE__ */ import_react4.default.createElement("div", { className: "prep-list" }, detail.items.map((item) => /* @__PURE__ */ import_react4.default.createElement(PrepItem, { key: item.id, item, editable: editable && (!locked || fullAccess), onSave: onPrep }))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "totals" }, /* @__PURE__ */ import_react4.default.createElement("span", null, "Subtotal ", /* @__PURE__ */ import_react4.default.createElement("b", null, "\u20B9", Number(order.subtotal).toLocaleString("en-IN"))), /* @__PURE__ */ import_react4.default.createElement("span", null, "Discount ", /* @__PURE__ */ import_react4.default.createElement("b", null, "\u2212 \u20B9", Number(order.discount || 0).toLocaleString("en-IN"))), /* @__PURE__ */ import_react4.default.createElement("span", null, "Delivery ", /* @__PURE__ */ import_react4.default.createElement("b", null, "\u20B9", Number(order.delivery_charge || 0).toLocaleString("en-IN"))), /* @__PURE__ */ import_react4.default.createElement("strong", null, "Total ", /* @__PURE__ */ import_react4.default.createElement("b", null, "\u20B9", Number(order.total).toLocaleString("en-IN"))))), /* @__PURE__ */ import_react4.default.createElement("article", { className: "detail-card" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-card-head" }, /* @__PURE__ */ import_react4.default.createElement("h3", null, /* @__PURE__ */ import_react4.default.createElement(MessageSquare, null), " Internal notes"), /* @__PURE__ */ import_react4.default.createElement("span", null, "Visible only to authorised operations users.")), editable && /* @__PURE__ */ import_react4.default.createElement("div", { className: "note-compose" }, /* @__PURE__ */ import_react4.default.createElement("textarea", { value: note, maxLength: 2e3, onChange: (e) => setNote(e.target.value), placeholder: "Add an operational note\u2026" }), /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary", disabled: !note.trim(), onClick: onAddNote }, "Add note")), /* @__PURE__ */ import_react4.default.createElement("div", { className: "note-list" }, detail.notes.map((x) => /* @__PURE__ */ import_react4.default.createElement("div", { key: x.id }, /* @__PURE__ */ import_react4.default.createElement("p", null, x.note), /* @__PURE__ */ import_react4.default.createElement("small", null, x.created_by_email || "System", " \xB7 ", new Date(x.created_at).toLocaleString("en-IN")))), !detail.notes.length && /* @__PURE__ */ import_react4.default.createElement("p", { className: "muted" }, "No internal notes yet.")))), /* @__PURE__ */ import_react4.default.createElement("aside", { className: "timeline-card" }, /* @__PURE__ */ import_react4.default.createElement("h3", null, /* @__PURE__ */ import_react4.default.createElement(RotateCcwClock, null), " Timeline"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "timeline" }, detail.timeline.map((x) => /* @__PURE__ */ import_react4.default.createElement("div", { key: x.id }, /* @__PURE__ */ import_react4.default.createElement("i", null), /* @__PURE__ */ import_react4.default.createElement("p", null, /* @__PURE__ */ import_react4.default.createElement("b", null, x.message), x.from_status && x.to_status && /* @__PURE__ */ import_react4.default.createElement("span", null, nice(x.from_status), " \u2192 ", nice(x.to_status)), x.override_reason && /* @__PURE__ */ import_react4.default.createElement("em", null, "Override: ", x.override_reason), /* @__PURE__ */ import_react4.default.createElement("small", null, x.actor_email || "System", " \xB7 ", new Date(x.created_at).toLocaleString("en-IN"))))), !detail.timeline.length && /* @__PURE__ */ import_react4.default.createElement("p", { className: "muted" }, "No timeline events.")))));
+  return /* @__PURE__ */ import_react3.default.createElement("div", { className: "order-detail" }, /* @__PURE__ */ import_react3.default.createElement("button", { className: "back-link", onClick: onBack }, /* @__PURE__ */ import_react3.default.createElement(ArrowLeft, null), " Back to orders"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-hero" }, /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("span", null, "ORDER DETAILS"), /* @__PURE__ */ import_react3.default.createElement("h2", null, order.order_number), /* @__PURE__ */ import_react3.default.createElement("p", null, "Placed ", new Date(order.created_at).toLocaleString("en-IN"), " \xB7 ", order.order_type || "Standard", " order")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-status" }, /* @__PURE__ */ import_react3.default.createElement(Status, { value: order.status }), /* @__PURE__ */ import_react3.default.createElement("select", { disabled: !editable, value: order.status, onChange: (e) => onStatus(order, e.target.value) }, allowed.map((s) => /* @__PURE__ */ import_react3.default.createElement("option", { key: s, value: s }, nice(s)))))), actionError && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner detail-error" }, actionError), locked && /* @__PURE__ */ import_react3.default.createElement("div", { className: "lock-banner" }, /* @__PURE__ */ import_react3.default.createElement(LockKeyhole, null), /* @__PURE__ */ import_react3.default.createElement("span", null, /* @__PURE__ */ import_react3.default.createElement("b", null, "Sensitive operations are locked."), " ", fullAccess ? "Admin/Owner changes require an explicit audited reason." : "Only Admin or Owner can override this lock.")), busy && /* @__PURE__ */ import_react3.default.createElement("div", { className: "sync-note" }, "Loading complete order record\u2026"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-summary" }, /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(Users, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Customer"), /* @__PURE__ */ import_react3.default.createElement("b", null, order.customer_name), /* @__PURE__ */ import_react3.default.createElement("span", null, order.mobile), /* @__PURE__ */ import_react3.default.createElement("span", null, order.email))), /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(MapPin, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Delivery"), /* @__PURE__ */ import_react3.default.createElement("b", null, (/* @__PURE__ */ new Date(`${order.delivery_date}T00:00:00`)).toLocaleDateString("en-IN"), " \xB7 ", order.delivery_slots?.label), /* @__PURE__ */ import_react3.default.createElement("span", null, addressText || order.area || order.pincode), /* @__PURE__ */ import_react3.default.createElement("span", null, order.area))), /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(CreditCard, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Payment"), /* @__PURE__ */ import_react3.default.createElement("b", null, payment?.method || order.payment_method, " \xB7 ", payment?.status || "Pending"), /* @__PURE__ */ import_react3.default.createElement("span", null, "\u20B9", Number(payment?.amount ?? order.total).toLocaleString("en-IN")), /* @__PURE__ */ import_react3.default.createElement("span", null, payment?.transaction_id ? `Txn: ${payment.transaction_id}` : "No transaction ID"))), /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(UserCheck, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Delivery executive"), /* @__PURE__ */ import_react3.default.createElement("b", null, assignment?.delivery_executives?.name || "Unassigned"), assignment?.delivery_executives?.mobile && /* @__PURE__ */ import_react3.default.createElement("span", null, assignment.delivery_executives.mobile), editable && /* @__PURE__ */ import_react3.default.createElement("select", { value: assignment?.executive_id || "", onChange: (e) => onAssign(e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "" }, "Choose executive\u2026"), detail.executives.map((x) => /* @__PURE__ */ import_react3.default.createElement("option", { key: x.id, value: x.id }, x.name, x.area ? ` \xB7 ${x.area}` : "")))))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-grid" }, /* @__PURE__ */ import_react3.default.createElement("section", { className: "detail-main" }, /* @__PURE__ */ import_react3.default.createElement("article", { className: "detail-card" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-card-head" }, /* @__PURE__ */ import_react3.default.createElement("h3", null, /* @__PURE__ */ import_react3.default.createElement(FileCheck, null), " Refund request & status"), /* @__PURE__ */ import_react3.default.createElement("span", null, "Only Owner/Admin can create or change refund decisions.")), /* @__PURE__ */ import_react3.default.createElement(RefundPanel, { order, refunds: detail.refunds, enabled: fullAccess, onSaved: onRefreshDetail })), /* @__PURE__ */ import_react3.default.createElement("article", { className: "detail-card" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-card-head" }, /* @__PURE__ */ import_react3.default.createElement("h3", null, /* @__PURE__ */ import_react3.default.createElement(WalletCards, null), " Delivery proof & COD collection"), /* @__PURE__ */ import_react3.default.createElement("span", null, "Record proof of delivery and COD collection after handover.")), /* @__PURE__ */ import_react3.default.createElement(ProofPanel, { order, proofs: detail.proofs, enabled: fullAccess, onSaved: onRefreshDetail })), /* @__PURE__ */ import_react3.default.createElement("article", { className: "detail-card" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-card-head" }, /* @__PURE__ */ import_react3.default.createElement("h3", null, /* @__PURE__ */ import_react3.default.createElement(ClipboardList, null), " Items & preparation"), /* @__PURE__ */ import_react3.default.createElement("span", null, "All four checks and actual weight are required for dispatch.")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "prep-list" }, detail.items.map((item) => /* @__PURE__ */ import_react3.default.createElement(PrepItem, { key: item.id, item, editable: editable && (!locked || fullAccess), onSave: onPrep }))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "totals" }, /* @__PURE__ */ import_react3.default.createElement("span", null, "Subtotal ", /* @__PURE__ */ import_react3.default.createElement("b", null, "\u20B9", Number(order.subtotal).toLocaleString("en-IN"))), /* @__PURE__ */ import_react3.default.createElement("span", null, "Discount ", /* @__PURE__ */ import_react3.default.createElement("b", null, "\u2212 \u20B9", Number(order.discount || 0).toLocaleString("en-IN"))), /* @__PURE__ */ import_react3.default.createElement("span", null, "Delivery ", /* @__PURE__ */ import_react3.default.createElement("b", null, "\u20B9", Number(order.delivery_charge || 0).toLocaleString("en-IN"))), /* @__PURE__ */ import_react3.default.createElement("strong", null, "Total ", /* @__PURE__ */ import_react3.default.createElement("b", null, "\u20B9", Number(order.total).toLocaleString("en-IN"))))), /* @__PURE__ */ import_react3.default.createElement("article", { className: "detail-card" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-card-head" }, /* @__PURE__ */ import_react3.default.createElement("h3", null, /* @__PURE__ */ import_react3.default.createElement(MessageSquare, null), " Internal notes"), /* @__PURE__ */ import_react3.default.createElement("span", null, "Visible only to authorised operations users.")), editable && /* @__PURE__ */ import_react3.default.createElement("div", { className: "note-compose" }, /* @__PURE__ */ import_react3.default.createElement("textarea", { value: note, maxLength: 2e3, onChange: (e) => setNote(e.target.value), placeholder: "Add an operational note\u2026" }), /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary", disabled: !note.trim(), onClick: onAddNote }, "Add note")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "note-list" }, detail.notes.map((x) => /* @__PURE__ */ import_react3.default.createElement("div", { key: x.id }, /* @__PURE__ */ import_react3.default.createElement("p", null, x.note), /* @__PURE__ */ import_react3.default.createElement("small", null, x.created_by_email || "System", " \xB7 ", new Date(x.created_at).toLocaleString("en-IN")))), !detail.notes.length && /* @__PURE__ */ import_react3.default.createElement("p", { className: "muted" }, "No internal notes yet.")))), /* @__PURE__ */ import_react3.default.createElement("aside", { className: "timeline-card" }, /* @__PURE__ */ import_react3.default.createElement("h3", null, /* @__PURE__ */ import_react3.default.createElement(History, null), " Timeline"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "timeline" }, detail.timeline.map((x) => /* @__PURE__ */ import_react3.default.createElement("div", { key: x.id }, /* @__PURE__ */ import_react3.default.createElement("i", null), /* @__PURE__ */ import_react3.default.createElement("p", null, /* @__PURE__ */ import_react3.default.createElement("b", null, x.message), x.from_status && x.to_status && /* @__PURE__ */ import_react3.default.createElement("span", null, nice(x.from_status), " \u2192 ", nice(x.to_status)), x.override_reason && /* @__PURE__ */ import_react3.default.createElement("em", null, "Override: ", x.override_reason), /* @__PURE__ */ import_react3.default.createElement("small", null, x.actor_email || "System", " \xB7 ", new Date(x.created_at).toLocaleString("en-IN"))))), !detail.timeline.length && /* @__PURE__ */ import_react3.default.createElement("p", { className: "muted" }, "No timeline events.")))));
 }
 function RefundPanel({ order, refunds: refunds2, enabled, onSaved }) {
-  const [status, setStatus] = (0, import_react4.useState)("Requested");
-  const [amount, setAmount] = (0, import_react4.useState)(String(order.total || ""));
-  const [reason, setReason] = (0, import_react4.useState)("");
+  const [status, setStatus] = (0, import_react3.useState)("Requested");
+  const [amount, setAmount] = (0, import_react3.useState)(String(order.total || ""));
+  const [reason, setReason] = (0, import_react3.useState)("");
   const latest = refunds2[0];
   const save = async () => {
     const payload = { order_id: order.id, amount: Number(amount || 0), reason: reason.trim() || null, status };
@@ -45496,49 +45160,49 @@ function RefundPanel({ order, refunds: refunds2, enabled, onSaved }) {
       onSaved();
     }
   };
-  return /* @__PURE__ */ import_react4.default.createElement("div", { className: "ops-form" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "ops-record" }, /* @__PURE__ */ import_react4.default.createElement("b", null, latest ? nice(latest.status) : "No refund requested"), latest?.amount != null && /* @__PURE__ */ import_react4.default.createElement("span", null, "\u20B9", Number(latest.amount).toLocaleString("en-IN"))), enabled && /* @__PURE__ */ import_react4.default.createElement("div", { className: "ops-controls" }, /* @__PURE__ */ import_react4.default.createElement("select", { value: status, onChange: (e) => setStatus(e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", null, "Requested"), /* @__PURE__ */ import_react4.default.createElement("option", null, "Approved"), /* @__PURE__ */ import_react4.default.createElement("option", null, "Rejected"), /* @__PURE__ */ import_react4.default.createElement("option", null, "Processed")), /* @__PURE__ */ import_react4.default.createElement("input", { type: "number", min: "0", value: amount, onChange: (e) => setAmount(e.target.value), placeholder: "Refund amount" }), /* @__PURE__ */ import_react4.default.createElement("input", { value: reason, onChange: (e) => setReason(e.target.value), placeholder: "Reason (optional)" }), /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", onClick: save }, latest ? "Update refund" : "Create request")), !enabled && /* @__PURE__ */ import_react4.default.createElement("small", { className: "muted" }, "Owner/Admin access is required to manage refunds."));
+  return /* @__PURE__ */ import_react3.default.createElement("div", { className: "ops-form" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "ops-record" }, /* @__PURE__ */ import_react3.default.createElement("b", null, latest ? nice(latest.status) : "No refund requested"), latest?.amount != null && /* @__PURE__ */ import_react3.default.createElement("span", null, "\u20B9", Number(latest.amount).toLocaleString("en-IN"))), enabled && /* @__PURE__ */ import_react3.default.createElement("div", { className: "ops-controls" }, /* @__PURE__ */ import_react3.default.createElement("select", { value: status, onChange: (e) => setStatus(e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", null, "Requested"), /* @__PURE__ */ import_react3.default.createElement("option", null, "Approved"), /* @__PURE__ */ import_react3.default.createElement("option", null, "Rejected"), /* @__PURE__ */ import_react3.default.createElement("option", null, "Processed")), /* @__PURE__ */ import_react3.default.createElement("input", { type: "number", min: "0", value: amount, onChange: (e) => setAmount(e.target.value), placeholder: "Refund amount" }), /* @__PURE__ */ import_react3.default.createElement("input", { value: reason, onChange: (e) => setReason(e.target.value), placeholder: "Reason (optional)" }), /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", onClick: save }, latest ? "Update refund" : "Create request")), !enabled && /* @__PURE__ */ import_react3.default.createElement("small", { className: "muted" }, "Owner/Admin access is required to manage refunds."));
 }
 function ProofPanel({ order, proofs: proofs2, enabled, onSaved }) {
   const latest = proofs2[0];
-  const [proofUrl, setProofUrl] = (0, import_react4.useState)(latest?.proof_url || "");
-  const [cod, setCod] = (0, import_react4.useState)(String(latest?.cod_collected ?? (order.payment_method === "COD" ? order.total : 0)));
-  const [status, setStatus] = (0, import_react4.useState)(latest?.status || "Pending");
+  const [proofUrl, setProofUrl] = (0, import_react3.useState)(latest?.proof_url || "");
+  const [cod, setCod] = (0, import_react3.useState)(String(latest?.cod_collected ?? (order.payment_method === "COD" ? order.total : 0)));
+  const [status, setStatus] = (0, import_react3.useState)(latest?.status || "Pending");
   const save = async () => {
     const payload = { order_id: order.id, proof_url: proofUrl.trim() || null, cod_collected: Number(cod || 0), status };
     const result = latest ? await supabase.from("delivery_proofs").update(payload).eq("id", latest.id) : await supabase.from("delivery_proofs").insert(payload);
     if (result.error) alert(result.error.message);
     else onSaved();
   };
-  return /* @__PURE__ */ import_react4.default.createElement("div", { className: "ops-form" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "ops-record" }, /* @__PURE__ */ import_react4.default.createElement("b", null, latest ? nice(latest.status) : "No delivery proof recorded"), /* @__PURE__ */ import_react4.default.createElement("span", null, "COD collected: \u20B9", Number(latest?.cod_collected || 0).toLocaleString("en-IN"))), enabled && /* @__PURE__ */ import_react4.default.createElement("div", { className: "ops-controls" }, /* @__PURE__ */ import_react4.default.createElement("select", { value: status, onChange: (e) => setStatus(e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", null, "Pending"), /* @__PURE__ */ import_react4.default.createElement("option", null, "Collected"), /* @__PURE__ */ import_react4.default.createElement("option", null, "Failed")), /* @__PURE__ */ import_react4.default.createElement("input", { value: proofUrl, onChange: (e) => setProofUrl(e.target.value), placeholder: "Proof URL (photo/signature)" }), /* @__PURE__ */ import_react4.default.createElement("input", { type: "number", min: "0", value: cod, onChange: (e) => setCod(e.target.value), placeholder: "COD collected" }), /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", onClick: save }, latest ? "Update proof" : "Save proof")), !enabled && /* @__PURE__ */ import_react4.default.createElement("small", { className: "muted" }, "Owner/Admin access is required to record delivery proof or COD."));
+  return /* @__PURE__ */ import_react3.default.createElement("div", { className: "ops-form" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "ops-record" }, /* @__PURE__ */ import_react3.default.createElement("b", null, latest ? nice(latest.status) : "No delivery proof recorded"), /* @__PURE__ */ import_react3.default.createElement("span", null, "COD collected: \u20B9", Number(latest?.cod_collected || 0).toLocaleString("en-IN"))), enabled && /* @__PURE__ */ import_react3.default.createElement("div", { className: "ops-controls" }, /* @__PURE__ */ import_react3.default.createElement("select", { value: status, onChange: (e) => setStatus(e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", null, "Pending"), /* @__PURE__ */ import_react3.default.createElement("option", null, "Collected"), /* @__PURE__ */ import_react3.default.createElement("option", null, "Failed")), /* @__PURE__ */ import_react3.default.createElement("input", { value: proofUrl, onChange: (e) => setProofUrl(e.target.value), placeholder: "Proof URL (photo/signature)" }), /* @__PURE__ */ import_react3.default.createElement("input", { type: "number", min: "0", value: cod, onChange: (e) => setCod(e.target.value), placeholder: "COD collected" }), /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", onClick: save }, latest ? "Update proof" : "Save proof")), !enabled && /* @__PURE__ */ import_react3.default.createElement("small", { className: "muted" }, "Owner/Admin access is required to record delivery proof or COD."));
 }
 function PrepItem({ item, editable, onSave }) {
   const source = item.order_item_preparation?.[0] || { actual_weight: "", prepared: false, weighed: false, packed: false, label_attached: false };
-  const [draft, setDraft] = (0, import_react4.useState)({ ...source });
-  (0, import_react4.useEffect)(() => setDraft({ ...source }), [source.actual_weight, source.prepared, source.weighed, source.packed, source.label_attached]);
+  const [draft, setDraft] = (0, import_react3.useState)({ ...source });
+  (0, import_react3.useEffect)(() => setDraft({ ...source }), [source.actual_weight, source.prepared, source.weighed, source.packed, source.label_attached]);
   const set = (key, value) => setDraft((d) => ({ ...d, [key]: value }));
   const complete = draft.prepared && draft.weighed && draft.packed && draft.label_attached && Number(draft.actual_weight) > 0;
   const ordered = Number(item.ordered_weight || 0);
   const actual = Number(draft.actual_weight || 0);
   const variance = actual && ordered ? actual - ordered : 0;
-  return /* @__PURE__ */ import_react4.default.createElement("div", { className: "prep-item " + (complete ? "complete" : "") }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "prep-product" }, /* @__PURE__ */ import_react4.default.createElement(Box, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("b", null, item.product_name), /* @__PURE__ */ import_react4.default.createElement("span", null, item.sku, " \xB7 Qty ", item.quantity)), /* @__PURE__ */ import_react4.default.createElement("strong", null, "\u20B9", Number(item.line_total).toLocaleString("en-IN"))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "weight-fields" }, /* @__PURE__ */ import_react4.default.createElement("label", null, /* @__PURE__ */ import_react4.default.createElement(Scale, null), " Ordered weight", /* @__PURE__ */ import_react4.default.createElement("input", { disabled: true, value: item.ordered_weight ? `${item.ordered_weight} ${item.ordered_weight_unit || "g"}` : "Not recorded" })), /* @__PURE__ */ import_react4.default.createElement("label", null, /* @__PURE__ */ import_react4.default.createElement(Scale, null), " Actual weight (g)", /* @__PURE__ */ import_react4.default.createElement("input", { disabled: !editable, type: "number", min: "0", step: "0.001", value: draft.actual_weight ?? "", onChange: (e) => set("actual_weight", e.target.value) }))), variance !== 0 && /* @__PURE__ */ import_react4.default.createElement("div", { className: "weight-variance" }, /* @__PURE__ */ import_react4.default.createElement(TriangleAlert, null), " Weight difference: ", variance > 0 ? "+" : "", variance.toFixed(3), " g \u2014 retain the original order amount and flag for payment/refund review."), /* @__PURE__ */ import_react4.default.createElement("div", { className: "prep-checks" }, [["prepared", "Prepared"], ["weighed", "Weighed"], ["packed", "Packed"], ["label_attached", "Label attached"]].map(([key, label]) => /* @__PURE__ */ import_react4.default.createElement("label", { key }, /* @__PURE__ */ import_react4.default.createElement("input", { disabled: !editable, type: "checkbox", checked: !!draft[key], onChange: (e) => set(key, e.target.checked) }), label))), editable && /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline prep-save", onClick: () => onSave(item, draft) }, "Save preparation"));
+  return /* @__PURE__ */ import_react3.default.createElement("div", { className: "prep-item " + (complete ? "complete" : "") }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "prep-product" }, /* @__PURE__ */ import_react3.default.createElement(Box, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("b", null, item.product_name), /* @__PURE__ */ import_react3.default.createElement("span", null, item.sku, " \xB7 Qty ", item.quantity)), /* @__PURE__ */ import_react3.default.createElement("strong", null, "\u20B9", Number(item.line_total).toLocaleString("en-IN"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "weight-fields" }, /* @__PURE__ */ import_react3.default.createElement("label", null, /* @__PURE__ */ import_react3.default.createElement(Scale, null), " Ordered weight", /* @__PURE__ */ import_react3.default.createElement("input", { disabled: true, value: item.ordered_weight ? `${item.ordered_weight} ${item.ordered_weight_unit || "g"}` : "Not recorded" })), /* @__PURE__ */ import_react3.default.createElement("label", null, /* @__PURE__ */ import_react3.default.createElement(Scale, null), " Actual weight (g)", /* @__PURE__ */ import_react3.default.createElement("input", { disabled: !editable, type: "number", min: "0", step: "0.001", value: draft.actual_weight ?? "", onChange: (e) => set("actual_weight", e.target.value) }))), variance !== 0 && /* @__PURE__ */ import_react3.default.createElement("div", { className: "weight-variance" }, /* @__PURE__ */ import_react3.default.createElement(TriangleAlert, null), " Weight difference: ", variance > 0 ? "+" : "", variance.toFixed(3), " g \u2014 retain the original order amount and flag for payment/refund review."), /* @__PURE__ */ import_react3.default.createElement("div", { className: "prep-checks" }, [["prepared", "Prepared"], ["weighed", "Weighed"], ["packed", "Packed"], ["label_attached", "Label attached"]].map(([key, label]) => /* @__PURE__ */ import_react3.default.createElement("label", { key }, /* @__PURE__ */ import_react3.default.createElement("input", { disabled: !editable, type: "checkbox", checked: !!draft[key], onChange: (e) => set(key, e.target.checked) }), label))), editable && /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline prep-save", onClick: () => onSave(item, draft) }, "Save preparation"));
 }
-function Inventory({ products, refresh, editable }) {
+function Inventory({ products, categories, refresh, editable }) {
   const sample = [
     { id: "sample-1", name: "Chicken Curry Cut", sku: "JWM-CHK-001", stock: 18, unit: "KG", minimum: 10, updated: "2025-02-14T10:30:00Z" },
     { id: "sample-2", name: "Mutton Boneless", sku: "JWM-MUT-002", stock: 4, unit: "KG", minimum: 8, updated: "2025-02-14T09:15:00Z" },
     { id: "sample-3", name: "Eggs (Farm Fresh)", sku: "JWM-EGG-003", stock: 0, unit: "PCS", minimum: 12, updated: "2025-02-13T17:45:00Z" }
   ];
   const rows = (products || []).length ? products.map((p) => ({ ...p, unit: p.unit || p.stock_unit || "PCS", minimum: Number(p.low_stock_threshold ?? p.minimum_stock ?? 0), updated: p.updated_at || p.created_at })) : sample;
-  const [selected, setSelected] = (0, import_react4.useState)(null);
-  const [history, setHistory] = (0, import_react4.useState)([]);
-  const [adjustment, setAdjustment] = (0, import_react4.useState)("");
-  const [reason, setReason] = (0, import_react4.useState)("");
-  const [modalError, setModalError] = (0, import_react4.useState)("");
-  const [busy, setBusy] = (0, import_react4.useState)(false);
-  const [productOpen, setProductOpen] = (0, import_react4.useState)(false);
-  const [productBusy, setProductBusy] = (0, import_react4.useState)(false);
-  const [productError, setProductError] = (0, import_react4.useState)("");
-  const [productForm, setProductForm] = (0, import_react4.useState)({ name: "", sku: "", category_id: categories[0]?.id || "", description: "", weight: "", servings: "", price: "", mrp: "", stock: "0", low_stock_threshold: "10", image_url: "", featured: false, active: true });
+  const [selected, setSelected] = (0, import_react3.useState)(null);
+  const [history, setHistory] = (0, import_react3.useState)([]);
+  const [adjustment, setAdjustment] = (0, import_react3.useState)("");
+  const [reason, setReason] = (0, import_react3.useState)("");
+  const [modalError, setModalError] = (0, import_react3.useState)("");
+  const [busy, setBusy] = (0, import_react3.useState)(false);
+  const [productOpen, setProductOpen] = (0, import_react3.useState)(false);
+  const [productBusy, setProductBusy] = (0, import_react3.useState)(false);
+  const [productError, setProductError] = (0, import_react3.useState)("");
+  const [productForm, setProductForm] = (0, import_react3.useState)({ name: "", sku: "", category_id: categories[0]?.id || "", description: "", weight: "", servings: "", price: "", mrp: "", stock: "0", low_stock_threshold: "10", image_url: "", featured: false, active: true });
   const open = async (product) => {
     if (String(product.id).startsWith("sample-")) return;
     setSelected(product);
@@ -45609,14 +45273,14 @@ function Inventory({ products, refresh, editable }) {
     }
     await refresh();
   };
-  return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Inventory", sub: "Monitor current stock levels across the catalogue.", action: editable ? /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary", onClick: () => {
+  return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Inventory", sub: "Monitor current stock levels across the catalogue.", action: editable ? /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary", onClick: () => {
     setProductError("");
     setProductForm((draft) => ({ ...draft, category_id: draft.category_id || categories[0]?.id || "" }));
     setProductOpen(true);
-  } }, /* @__PURE__ */ import_react4.default.createElement(Plus, null), " Add Product") : void 0 }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap basic-inventory" }, /* @__PURE__ */ import_react4.default.createElement("table", null, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "Product name"), /* @__PURE__ */ import_react4.default.createElement("th", null, "SKU"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Current stock"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Unit"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Minimum stock"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Status"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Catalogue"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Last updated"), /* @__PURE__ */ import_react4.default.createElement("th", null, "View"))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, rows.map((p) => {
+  } }, /* @__PURE__ */ import_react3.default.createElement(Plus, null), " Add Product") : void 0 }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap basic-inventory" }, /* @__PURE__ */ import_react3.default.createElement("table", null, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "Product name"), /* @__PURE__ */ import_react3.default.createElement("th", null, "SKU"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Current stock"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Unit"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Minimum stock"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Status"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Catalogue"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Last updated"), /* @__PURE__ */ import_react3.default.createElement("th", null, "View"))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, rows.map((p) => {
     const stock = Number(p.stock || 0), minimum = Number(p.minimum || 0), state = status(stock, minimum);
-    return /* @__PURE__ */ import_react4.default.createElement("tr", { key: p.id || p.sku }, /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, p.name)), /* @__PURE__ */ import_react4.default.createElement("td", null, p.sku || "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, stock), /* @__PURE__ */ import_react4.default.createElement("td", null, String(p.unit).toUpperCase()), /* @__PURE__ */ import_react4.default.createElement("td", null, minimum), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("span", { className: `status ${state === "In Stock" ? "in-stock" : state === "Out of Stock" ? "out-of-stock" : ""}` }, state)), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("button", { className: `catalogue-toggle ${p.active !== false ? "enabled" : "disabled"}`, disabled: !editable || String(p.id).startsWith("sample-"), onClick: () => toggleProduct(p) }, p.active !== false ? "Enabled" : "Disabled")), /* @__PURE__ */ import_react4.default.createElement("td", null, p.updated ? new Date(p.updated).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("button", { className: "view-order", disabled: String(p.id).startsWith("sample-"), onClick: () => open(p) }, /* @__PURE__ */ import_react4.default.createElement(Eye, null), " View")));
-  })))), productOpen && /* @__PURE__ */ import_react4.default.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ import_react4.default.createElement("form", { className: "modal product-modal", onSubmit: addProduct }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "modal-close", onClick: () => setProductOpen(false) }, "\xD7"), /* @__PURE__ */ import_react4.default.createElement("span", { className: "modal-kicker" }, "CATALOGUE PRODUCT"), /* @__PURE__ */ import_react4.default.createElement("h3", null, "Add Product"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react4.default.createElement("label", null, "Product name", /* @__PURE__ */ import_react4.default.createElement("input", { required: true, value: productForm.name, onChange: (e) => setProduct("name", e.target.value), placeholder: "e.g. Chicken Leg Curry Cut" })), /* @__PURE__ */ import_react4.default.createElement("label", null, "SKU", /* @__PURE__ */ import_react4.default.createElement("input", { required: true, value: productForm.sku, onChange: (e) => setProduct("sku", e.target.value), placeholder: "JWM-CHK-003" }))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react4.default.createElement("label", null, "Category", /* @__PURE__ */ import_react4.default.createElement("select", { required: true, value: productForm.category_id, onChange: (e) => setProduct("category_id", e.target.value) }, /* @__PURE__ */ import_react4.default.createElement("option", { value: "" }, "Select category"), categories.map((c) => /* @__PURE__ */ import_react4.default.createElement("option", { key: c.id, value: c.id }, c.name)))), /* @__PURE__ */ import_react4.default.createElement("label", null, "Weight / pack", /* @__PURE__ */ import_react4.default.createElement("input", { value: productForm.weight, onChange: (e) => setProduct("weight", e.target.value), placeholder: "500 g" }))), /* @__PURE__ */ import_react4.default.createElement("label", null, "Description", /* @__PURE__ */ import_react4.default.createElement("textarea", { value: productForm.description, onChange: (e) => setProduct("description", e.target.value), placeholder: "Short customer-facing description" })), /* @__PURE__ */ import_react4.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react4.default.createElement("label", null, "Price (\u20B9)", /* @__PURE__ */ import_react4.default.createElement("input", { required: true, type: "number", min: "0", step: "0.01", value: productForm.price, onChange: (e) => setProduct("price", e.target.value) })), /* @__PURE__ */ import_react4.default.createElement("label", null, "MRP (\u20B9)", /* @__PURE__ */ import_react4.default.createElement("input", { required: true, type: "number", min: "0", step: "0.01", value: productForm.mrp, onChange: (e) => setProduct("mrp", e.target.value) }))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react4.default.createElement("label", null, "Opening stock", /* @__PURE__ */ import_react4.default.createElement("input", { type: "number", min: "0", step: "1", value: productForm.stock, onChange: (e) => setProduct("stock", e.target.value) })), /* @__PURE__ */ import_react4.default.createElement("label", null, "Low-stock threshold", /* @__PURE__ */ import_react4.default.createElement("input", { type: "number", min: "0", step: "1", value: productForm.low_stock_threshold, onChange: (e) => setProduct("low_stock_threshold", e.target.value) }))), /* @__PURE__ */ import_react4.default.createElement("label", null, "Image URL", /* @__PURE__ */ import_react4.default.createElement("input", { type: "url", value: productForm.image_url, onChange: (e) => setProduct("image_url", e.target.value), placeholder: "Optional approved image URL" })), /* @__PURE__ */ import_react4.default.createElement("div", { className: "product-checks" }, /* @__PURE__ */ import_react4.default.createElement("label", { className: "check" }, /* @__PURE__ */ import_react4.default.createElement("input", { type: "checkbox", checked: productForm.featured, onChange: (e) => setProduct("featured", e.target.checked) }), " Featured on storefront"), /* @__PURE__ */ import_react4.default.createElement("label", { className: "check" }, /* @__PURE__ */ import_react4.default.createElement("input", { type: "checkbox", checked: productForm.active, onChange: (e) => setProduct("active", e.target.checked) }), " Enabled for customers")), productError && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner" }, productError), /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary wide", disabled: productBusy }, productBusy ? "Adding\u2026" : "Add Product"))), selected && /* @__PURE__ */ import_react4.default.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ import_react4.default.createElement("form", { className: "modal inventory-modal", onSubmit: save }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "modal-close", onClick: () => setSelected(null) }, "\xD7"), /* @__PURE__ */ import_react4.default.createElement("span", { className: "modal-kicker" }, "INVENTORY ADJUSTMENT"), /* @__PURE__ */ import_react4.default.createElement("h3", null, selected.name), /* @__PURE__ */ import_react4.default.createElement("p", { className: "modal-help" }, "Current stock: ", /* @__PURE__ */ import_react4.default.createElement("b", null, Number(selected.stock || 0), " ", selected.unit || selected.stock_unit || "PCS")), /* @__PURE__ */ import_react4.default.createElement("label", null, "Adjustment quantity", /* @__PURE__ */ import_react4.default.createElement("input", { type: "number", step: "1", required: true, value: adjustment, onChange: (e) => setAdjustment(e.target.value), placeholder: "e.g. 5 or -2", disabled: !editable || busy })), /* @__PURE__ */ import_react4.default.createElement("label", null, "Reason", /* @__PURE__ */ import_react4.default.createElement("textarea", { required: true, value: reason, onChange: (e) => setReason(e.target.value), placeholder: "Why is this stock changing?", disabled: !editable || busy })), modalError && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner" }, modalError), editable && /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary wide", disabled: busy }, busy ? "Saving\u2026" : "Save adjustment"), /* @__PURE__ */ import_react4.default.createElement("h4", null, "Adjustment history"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap inventory-history" }, /* @__PURE__ */ import_react4.default.createElement("table", null, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "Who"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Date & time"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Previous"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Adjustment"), /* @__PURE__ */ import_react4.default.createElement("th", null, "New"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Reason"))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, history.length ? history.map((item) => /* @__PURE__ */ import_react4.default.createElement("tr", { key: item.id || item.created_at }, /* @__PURE__ */ import_react4.default.createElement("td", null, item.adjusted_by || "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, item.created_at ? new Date(item.created_at).toLocaleString("en-IN") : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, item.previous_quantity), /* @__PURE__ */ import_react4.default.createElement("td", { className: Number(item.adjustment_quantity) > 0 ? "quantity-positive" : "quantity-negative" }, Number(item.adjustment_quantity) > 0 ? "+" : "", item.adjustment_quantity), /* @__PURE__ */ import_react4.default.createElement("td", null, item.new_quantity), /* @__PURE__ */ import_react4.default.createElement("td", null, item.reason))) : /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("td", { colSpan: 6, className: "muted" }, "No adjustments recorded yet."))))))));
+    return /* @__PURE__ */ import_react3.default.createElement("tr", { key: p.id || p.sku }, /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, p.name)), /* @__PURE__ */ import_react3.default.createElement("td", null, p.sku || "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, stock), /* @__PURE__ */ import_react3.default.createElement("td", null, String(p.unit).toUpperCase()), /* @__PURE__ */ import_react3.default.createElement("td", null, minimum), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("span", { className: `status ${state === "In Stock" ? "in-stock" : state === "Out of Stock" ? "out-of-stock" : ""}` }, state)), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("button", { className: `catalogue-toggle ${p.active !== false ? "enabled" : "disabled"}`, disabled: !editable || String(p.id).startsWith("sample-"), onClick: () => toggleProduct(p) }, p.active !== false ? "Enabled" : "Disabled")), /* @__PURE__ */ import_react3.default.createElement("td", null, p.updated ? new Date(p.updated).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("button", { className: "view-order", disabled: String(p.id).startsWith("sample-"), onClick: () => open(p) }, /* @__PURE__ */ import_react3.default.createElement(Eye, null), " View")));
+  })))), productOpen && /* @__PURE__ */ import_react3.default.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ import_react3.default.createElement("form", { className: "modal product-modal", onSubmit: addProduct }, /* @__PURE__ */ import_react3.default.createElement("button", { type: "button", className: "modal-close", onClick: () => setProductOpen(false) }, "\xD7"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "modal-kicker" }, "CATALOGUE PRODUCT"), /* @__PURE__ */ import_react3.default.createElement("h3", null, "Add Product"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react3.default.createElement("label", null, "Product name", /* @__PURE__ */ import_react3.default.createElement("input", { required: true, value: productForm.name, onChange: (e) => setProduct("name", e.target.value), placeholder: "e.g. Chicken Leg Curry Cut" })), /* @__PURE__ */ import_react3.default.createElement("label", null, "SKU", /* @__PURE__ */ import_react3.default.createElement("input", { required: true, value: productForm.sku, onChange: (e) => setProduct("sku", e.target.value), placeholder: "JWM-CHK-003" }))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react3.default.createElement("label", null, "Category", /* @__PURE__ */ import_react3.default.createElement("select", { required: true, value: productForm.category_id, onChange: (e) => setProduct("category_id", e.target.value) }, /* @__PURE__ */ import_react3.default.createElement("option", { value: "" }, "Select category"), categories.map((c) => /* @__PURE__ */ import_react3.default.createElement("option", { key: c.id, value: c.id }, c.name)))), /* @__PURE__ */ import_react3.default.createElement("label", null, "Weight / pack", /* @__PURE__ */ import_react3.default.createElement("input", { value: productForm.weight, onChange: (e) => setProduct("weight", e.target.value), placeholder: "500 g" }))), /* @__PURE__ */ import_react3.default.createElement("label", null, "Description", /* @__PURE__ */ import_react3.default.createElement("textarea", { value: productForm.description, onChange: (e) => setProduct("description", e.target.value), placeholder: "Short customer-facing description" })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react3.default.createElement("label", null, "Price (\u20B9)", /* @__PURE__ */ import_react3.default.createElement("input", { required: true, type: "number", min: "0", step: "0.01", value: productForm.price, onChange: (e) => setProduct("price", e.target.value) })), /* @__PURE__ */ import_react3.default.createElement("label", null, "MRP (\u20B9)", /* @__PURE__ */ import_react3.default.createElement("input", { required: true, type: "number", min: "0", step: "0.01", value: productForm.mrp, onChange: (e) => setProduct("mrp", e.target.value) }))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react3.default.createElement("label", null, "Opening stock", /* @__PURE__ */ import_react3.default.createElement("input", { type: "number", min: "0", step: "1", value: productForm.stock, onChange: (e) => setProduct("stock", e.target.value) })), /* @__PURE__ */ import_react3.default.createElement("label", null, "Low-stock threshold", /* @__PURE__ */ import_react3.default.createElement("input", { type: "number", min: "0", step: "1", value: productForm.low_stock_threshold, onChange: (e) => setProduct("low_stock_threshold", e.target.value) }))), /* @__PURE__ */ import_react3.default.createElement("label", null, "Image URL", /* @__PURE__ */ import_react3.default.createElement("input", { type: "url", value: productForm.image_url, onChange: (e) => setProduct("image_url", e.target.value), placeholder: "Optional approved image URL" })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "product-checks" }, /* @__PURE__ */ import_react3.default.createElement("label", { className: "check" }, /* @__PURE__ */ import_react3.default.createElement("input", { type: "checkbox", checked: productForm.featured, onChange: (e) => setProduct("featured", e.target.checked) }), " Featured on storefront"), /* @__PURE__ */ import_react3.default.createElement("label", { className: "check" }, /* @__PURE__ */ import_react3.default.createElement("input", { type: "checkbox", checked: productForm.active, onChange: (e) => setProduct("active", e.target.checked) }), " Enabled for customers")), productError && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner" }, productError), /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary wide", disabled: productBusy }, productBusy ? "Adding\u2026" : "Add Product"))), selected && /* @__PURE__ */ import_react3.default.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ import_react3.default.createElement("form", { className: "modal inventory-modal", onSubmit: save }, /* @__PURE__ */ import_react3.default.createElement("button", { type: "button", className: "modal-close", onClick: () => setSelected(null) }, "\xD7"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "modal-kicker" }, "INVENTORY ADJUSTMENT"), /* @__PURE__ */ import_react3.default.createElement("h3", null, selected.name), /* @__PURE__ */ import_react3.default.createElement("p", { className: "modal-help" }, "Current stock: ", /* @__PURE__ */ import_react3.default.createElement("b", null, Number(selected.stock || 0), " ", selected.unit || selected.stock_unit || "PCS")), /* @__PURE__ */ import_react3.default.createElement("label", null, "Adjustment quantity", /* @__PURE__ */ import_react3.default.createElement("input", { type: "number", step: "1", required: true, value: adjustment, onChange: (e) => setAdjustment(e.target.value), placeholder: "e.g. 5 or -2", disabled: !editable || busy })), /* @__PURE__ */ import_react3.default.createElement("label", null, "Reason", /* @__PURE__ */ import_react3.default.createElement("textarea", { required: true, value: reason, onChange: (e) => setReason(e.target.value), placeholder: "Why is this stock changing?", disabled: !editable || busy })), modalError && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner" }, modalError), editable && /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary wide", disabled: busy }, busy ? "Saving\u2026" : "Save adjustment"), /* @__PURE__ */ import_react3.default.createElement("h4", null, "Adjustment history"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap inventory-history" }, /* @__PURE__ */ import_react3.default.createElement("table", null, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "Who"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Date & time"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Previous"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Adjustment"), /* @__PURE__ */ import_react3.default.createElement("th", null, "New"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Reason"))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, history.length ? history.map((item) => /* @__PURE__ */ import_react3.default.createElement("tr", { key: item.id || item.created_at }, /* @__PURE__ */ import_react3.default.createElement("td", null, item.adjusted_by || "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, item.created_at ? new Date(item.created_at).toLocaleString("en-IN") : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, item.previous_quantity), /* @__PURE__ */ import_react3.default.createElement("td", { className: Number(item.adjustment_quantity) > 0 ? "quantity-positive" : "quantity-negative" }, Number(item.adjustment_quantity) > 0 ? "+" : "", item.adjustment_quantity), /* @__PURE__ */ import_react3.default.createElement("td", null, item.new_quantity), /* @__PURE__ */ import_react3.default.createElement("td", null, item.reason))) : /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("td", { colSpan: 6, className: "muted" }, "No adjustments recorded yet."))))))));
 }
 function Slots({ slots, refresh, editable }) {
   const save = async (s) => {
@@ -45625,16 +45289,16 @@ function Slots({ slots, refresh, editable }) {
     if (error) alert(error.message);
     else refresh();
   };
-  return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Delivery slots", sub: "Keep live capacity and availability aligned with dispatch operations." }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "slot-grid" }, slots.map((s) => /* @__PURE__ */ import_react4.default.createElement("div", { className: "slot-card", key: s.id }, /* @__PURE__ */ import_react4.default.createElement("span", null, "DELIVERY WINDOW"), /* @__PURE__ */ import_react4.default.createElement("h3", null, s.label), /* @__PURE__ */ import_react4.default.createElement("label", null, "Capacity", /* @__PURE__ */ import_react4.default.createElement("input", { disabled: !editable, type: "number", min: "0", value: s.capacity, onChange: (e) => {
+  return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Delivery slots", sub: "Keep live capacity and availability aligned with dispatch operations." }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "slot-grid" }, slots.map((s) => /* @__PURE__ */ import_react3.default.createElement("div", { className: "slot-card", key: s.id }, /* @__PURE__ */ import_react3.default.createElement("span", null, "DELIVERY WINDOW"), /* @__PURE__ */ import_react3.default.createElement("h3", null, s.label), /* @__PURE__ */ import_react3.default.createElement("label", null, "Capacity", /* @__PURE__ */ import_react3.default.createElement("input", { disabled: !editable, type: "number", min: "0", value: s.capacity, onChange: (e) => {
     s.capacity = e.target.value;
-  }, onBlur: () => save(s) })), /* @__PURE__ */ import_react4.default.createElement("label", { className: "toggle" }, /* @__PURE__ */ import_react4.default.createElement("input", { disabled: !editable, type: "checkbox", checked: s.active, onChange: (e) => {
+  }, onBlur: () => save(s) })), /* @__PURE__ */ import_react3.default.createElement("label", { className: "toggle" }, /* @__PURE__ */ import_react3.default.createElement("input", { disabled: !editable, type: "checkbox", checked: s.active, onChange: (e) => {
     s.active = e.target.checked;
     save(s);
-  } }), " Accepting orders"), editable && /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", onClick: () => save(s) }, "Save changes")))));
+  } }), " Accepting orders"), editable && /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", onClick: () => save(s) }, "Save changes")))));
 }
 function AbandonedCarts({ carts, refresh, editable }) {
-  const [selected, setSelected] = (0, import_react4.useState)(null);
-  const [query, setQuery] = (0, import_react4.useState)("");
+  const [selected, setSelected] = (0, import_react3.useState)(null);
+  const [query, setQuery] = (0, import_react3.useState)("");
   const rows = (carts || []).filter((c) => ["active", "abandoned", "recovered", "expired"].includes(c.status)).filter((c) => `${c.id} ${c.customer_name || ""} ${c.email || ""} ${c.mobile || ""}`.toLowerCase().includes(query.toLowerCase()));
   const statusLabel = (s) => s === "active" ? "Active" : s === "abandoned" ? "Abandoned" : s === "recovered" ? "Recovered" : "Expired";
   const updateStatus = async (status) => {
@@ -45648,18 +45312,18 @@ function AbandonedCarts({ carts, refresh, editable }) {
   };
   if (selected) {
     const items = Array.isArray(selected.items) ? selected.items : [];
-    return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Abandoned cart detail", sub: "Customer, products, value and saved delivery information." }, /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", onClick: () => setSelected(null) }, "\u2190 Back to abandoned carts"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-summary customer-summary" }, /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(Users, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Customer"), /* @__PURE__ */ import_react4.default.createElement("b", null, selected.customer_name || "Guest customer"), /* @__PURE__ */ import_react4.default.createElement("span", null, selected.email || selected.mobile || "No contact saved"))), /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(IndianRupee, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Cart value"), /* @__PURE__ */ import_react4.default.createElement("b", null, "\u20B9", Number(selected.subtotal || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react4.default.createElement("span", null, statusLabel(selected.status)))), /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(Clock3, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Activity"), /* @__PURE__ */ import_react4.default.createElement("b", null, selected.created_at ? new Date(selected.created_at).toLocaleString("en-IN") : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("span", null, "Last activity: ", selected.updated_at ? new Date(selected.updated_at).toLocaleString("en-IN") : "\u2014")))), /* @__PURE__ */ import_react4.default.createElement(Panel, { title: "Products and quantities" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react4.default.createElement("table", null, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "Product"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Quantity"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Current price"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Value"))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, items.length ? items.map((i, n) => /* @__PURE__ */ import_react4.default.createElement("tr", { key: i.product_id || n }, /* @__PURE__ */ import_react4.default.createElement("td", null, i.name || i.product_name || i.sku || i.product_id || "Product"), /* @__PURE__ */ import_react4.default.createElement("td", null, i.quantity || 0), /* @__PURE__ */ import_react4.default.createElement("td", null, "\u20B9", Number(i.price || i.current_price || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react4.default.createElement("td", null, "\u20B9", (Number(i.price || i.current_price || 0) * Number(i.quantity || 0)).toLocaleString("en-IN")))) : /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("td", { colSpan: 4, className: "muted" }, "No items recorded.")))))), /* @__PURE__ */ import_react4.default.createElement(Panel, { title: "Saved delivery information" }, /* @__PURE__ */ import_react4.default.createElement("p", null, selected.pincode ? `PIN ${selected.pincode}` : "No delivery PIN saved.")), /* @__PURE__ */ import_react4.default.createElement("div", { className: "status-actions" }, /* @__PURE__ */ import_react4.default.createElement("b", null, "Status"), ["active", "abandoned", "recovered", "expired"].map((s) => /* @__PURE__ */ import_react4.default.createElement("button", { key: s, className: selected.status === s ? "primary" : "outline", disabled: !editable, onClick: () => updateStatus(s) }, statusLabel(s)))));
+    return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Abandoned cart detail", sub: "Customer, products, value and saved delivery information." }, /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", onClick: () => setSelected(null) }, "\u2190 Back to abandoned carts"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-summary customer-summary" }, /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(Users, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Customer"), /* @__PURE__ */ import_react3.default.createElement("b", null, selected.customer_name || "Guest customer"), /* @__PURE__ */ import_react3.default.createElement("span", null, selected.email || selected.mobile || "No contact saved"))), /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(IndianRupee, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Cart value"), /* @__PURE__ */ import_react3.default.createElement("b", null, "\u20B9", Number(selected.subtotal || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react3.default.createElement("span", null, statusLabel(selected.status)))), /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(Clock3, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Activity"), /* @__PURE__ */ import_react3.default.createElement("b", null, selected.created_at ? new Date(selected.created_at).toLocaleString("en-IN") : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("span", null, "Last activity: ", selected.updated_at ? new Date(selected.updated_at).toLocaleString("en-IN") : "\u2014")))), /* @__PURE__ */ import_react3.default.createElement(Panel, { title: "Products and quantities" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react3.default.createElement("table", null, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "Product"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Quantity"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Current price"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Value"))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, items.length ? items.map((i, n) => /* @__PURE__ */ import_react3.default.createElement("tr", { key: i.product_id || n }, /* @__PURE__ */ import_react3.default.createElement("td", null, i.name || i.product_name || i.sku || i.product_id || "Product"), /* @__PURE__ */ import_react3.default.createElement("td", null, i.quantity || 0), /* @__PURE__ */ import_react3.default.createElement("td", null, "\u20B9", Number(i.price || i.current_price || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react3.default.createElement("td", null, "\u20B9", (Number(i.price || i.current_price || 0) * Number(i.quantity || 0)).toLocaleString("en-IN")))) : /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("td", { colSpan: 4, className: "muted" }, "No items recorded.")))))), /* @__PURE__ */ import_react3.default.createElement(Panel, { title: "Saved delivery information" }, /* @__PURE__ */ import_react3.default.createElement("p", null, selected.pincode ? `PIN ${selected.pincode}` : "No delivery PIN saved.")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "status-actions" }, /* @__PURE__ */ import_react3.default.createElement("b", null, "Status"), ["active", "abandoned", "recovered", "expired"].map((s) => /* @__PURE__ */ import_react3.default.createElement("button", { key: s, className: selected.status === s ? "primary" : "outline", disabled: !editable, onClick: () => updateStatus(s) }, statusLabel(s)))));
   }
-  return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Abandoned carts", sub: "Track cart activity and recovery status without sending reminders or discounts." }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "toolbar" }, /* @__PURE__ */ import_react4.default.createElement("label", null, /* @__PURE__ */ import_react4.default.createElement(Search, null), /* @__PURE__ */ import_react4.default.createElement("input", { placeholder: "Search cart, customer or contact\u2026", value: query, onChange: (e) => setQuery(e.target.value) }))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react4.default.createElement("table", null, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "Cart ID"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Customer / contact"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Items"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Cart value"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Created"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Last activity"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Time abandoned"), /* @__PURE__ */ import_react4.default.createElement("th", null, "View"))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, rows.map((c) => /* @__PURE__ */ import_react4.default.createElement("tr", { key: c.id }, /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, String(c.id).slice(0, 8))), /* @__PURE__ */ import_react4.default.createElement("td", null, c.customer_name || "Guest", /* @__PURE__ */ import_react4.default.createElement("br", null), /* @__PURE__ */ import_react4.default.createElement("span", { className: "muted" }, c.email || c.mobile || "\u2014")), /* @__PURE__ */ import_react4.default.createElement("td", null, Array.isArray(c.items) ? c.items.reduce((n, i) => n + Number(i.quantity || 0), 0) : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, "\u20B9", Number(c.subtotal || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react4.default.createElement("td", null, c.created_at ? new Date(c.created_at).toLocaleString("en-IN") : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, c.updated_at ? new Date(c.updated_at).toLocaleString("en-IN") : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, c.status === "abandoned" ? c.updated_at ? new Date(c.updated_at).toLocaleString("en-IN") : "\u2014" : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("button", { className: "view-order", onClick: () => setSelected(c) }, /* @__PURE__ */ import_react4.default.createElement(Eye, null), " View"))))))));
+  return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Abandoned carts", sub: "Track cart activity and recovery status without sending reminders or discounts." }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "toolbar" }, /* @__PURE__ */ import_react3.default.createElement("label", null, /* @__PURE__ */ import_react3.default.createElement(Search, null), /* @__PURE__ */ import_react3.default.createElement("input", { placeholder: "Search cart, customer or contact\u2026", value: query, onChange: (e) => setQuery(e.target.value) }))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react3.default.createElement("table", null, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "Cart ID"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Customer / contact"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Items"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Cart value"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Created"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Last activity"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Time abandoned"), /* @__PURE__ */ import_react3.default.createElement("th", null, "View"))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, rows.map((c) => /* @__PURE__ */ import_react3.default.createElement("tr", { key: c.id }, /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, String(c.id).slice(0, 8))), /* @__PURE__ */ import_react3.default.createElement("td", null, c.customer_name || "Guest", /* @__PURE__ */ import_react3.default.createElement("br", null), /* @__PURE__ */ import_react3.default.createElement("span", { className: "muted" }, c.email || c.mobile || "\u2014")), /* @__PURE__ */ import_react3.default.createElement("td", null, Array.isArray(c.items) ? c.items.reduce((n, i) => n + Number(i.quantity || 0), 0) : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, "\u20B9", Number(c.subtotal || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react3.default.createElement("td", null, c.created_at ? new Date(c.created_at).toLocaleString("en-IN") : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, c.updated_at ? new Date(c.updated_at).toLocaleString("en-IN") : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, c.status === "abandoned" ? c.updated_at ? new Date(c.updated_at).toLocaleString("en-IN") : "\u2014" : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("button", { className: "view-order", onClick: () => setSelected(c) }, /* @__PURE__ */ import_react3.default.createElement(Eye, null), " View"))))))));
 }
 function Customers() {
-  const [rows, setRows] = (0, import_react4.useState)([]);
-  const [selected, setSelected] = (0, import_react4.useState)(null);
-  const [detail, setDetail] = (0, import_react4.useState)(null);
-  const [query, setQuery] = (0, import_react4.useState)("");
-  const [loading, setLoading] = (0, import_react4.useState)(true);
-  const [detailLoading, setDetailLoading] = (0, import_react4.useState)(false);
-  const [error, setError] = (0, import_react4.useState)("");
+  const [rows, setRows] = (0, import_react3.useState)([]);
+  const [selected, setSelected] = (0, import_react3.useState)(null);
+  const [detail, setDetail] = (0, import_react3.useState)(null);
+  const [query, setQuery] = (0, import_react3.useState)("");
+  const [loading, setLoading] = (0, import_react3.useState)(true);
+  const [detailLoading, setDetailLoading] = (0, import_react3.useState)(false);
+  const [error, setError] = (0, import_react3.useState)("");
   const load = async () => {
     setLoading(true);
     setError("");
@@ -45668,7 +45332,7 @@ function Customers() {
     if (loadError) setError(loadError.message);
     setLoading(false);
   };
-  (0, import_react4.useEffect)(() => {
+  (0, import_react3.useEffect)(() => {
     load();
   }, []);
   const open = async (customer) => {
@@ -45691,34 +45355,34 @@ function Customers() {
   };
   const filtered = rows.filter((c) => [c.name, c.mobile, c.email].join(" ").toLowerCase().includes(query.toLowerCase()));
   if (selected) {
-    if (detailLoading || !detail) return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Customer detail", sub: "Account, saved addresses and preserved order history." }, /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", onClick: () => setSelected(null) }, "\u2190 Back to customers"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "empty-state" }, /* @__PURE__ */ import_react4.default.createElement(RefreshCw, null), " Loading customer details\u2026"));
+    if (detailLoading || !detail) return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Customer detail", sub: "Account, saved addresses and preserved order history." }, /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", onClick: () => setSelected(null) }, "\u2190 Back to customers"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "empty-state" }, /* @__PURE__ */ import_react3.default.createElement(RefreshCw, null), " Loading customer details\u2026"));
     const orders = detail.orders || [];
     const totalOrders = Number(selected.total_orders ?? orders.length);
     const totalSpent = Number(selected.total_spent ?? orders.filter((o) => o.status !== "cancelled").reduce((sum, o) => sum + Number(o.total || 0), 0));
-    return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Customer detail", sub: "Account, saved addresses and preserved order history." }, /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", onClick: () => {
+    return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Customer detail", sub: "Account, saved addresses and preserved order history." }, /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", onClick: () => {
       setSelected(null);
       setDetail(null);
-    } }, "\u2190 Back to customers"), /* @__PURE__ */ import_react4.default.createElement("div", { className: "detail-summary customer-summary" }, /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(Users, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Customer"), /* @__PURE__ */ import_react4.default.createElement("b", null, selected.name || "Unnamed customer"), /* @__PURE__ */ import_react4.default.createElement("span", null, selected.mobile || "\u2014"), /* @__PURE__ */ import_react4.default.createElement("span", null, selected.email || "\u2014"))), /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(ClipboardList, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Summary"), /* @__PURE__ */ import_react4.default.createElement("b", null, totalOrders, " total orders"), /* @__PURE__ */ import_react4.default.createElement("span", null, "\u20B9", totalSpent.toLocaleString("en-IN"), " total spent"), /* @__PURE__ */ import_react4.default.createElement("span", null, "Last order: ", selected.last_order_at ? new Date(selected.last_order_at).toLocaleDateString("en-IN") : "\u2014"))), /* @__PURE__ */ import_react4.default.createElement("article", null, /* @__PURE__ */ import_react4.default.createElement(ShieldCheck, null), /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("small", null, "Account status"), /* @__PURE__ */ import_react4.default.createElement("b", null, selected.active ? "Active" : "Inactive"), /* @__PURE__ */ import_react4.default.createElement("span", null, selected.email_verified ? "Email verified" : "Email not verified"), /* @__PURE__ */ import_react4.default.createElement("span", null, selected.mobile_verified ? "Mobile verified" : "Mobile not verified")))), /* @__PURE__ */ import_react4.default.createElement("div", { className: "customer-detail-grid" }, /* @__PURE__ */ import_react4.default.createElement(Panel, { title: "Saved addresses" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "customer-addresses" }, detail.addresses.length ? detail.addresses.map((a) => /* @__PURE__ */ import_react4.default.createElement("p", { key: a.id }, /* @__PURE__ */ import_react4.default.createElement("b", null, a.label || "Address"), a.is_default && /* @__PURE__ */ import_react4.default.createElement("span", { className: "muted" }, " \xB7 Default"), /* @__PURE__ */ import_react4.default.createElement("br", null), a.recipient_name, ", ", a.line1, a.line2 ? `, ${a.line2}` : "", ", ", a.city, " ", a.pincode)) : /* @__PURE__ */ import_react4.default.createElement("p", { className: "muted" }, "No saved addresses"))), /* @__PURE__ */ import_react4.default.createElement(Panel, { title: "Order history" }, orders.length ? /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap customer-orders" }, /* @__PURE__ */ import_react4.default.createElement("table", null, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "ID"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Date"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Amount"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Payment status"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Order status"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Delivery status"))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, orders.map((o) => {
+    } }, "\u2190 Back to customers"), /* @__PURE__ */ import_react3.default.createElement("div", { className: "detail-summary customer-summary" }, /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(Users, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Customer"), /* @__PURE__ */ import_react3.default.createElement("b", null, selected.name || "Unnamed customer"), /* @__PURE__ */ import_react3.default.createElement("span", null, selected.mobile || "\u2014"), /* @__PURE__ */ import_react3.default.createElement("span", null, selected.email || "\u2014"))), /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(ClipboardList, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Summary"), /* @__PURE__ */ import_react3.default.createElement("b", null, totalOrders, " total orders"), /* @__PURE__ */ import_react3.default.createElement("span", null, "\u20B9", totalSpent.toLocaleString("en-IN"), " total spent"), /* @__PURE__ */ import_react3.default.createElement("span", null, "Last order: ", selected.last_order_at ? new Date(selected.last_order_at).toLocaleDateString("en-IN") : "\u2014"))), /* @__PURE__ */ import_react3.default.createElement("article", null, /* @__PURE__ */ import_react3.default.createElement(ShieldCheck, null), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("small", null, "Account status"), /* @__PURE__ */ import_react3.default.createElement("b", null, selected.active ? "Active" : "Inactive"), /* @__PURE__ */ import_react3.default.createElement("span", null, selected.email_verified ? "Email verified" : "Email not verified"), /* @__PURE__ */ import_react3.default.createElement("span", null, selected.mobile_verified ? "Mobile verified" : "Mobile not verified")))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "customer-detail-grid" }, /* @__PURE__ */ import_react3.default.createElement(Panel, { title: "Saved addresses" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "customer-addresses" }, detail.addresses.length ? detail.addresses.map((a) => /* @__PURE__ */ import_react3.default.createElement("p", { key: a.id }, /* @__PURE__ */ import_react3.default.createElement("b", null, a.label || "Address"), a.is_default && /* @__PURE__ */ import_react3.default.createElement("span", { className: "muted" }, " \xB7 Default"), /* @__PURE__ */ import_react3.default.createElement("br", null), a.recipient_name, ", ", a.line1, a.line2 ? `, ${a.line2}` : "", ", ", a.city, " ", a.pincode)) : /* @__PURE__ */ import_react3.default.createElement("p", { className: "muted" }, "No saved addresses"))), /* @__PURE__ */ import_react3.default.createElement(Panel, { title: "Order history" }, orders.length ? /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap customer-orders" }, /* @__PURE__ */ import_react3.default.createElement("table", null, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "ID"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Date"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Amount"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Payment status"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Order status"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Delivery status"))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, orders.map((o) => {
       const payment = Array.isArray(o.payments) ? o.payments[0] : o.payments;
       const paymentStatus = payment?.status || (o.payment_method === "COD" ? "COD" : "Pending");
       const deliveryStatus = o.status === "delivered" ? "Delivered" : o.status === "out_for_delivery" ? "Out for delivery" : o.status === "failed" || o.status === "returned_undelivered" ? "Delivery exception" : "Not dispatched";
-      return /* @__PURE__ */ import_react4.default.createElement("tr", { key: o.id }, /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, o.order_number)), /* @__PURE__ */ import_react4.default.createElement("td", null, o.created_at ? new Date(o.created_at).toLocaleDateString("en-IN") : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, "\u20B9", Number(o.total || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react4.default.createElement("td", null, paymentStatus), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement(Status, { value: o.status })), /* @__PURE__ */ import_react4.default.createElement("td", null, deliveryStatus));
-    })))) : /* @__PURE__ */ import_react4.default.createElement("p", { className: "muted" }, "No orders found for this customer."))));
+      return /* @__PURE__ */ import_react3.default.createElement("tr", { key: o.id }, /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, o.order_number)), /* @__PURE__ */ import_react3.default.createElement("td", null, o.created_at ? new Date(o.created_at).toLocaleDateString("en-IN") : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, "\u20B9", Number(o.total || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react3.default.createElement("td", null, paymentStatus), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement(Status, { value: o.status })), /* @__PURE__ */ import_react3.default.createElement("td", null, deliveryStatus));
+    })))) : /* @__PURE__ */ import_react3.default.createElement("p", { className: "muted" }, "No orders found for this customer."))));
   }
-  return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Customers", sub: "Derived from accounts and orders; order history is preserved." }, /* @__PURE__ */ import_react4.default.createElement("label", { className: "order-search customer-search" }, /* @__PURE__ */ import_react4.default.createElement(Search, null), /* @__PURE__ */ import_react4.default.createElement("input", { value: query, onChange: (e) => setQuery(e.target.value), placeholder: "Search name, mobile or email" })), error && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner customer-error" }, "Unable to load customers: ", error, " ", /* @__PURE__ */ import_react4.default.createElement("button", { onClick: load }, "Retry")), /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react4.default.createElement("table", null, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "Name"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Mobile"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Email"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Total Orders"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Total Spent"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Last Order Date"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Status"), /* @__PURE__ */ import_react4.default.createElement("th", null, "View Customer"))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, filtered.map((c) => /* @__PURE__ */ import_react4.default.createElement("tr", { key: `${c.id || c.email}-${c.mobile}` }, /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, c.name || "Unnamed customer")), /* @__PURE__ */ import_react4.default.createElement("td", null, c.mobile || "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, c.email || "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, Number(c.total_orders || 0)), /* @__PURE__ */ import_react4.default.createElement("td", null, "\u20B9", Number(c.total_spent || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react4.default.createElement("td", null, c.last_order_at ? new Date(c.last_order_at).toLocaleDateString("en-IN") : "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("span", { className: "member-status " + (c.active ? "active" : "inactive") }, /* @__PURE__ */ import_react4.default.createElement("i", null), c.active ? "Active" : "Inactive")), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("button", { className: "view-order", onClick: () => open(c) }, /* @__PURE__ */ import_react4.default.createElement(Eye, null), " View Customer")))))), loading ? /* @__PURE__ */ import_react4.default.createElement("div", { className: "empty-state" }, /* @__PURE__ */ import_react4.default.createElement(RefreshCw, null), " Loading customers\u2026") : !filtered.length && !error && /* @__PURE__ */ import_react4.default.createElement(Empty, { text: query ? "No customers match your search" : "No customers yet" })));
+  return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Customers", sub: "Derived from accounts and orders; order history is preserved." }, /* @__PURE__ */ import_react3.default.createElement("label", { className: "order-search customer-search" }, /* @__PURE__ */ import_react3.default.createElement(Search, null), /* @__PURE__ */ import_react3.default.createElement("input", { value: query, onChange: (e) => setQuery(e.target.value), placeholder: "Search name, mobile or email" })), error && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner customer-error" }, "Unable to load customers: ", error, " ", /* @__PURE__ */ import_react3.default.createElement("button", { onClick: load }, "Retry")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react3.default.createElement("table", null, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "Name"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Mobile"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Email"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Total Orders"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Total Spent"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Last Order Date"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Status"), /* @__PURE__ */ import_react3.default.createElement("th", null, "View Customer"))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, filtered.map((c) => /* @__PURE__ */ import_react3.default.createElement("tr", { key: `${c.id || c.email}-${c.mobile}` }, /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, c.name || "Unnamed customer")), /* @__PURE__ */ import_react3.default.createElement("td", null, c.mobile || "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, c.email || "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, Number(c.total_orders || 0)), /* @__PURE__ */ import_react3.default.createElement("td", null, "\u20B9", Number(c.total_spent || 0).toLocaleString("en-IN")), /* @__PURE__ */ import_react3.default.createElement("td", null, c.last_order_at ? new Date(c.last_order_at).toLocaleDateString("en-IN") : "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("span", { className: "member-status " + (c.active ? "active" : "inactive") }, /* @__PURE__ */ import_react3.default.createElement("i", null), c.active ? "Active" : "Inactive")), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("button", { className: "view-order", onClick: () => open(c) }, /* @__PURE__ */ import_react3.default.createElement(Eye, null), " View Customer")))))), loading ? /* @__PURE__ */ import_react3.default.createElement("div", { className: "empty-state" }, /* @__PURE__ */ import_react3.default.createElement(RefreshCw, null), " Loading customers\u2026") : !filtered.length && !error && /* @__PURE__ */ import_react3.default.createElement(Empty, { text: query ? "No customers match your search" : "No customers yet" })));
 }
 function Team({ members, refresh, rolePermissions, canManageRoles, canManageTeam, onPermissionsSaved }) {
   const statuses2 = ["Active", "Inactive"];
   const blank = { name: "", email: "", role: "Staff", status: "Active" };
-  const [open, setOpen] = (0, import_react4.useState)(false);
-  const [editing, setEditing] = (0, import_react4.useState)(null);
-  const [form, setForm] = (0, import_react4.useState)(blank);
-  const [busy, setBusy] = (0, import_react4.useState)(false);
-  const [formError, setFormError] = (0, import_react4.useState)("");
-  const [manageRoles, setManageRoles] = (0, import_react4.useState)(false);
-  const [editingRole, setEditingRole] = (0, import_react4.useState)(null);
-  const [roleDraft, setRoleDraft] = (0, import_react4.useState)(rolePermissions);
-  (0, import_react4.useEffect)(() => setRoleDraft(rolePermissions), [rolePermissions]);
+  const [open, setOpen] = (0, import_react3.useState)(false);
+  const [editing, setEditing] = (0, import_react3.useState)(null);
+  const [form, setForm] = (0, import_react3.useState)(blank);
+  const [busy, setBusy] = (0, import_react3.useState)(false);
+  const [formError, setFormError] = (0, import_react3.useState)("");
+  const [manageRoles, setManageRoles] = (0, import_react3.useState)(false);
+  const [editingRole, setEditingRole] = (0, import_react3.useState)(null);
+  const [roleDraft, setRoleDraft] = (0, import_react3.useState)(rolePermissions);
+  (0, import_react3.useEffect)(() => setRoleDraft(rolePermissions), [rolePermissions]);
   const beginAdd = () => {
     setEditing(null);
     setForm({ ...blank });
@@ -45765,20 +45429,20 @@ function Team({ members, refresh, rolePermissions, canManageRoles, canManageTeam
     setEditingRole(null);
     setFormError("");
   };
-  return /* @__PURE__ */ import_react4.default.createElement(Page, { title: "Team", sub: "Manage who can access and operate the JabWeMeat dashboard.", action: /* @__PURE__ */ import_react4.default.createElement("div", { className: "page-actions" }, /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", disabled: !canManageRoles, onClick: () => setManageRoles(true) }, /* @__PURE__ */ import_react4.default.createElement(ShieldCheck, null), " Manage Roles"), /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary", disabled: !canManageTeam, onClick: beginAdd }, /* @__PURE__ */ import_react4.default.createElement(Plus, null), " Add Team Member")) }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react4.default.createElement("table", { className: "team-table" }, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "Name"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Email"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Role"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Status"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Action"))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, members.map((member) => /* @__PURE__ */ import_react4.default.createElement("tr", { key: member.id }, /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, member.name)), /* @__PURE__ */ import_react4.default.createElement("td", null, member.email), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("span", { className: "role-pill" }, member.role)), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("span", { className: "member-status " + member.status.toLowerCase() }, /* @__PURE__ */ import_react4.default.createElement("i", null), member.status)), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline edit-member", disabled: !canManageTeam, onClick: () => beginEdit(member) }, /* @__PURE__ */ import_react4.default.createElement(Pencil, null), " Edit")))))), !members.length && /* @__PURE__ */ import_react4.default.createElement(Empty, { text: "No team members yet" })), open && /* @__PURE__ */ import_react4.default.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ import_react4.default.createElement("form", { className: "modal team-modal", onSubmit: save }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "modal-close", onClick: () => setOpen(false) }, "\xD7"), /* @__PURE__ */ import_react4.default.createElement("span", { className: "modal-kicker" }, "TEAM ACCESS"), /* @__PURE__ */ import_react4.default.createElement("h3", null, editing ? "Edit Team Member" : "Add Team Member"), /* @__PURE__ */ import_react4.default.createElement("label", null, "Name", /* @__PURE__ */ import_react4.default.createElement("input", { required: true, value: form.name, onChange: (e) => setForm({ ...form, name: e.target.value }), placeholder: "Full name" })), /* @__PURE__ */ import_react4.default.createElement("label", null, "Email", /* @__PURE__ */ import_react4.default.createElement("input", { required: true, type: "email", value: form.email, onChange: (e) => setForm({ ...form, email: e.target.value }), placeholder: "name@example.com" })), /* @__PURE__ */ import_react4.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react4.default.createElement("label", null, "Role", /* @__PURE__ */ import_react4.default.createElement("select", { value: form.role, onChange: (e) => setForm({ ...form, role: e.target.value }) }, roles.map((r) => /* @__PURE__ */ import_react4.default.createElement("option", { key: r }, r)))), /* @__PURE__ */ import_react4.default.createElement("label", null, "Status", /* @__PURE__ */ import_react4.default.createElement("select", { value: form.status, onChange: (e) => setForm({ ...form, status: e.target.value }) }, statuses2.map((status) => /* @__PURE__ */ import_react4.default.createElement("option", { key: status }, status))))), formError && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner" }, formError), /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary wide", disabled: busy }, busy ? "Saving\u2026" : editing ? "Save Changes" : "Add Team Member"))), manageRoles && /* @__PURE__ */ import_react4.default.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "modal role-manager" }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "modal-close", onClick: () => {
+  return /* @__PURE__ */ import_react3.default.createElement(Page, { title: "Team", sub: "Manage who can access and operate the JabWeMeat dashboard.", action: /* @__PURE__ */ import_react3.default.createElement("div", { className: "page-actions" }, /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", disabled: !canManageRoles, onClick: () => setManageRoles(true) }, /* @__PURE__ */ import_react3.default.createElement(ShieldCheck, null), " Manage Roles"), /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary", disabled: !canManageTeam, onClick: beginAdd }, /* @__PURE__ */ import_react3.default.createElement(Plus, null), " Add Team Member")) }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react3.default.createElement("table", { className: "team-table" }, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "Name"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Email"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Role"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Status"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Action"))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, members.map((member) => /* @__PURE__ */ import_react3.default.createElement("tr", { key: member.id }, /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, member.name)), /* @__PURE__ */ import_react3.default.createElement("td", null, member.email), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("span", { className: "role-pill" }, member.role)), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("span", { className: "member-status " + member.status.toLowerCase() }, /* @__PURE__ */ import_react3.default.createElement("i", null), member.status)), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline edit-member", disabled: !canManageTeam, onClick: () => beginEdit(member) }, /* @__PURE__ */ import_react3.default.createElement(Pencil, null), " Edit")))))), !members.length && /* @__PURE__ */ import_react3.default.createElement(Empty, { text: "No team members yet" })), open && /* @__PURE__ */ import_react3.default.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ import_react3.default.createElement("form", { className: "modal team-modal", onSubmit: save }, /* @__PURE__ */ import_react3.default.createElement("button", { type: "button", className: "modal-close", onClick: () => setOpen(false) }, "\xD7"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "modal-kicker" }, "TEAM ACCESS"), /* @__PURE__ */ import_react3.default.createElement("h3", null, editing ? "Edit Team Member" : "Add Team Member"), /* @__PURE__ */ import_react3.default.createElement("label", null, "Name", /* @__PURE__ */ import_react3.default.createElement("input", { required: true, value: form.name, onChange: (e) => setForm({ ...form, name: e.target.value }), placeholder: "Full name" })), /* @__PURE__ */ import_react3.default.createElement("label", null, "Email", /* @__PURE__ */ import_react3.default.createElement("input", { required: true, type: "email", value: form.email, onChange: (e) => setForm({ ...form, email: e.target.value }), placeholder: "name@example.com" })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "two" }, /* @__PURE__ */ import_react3.default.createElement("label", null, "Role", /* @__PURE__ */ import_react3.default.createElement("select", { value: form.role, onChange: (e) => setForm({ ...form, role: e.target.value }) }, roles.map((r) => /* @__PURE__ */ import_react3.default.createElement("option", { key: r }, r)))), /* @__PURE__ */ import_react3.default.createElement("label", null, "Status", /* @__PURE__ */ import_react3.default.createElement("select", { value: form.status, onChange: (e) => setForm({ ...form, status: e.target.value }) }, statuses2.map((status) => /* @__PURE__ */ import_react3.default.createElement("option", { key: status }, status))))), formError && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner" }, formError), /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary wide", disabled: busy }, busy ? "Saving\u2026" : editing ? "Save Changes" : "Add Team Member"))), manageRoles && /* @__PURE__ */ import_react3.default.createElement("div", { className: "modal-backdrop" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "modal role-manager" }, /* @__PURE__ */ import_react3.default.createElement("button", { type: "button", className: "modal-close", onClick: () => {
     setManageRoles(false);
     setEditingRole(null);
-  } }, "\xD7"), /* @__PURE__ */ import_react4.default.createElement("span", { className: "modal-kicker" }, "ACCESS CONTROL"), /* @__PURE__ */ import_react4.default.createElement("h3", null, "Manage Roles"), /* @__PURE__ */ import_react4.default.createElement("p", { className: "modal-help" }, "Choose Edit on a role to set its access for each dashboard area. Owner access is permanently locked."), /* @__PURE__ */ import_react4.default.createElement("div", { className: "role-cards" }, roles.map((r) => /* @__PURE__ */ import_react4.default.createElement("div", { className: "role-card", key: r }, /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("span", { className: "role-pill" }, r), /* @__PURE__ */ import_react4.default.createElement("p", null, r === "Owner" ? "Full access to every area." : "Configure dashboard access."), /* @__PURE__ */ import_react4.default.createElement("div", { className: "role-summary" }, areas.map((area) => /* @__PURE__ */ import_react4.default.createElement("span", { key: area }, area, ": ", /* @__PURE__ */ import_react4.default.createElement("b", null, r === "Owner" ? "Full" : rolePermissions[r][area]))))), /* @__PURE__ */ import_react4.default.createElement("button", { className: "outline", disabled: r === "Owner" || !canManageRoles, onClick: () => openRole(r) }, r === "Owner" ? /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement(LockKeyhole, null), " Locked") : /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement(Pencil, null), " Edit"))))))), editingRole && /* @__PURE__ */ import_react4.default.createElement("div", { className: "modal-backdrop role-edit-backdrop" }, /* @__PURE__ */ import_react4.default.createElement("form", { className: "modal role-editor", onSubmit: (e) => {
+  } }, "\xD7"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "modal-kicker" }, "ACCESS CONTROL"), /* @__PURE__ */ import_react3.default.createElement("h3", null, "Manage Roles"), /* @__PURE__ */ import_react3.default.createElement("p", { className: "modal-help" }, "Choose Edit on a role to set its access for each dashboard area. Owner access is permanently locked."), /* @__PURE__ */ import_react3.default.createElement("div", { className: "role-cards" }, roles.map((r) => /* @__PURE__ */ import_react3.default.createElement("div", { className: "role-card", key: r }, /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("span", { className: "role-pill" }, r), /* @__PURE__ */ import_react3.default.createElement("p", null, r === "Owner" ? "Full access to every area." : "Configure dashboard access."), /* @__PURE__ */ import_react3.default.createElement("div", { className: "role-summary" }, areas.map((area) => /* @__PURE__ */ import_react3.default.createElement("span", { key: area }, area, ": ", /* @__PURE__ */ import_react3.default.createElement("b", null, r === "Owner" ? "Full" : rolePermissions[r][area]))))), /* @__PURE__ */ import_react3.default.createElement("button", { className: "outline", disabled: r === "Owner" || !canManageRoles, onClick: () => openRole(r) }, r === "Owner" ? /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement(LockKeyhole, null), " Locked") : /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement(Pencil, null), " Edit"))))))), editingRole && /* @__PURE__ */ import_react3.default.createElement("div", { className: "modal-backdrop role-edit-backdrop" }, /* @__PURE__ */ import_react3.default.createElement("form", { className: "modal role-editor", onSubmit: (e) => {
     e.preventDefault();
     saveRole();
-  } }, /* @__PURE__ */ import_react4.default.createElement("button", { type: "button", className: "modal-close", onClick: () => setEditingRole(null) }, "\xD7"), /* @__PURE__ */ import_react4.default.createElement("span", { className: "modal-kicker" }, "ROLE PERMISSIONS"), /* @__PURE__ */ import_react4.default.createElement("h3", null, "Edit ", editingRole), /* @__PURE__ */ import_react4.default.createElement("p", { className: "modal-help" }, "Set exactly one access level for each dashboard area."), /* @__PURE__ */ import_react4.default.createElement("div", { className: "permission-list" }, areas.map((area) => /* @__PURE__ */ import_react4.default.createElement("label", { key: area }, /* @__PURE__ */ import_react4.default.createElement("span", null, area), /* @__PURE__ */ import_react4.default.createElement("select", { value: roleDraft[editingRole][area], onChange: (e) => updateRolePermission(area, e.target.value) }, permissionChoices.map((choice) => /* @__PURE__ */ import_react4.default.createElement("option", { key: choice }, choice)))))), formError && /* @__PURE__ */ import_react4.default.createElement("div", { className: "error-banner" }, formError), /* @__PURE__ */ import_react4.default.createElement("button", { className: "primary wide", disabled: busy }, busy ? "Saving\u2026" : "Save permissions"))));
+  } }, /* @__PURE__ */ import_react3.default.createElement("button", { type: "button", className: "modal-close", onClick: () => setEditingRole(null) }, "\xD7"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "modal-kicker" }, "ROLE PERMISSIONS"), /* @__PURE__ */ import_react3.default.createElement("h3", null, "Edit ", editingRole), /* @__PURE__ */ import_react3.default.createElement("p", { className: "modal-help" }, "Set exactly one access level for each dashboard area."), /* @__PURE__ */ import_react3.default.createElement("div", { className: "permission-list" }, areas.map((area) => /* @__PURE__ */ import_react3.default.createElement("label", { key: area }, /* @__PURE__ */ import_react3.default.createElement("span", null, area), /* @__PURE__ */ import_react3.default.createElement("select", { value: roleDraft[editingRole][area], onChange: (e) => updateRolePermission(area, e.target.value) }, permissionChoices.map((choice) => /* @__PURE__ */ import_react3.default.createElement("option", { key: choice }, choice)))))), formError && /* @__PURE__ */ import_react3.default.createElement("div", { className: "error-banner" }, formError), /* @__PURE__ */ import_react3.default.createElement("button", { className: "primary wide", disabled: busy }, busy ? "Saving\u2026" : "Save permissions"))));
 }
-var Page = ({ title, sub, children, action }) => /* @__PURE__ */ import_react4.default.createElement(import_react4.default.Fragment, null, /* @__PURE__ */ import_react4.default.createElement("div", { className: "page-title" }, /* @__PURE__ */ import_react4.default.createElement("div", null, /* @__PURE__ */ import_react4.default.createElement("h2", null, title), /* @__PURE__ */ import_react4.default.createElement("p", null, sub)), action), children);
-var OrderTable = ({ orders, compact }) => /* @__PURE__ */ import_react4.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react4.default.createElement("table", null, /* @__PURE__ */ import_react4.default.createElement("thead", null, /* @__PURE__ */ import_react4.default.createElement("tr", null, /* @__PURE__ */ import_react4.default.createElement("th", null, "Order"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Customer"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Value"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Slot"), /* @__PURE__ */ import_react4.default.createElement("th", null, "Status"))), /* @__PURE__ */ import_react4.default.createElement("tbody", null, orders.slice(0, compact ? 4 : orders.length).map((o) => /* @__PURE__ */ import_react4.default.createElement("tr", { key: o.id }, /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, o.order_number)), /* @__PURE__ */ import_react4.default.createElement("td", null, o.customer_name), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement("b", null, "\u20B9", o.total)), /* @__PURE__ */ import_react4.default.createElement("td", null, o.delivery_slots?.label || "\u2014"), /* @__PURE__ */ import_react4.default.createElement("td", null, /* @__PURE__ */ import_react4.default.createElement(Status, { value: o.status })))))));
-var Status = ({ value }) => /* @__PURE__ */ import_react4.default.createElement("span", { className: "status " + value }, ["delivered", "verified"].includes(value) ? /* @__PURE__ */ import_react4.default.createElement(CircleCheck, null) : ["cancelled"].includes(value) ? /* @__PURE__ */ import_react4.default.createElement(CircleX, null) : /* @__PURE__ */ import_react4.default.createElement(Clock3, null), nice(value));
-var Empty = ({ text }) => /* @__PURE__ */ import_react4.default.createElement("div", { className: "empty" }, /* @__PURE__ */ import_react4.default.createElement(Package, null), /* @__PURE__ */ import_react4.default.createElement("h3", null, text), /* @__PURE__ */ import_react4.default.createElement("p", null, "Live data will appear here as activity comes in."));
-var Upcoming = ({ title }) => /* @__PURE__ */ import_react4.default.createElement(Page, { title, sub: "This module is prepared for the backend implementation phase." }, /* @__PURE__ */ import_react4.default.createElement(Empty, { text: `${title} module upcoming` }));
-(0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ import_react4.default.createElement(App, null));
+var Page = ({ title, sub, children, action }) => /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "page-title" }, /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("h2", null, title), /* @__PURE__ */ import_react3.default.createElement("p", null, sub)), action), children);
+var OrderTable = ({ orders, compact }) => /* @__PURE__ */ import_react3.default.createElement("div", { className: "table-wrap" }, /* @__PURE__ */ import_react3.default.createElement("table", null, /* @__PURE__ */ import_react3.default.createElement("thead", null, /* @__PURE__ */ import_react3.default.createElement("tr", null, /* @__PURE__ */ import_react3.default.createElement("th", null, "Order"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Customer"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Value"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Slot"), /* @__PURE__ */ import_react3.default.createElement("th", null, "Status"))), /* @__PURE__ */ import_react3.default.createElement("tbody", null, orders.slice(0, compact ? 4 : orders.length).map((o) => /* @__PURE__ */ import_react3.default.createElement("tr", { key: o.id }, /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, o.order_number)), /* @__PURE__ */ import_react3.default.createElement("td", null, o.customer_name), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement("b", null, "\u20B9", o.total)), /* @__PURE__ */ import_react3.default.createElement("td", null, o.delivery_slots?.label || "\u2014"), /* @__PURE__ */ import_react3.default.createElement("td", null, /* @__PURE__ */ import_react3.default.createElement(Status, { value: o.status })))))));
+var Status = ({ value }) => /* @__PURE__ */ import_react3.default.createElement("span", { className: "status " + value }, ["delivered", "verified"].includes(value) ? /* @__PURE__ */ import_react3.default.createElement(CircleCheck, null) : ["cancelled"].includes(value) ? /* @__PURE__ */ import_react3.default.createElement(CircleX, null) : /* @__PURE__ */ import_react3.default.createElement(Clock3, null), nice(value));
+var Empty = ({ text }) => /* @__PURE__ */ import_react3.default.createElement("div", { className: "empty" }, /* @__PURE__ */ import_react3.default.createElement(Package, null), /* @__PURE__ */ import_react3.default.createElement("h3", null, text), /* @__PURE__ */ import_react3.default.createElement("p", null, "Live data will appear here as activity comes in."));
+var Upcoming = ({ title }) => /* @__PURE__ */ import_react3.default.createElement(Page, { title, sub: "This module is prepared for the backend implementation phase." }, /* @__PURE__ */ import_react3.default.createElement(Empty, { text: `${title} module upcoming` }));
+(0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ import_react3.default.createElement(App, null));
 /*! Bundled license information:
 
 react/cjs/react.development.js:
@@ -45825,58 +45489,50 @@ react-dom/cjs/react-dom-client.development.js:
    * LICENSE file in the root directory of this source tree.
    *)
 
-lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs:
-lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs:
-lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs:
-lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs:
-lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs:
-lucide-react/dist/esm/shared/src/build/defaultAttributes.mjs:
-lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs:
-lucide-react/dist/esm/shared/src/build/buildLucideIconForReact.mjs:
-lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs:
-lucide-react/dist/esm/context.mjs:
-lucide-react/dist/esm/Icon.mjs:
-lucide-react/dist/esm/createLucideIcon.mjs:
-lucide-react/dist/esm/icons/arrow-left.mjs:
-lucide-react/dist/esm/icons/arrow-up-right.mjs:
-lucide-react/dist/esm/icons/bell.mjs:
-lucide-react/dist/esm/icons/box.mjs:
-lucide-react/dist/esm/icons/calendar-clock.mjs:
-lucide-react/dist/esm/icons/circle-check.mjs:
-lucide-react/dist/esm/icons/circle-x.mjs:
-lucide-react/dist/esm/icons/clipboard-list.mjs:
-lucide-react/dist/esm/icons/clock-3.mjs:
-lucide-react/dist/esm/icons/credit-card.mjs:
-lucide-react/dist/esm/icons/download.mjs:
-lucide-react/dist/esm/icons/eye.mjs:
-lucide-react/dist/esm/icons/file-check.mjs:
-lucide-react/dist/esm/icons/indian-rupee.mjs:
-lucide-react/dist/esm/icons/layout-dashboard.mjs:
-lucide-react/dist/esm/icons/lock-keyhole.mjs:
-lucide-react/dist/esm/icons/log-out.mjs:
-lucide-react/dist/esm/icons/mail.mjs:
-lucide-react/dist/esm/icons/map-pin.mjs:
-lucide-react/dist/esm/icons/menu.mjs:
-lucide-react/dist/esm/icons/message-square.mjs:
-lucide-react/dist/esm/icons/package.mjs:
-lucide-react/dist/esm/icons/pencil.mjs:
-lucide-react/dist/esm/icons/plus.mjs:
-lucide-react/dist/esm/icons/receipt-text.mjs:
-lucide-react/dist/esm/icons/refresh-cw.mjs:
-lucide-react/dist/esm/icons/rotate-ccw-clock.mjs:
-lucide-react/dist/esm/icons/scale.mjs:
-lucide-react/dist/esm/icons/search.mjs:
-lucide-react/dist/esm/icons/shield-check.mjs:
-lucide-react/dist/esm/icons/shopping-bag.mjs:
-lucide-react/dist/esm/icons/triangle-alert.mjs:
-lucide-react/dist/esm/icons/truck.mjs:
-lucide-react/dist/esm/icons/user-check.mjs:
-lucide-react/dist/esm/icons/user-round-cog.mjs:
-lucide-react/dist/esm/icons/users.mjs:
-lucide-react/dist/esm/icons/wallet-cards.mjs:
-lucide-react/dist/esm/lucide-react.mjs:
+lucide-react/dist/esm/shared/src/utils.js:
+lucide-react/dist/esm/defaultAttributes.js:
+lucide-react/dist/esm/Icon.js:
+lucide-react/dist/esm/createLucideIcon.js:
+lucide-react/dist/esm/icons/arrow-left.js:
+lucide-react/dist/esm/icons/arrow-up-right.js:
+lucide-react/dist/esm/icons/bell.js:
+lucide-react/dist/esm/icons/box.js:
+lucide-react/dist/esm/icons/calendar-clock.js:
+lucide-react/dist/esm/icons/circle-check.js:
+lucide-react/dist/esm/icons/circle-x.js:
+lucide-react/dist/esm/icons/clipboard-list.js:
+lucide-react/dist/esm/icons/clock-3.js:
+lucide-react/dist/esm/icons/credit-card.js:
+lucide-react/dist/esm/icons/download.js:
+lucide-react/dist/esm/icons/eye.js:
+lucide-react/dist/esm/icons/file-check.js:
+lucide-react/dist/esm/icons/history.js:
+lucide-react/dist/esm/icons/indian-rupee.js:
+lucide-react/dist/esm/icons/layout-dashboard.js:
+lucide-react/dist/esm/icons/lock-keyhole.js:
+lucide-react/dist/esm/icons/log-out.js:
+lucide-react/dist/esm/icons/mail.js:
+lucide-react/dist/esm/icons/map-pin.js:
+lucide-react/dist/esm/icons/menu.js:
+lucide-react/dist/esm/icons/message-square.js:
+lucide-react/dist/esm/icons/package.js:
+lucide-react/dist/esm/icons/pencil.js:
+lucide-react/dist/esm/icons/plus.js:
+lucide-react/dist/esm/icons/receipt-text.js:
+lucide-react/dist/esm/icons/refresh-cw.js:
+lucide-react/dist/esm/icons/scale.js:
+lucide-react/dist/esm/icons/search.js:
+lucide-react/dist/esm/icons/shield-check.js:
+lucide-react/dist/esm/icons/shopping-bag.js:
+lucide-react/dist/esm/icons/triangle-alert.js:
+lucide-react/dist/esm/icons/truck.js:
+lucide-react/dist/esm/icons/user-check.js:
+lucide-react/dist/esm/icons/user-round-cog.js:
+lucide-react/dist/esm/icons/users.js:
+lucide-react/dist/esm/icons/wallet-cards.js:
+lucide-react/dist/esm/lucide-react.js:
   (**
-   * @license lucide-react v1.47.0 - ISC
+   * @license lucide-react v0.523.0 - ISC
    *
    * This source code is licensed under the ISC license.
    * See the LICENSE file in the root directory of this source tree.
