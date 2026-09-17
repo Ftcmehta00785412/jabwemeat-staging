@@ -26,9 +26,8 @@ html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--in
 .category-strip img{object-fit:cover;object-position:center;}
 /* Footer alignment and customer-confidence cleanup */
 .footer-inner{grid-template-columns:1.6fr 2.8fr 1fr 1.6fr;align-items:start}
-.footer-shop-links{display:flex;align-items:center;gap:12px;white-space:nowrap;overflow-x:auto;scrollbar-width:none}
-.footer-shop-links::-webkit-scrollbar{display:none}
-.footer-shop-links a{display:inline-block;margin:0!important;flex:none}
+.footer-shop-links{display:block;white-space:normal;overflow:visible}
+.footer-shop-links a{display:block;width:max-content;max-width:100%;margin:10px 0!important;white-space:nowrap}
 .footer-service-note p{display:flex;align-items:flex-start;gap:6px;font-size:14px!important;line-height:1.45;margin:8px 0;color:#b5c7b8!important}
 .footer-service-note p svg{width:14px!important;height:14px;flex:none;color:#a8cf91}
 .footer-service-note h4{font-size:14px!important}
