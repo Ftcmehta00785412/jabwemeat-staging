@@ -45128,7 +45128,6 @@ var SUPABASE_PUBLISHABLE_KEY = "sb_publishable_UsUmxiKAWj6-D7MgOF9AUw_Kf7xbh-F";
 var supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
 
 // app.tsx
-import "./styles.css";
 var areas = ["Dashboard", "Orders", "Inventory", "Customers", "Abandoned Carts", "Invoices", "Delivery slots", "Team"];
 var roles = ["Owner", "Admin", "Manager", "Staff"];
 var permissionChoices = ["Full", "Edit", "View", "No Access"];
