@@ -52,7 +52,10 @@
 
   const style = document.createElement("style");
   style.id = "jwm-hide-rec";
-  style.textContent = ".combo-suggestion,.product-card .combo-suggestion{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;}#jwm-white-eggs .variant-label,#jwm-white-eggs .variant-options,#jwm-white-eggs .product-meta{display:none!important;}";
+  style.textContent = 
+    ".combo-suggestion{display:none!important;}" +
+    "#jwm-white-eggs .variant-label,#jwm-white-eggs .variant-options,#jwm-white-eggs .product-meta{display:none!important;}" +
+    "#jwm-white-eggs{display:flex!important;}";
   document.documentElement.appendChild(style);
 
   const byTitle = [
@@ -61,48 +64,67 @@
     [/tikka/i, imgs.tikka],
     [/prawn/i, imgs.prawns],
     [/white\s*egg/i, imgs.whiteEggs],
-    [/brown\s*egg|farm\s*fresh\s*(brown\s*)?egg/i, imgs.brownEggs],
+    [/brown\s*egg/i, imgs.brownEggs],
+    [/farm\s*fresh.*egg/i, imgs.brownEggs],
     [/egg/i, imgs.brownEggs],
     [/rohu/i, imgs.rohu],
     [/combo/i, imgs.combo],
-    [/chicken.*curry\s*cut|curry\s*cut.*chicken|^classic chicken/i, imgs.curryCut],
-    [/^classic\s+chicken/i, imgs.curryCut]
+    [/chicken.*curry\s*cut|^classic chicken/i, imgs.curryCut]
   ];
 
-  const ensureWhiteEggs = () => {
-    if (document.getElementById("jwm-white-eggs")) return;
-    const grid = document.querySelector(".product-grid, .products-grid, #shop .grid, [class*='product']")
-      || [...document.querySelectorAll(".product-card")].map(c => c.parentElement).find(p => p && p.querySelectorAll(".product-card").length >= 2);
-    if (!grid) return;
-    const sample = grid.querySelector(".product-card");
-    if (!sample) return;
+  function buildWhiteEggsCard(sample) {
     const card = document.createElement("article");
     card.className = sample.className || "product-card";
     card.id = "jwm-white-eggs";
-    card.innerHTML = `
-      <div class="product-image-wrap">
-        <img src="${imgs.whiteEggs}" alt="Farm Fresh White Eggs" loading="lazy" width="900" height="675" style="object-fit:cover;width:100%;height:100%" />
-        <span class="availability-badge">In stock</span>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Eggs</p>
-        <h3>Farm Fresh White Eggs</h3>
-        <p class="product-description">Fresh white eggs, clean and ready for your kitchen.</p>
-        <div class="fresh-note">❄ Freshly packed for your slot</div>
-        <div class="product-buy-row">
-          <div class="price"><strong>₹245</strong></div>
-          <button type="button" class="add-button" id="jwm-white-eggs-add">ADD TO CART</button>
-        </div>
-      </div>`;
-    /* Place after brown eggs card if present */
-    const brown = [...grid.querySelectorAll(".product-card")].find(c => /brown\s*egg|farm\s*fresh\s*egg/i.test(c.querySelector("h3")?.textContent || ""));
-    if (brown && brown.nextSibling) grid.insertBefore(card, brown.nextSibling);
-    else grid.appendChild(card);
+    card.setAttribute("data-jwm-injected", "1");
+    card.innerHTML =
+      '<div class="product-image-wrap">' +
+        '<img src="' + imgs.whiteEggs + '" alt="Farm Fresh White Eggs" loading="lazy" width="900" height="675" style="object-fit:cover;width:100%;height:100%" />' +
+        '<span class="availability-badge">In stock</span>' +
+      '</div>' +
+      '<div class="product-info">' +
+        '<p class="product-category">Eggs</p>' +
+        '<h3>Farm Fresh White Eggs</h3>' +
+        '<p class="product-description">Fresh white eggs, clean and ready for your kitchen.</p>' +
+        '<div class="fresh-note">Freshly packed for your slot</div>' +
+        '<div class="product-buy-row">' +
+          '<div class="price"><strong>₹245</strong></div>' +
+          '<button type="button" class="add-button">ADD TO CART</button>' +
+        '</div>' +
+      '</div>';
+    return card;
+  }
+
+  const ensureWhiteEggs = () => {
+    const existing = document.getElementById("jwm-white-eggs");
+    if (existing && existing.isConnected) return;
+    if (existing) existing.remove();
+
+    const cards = [...document.querySelectorAll("article.product-card, .product-card")];
+    if (!cards.length) return;
+
+    const brown = cards.find(c => /brown\s*egg|farm\s*fresh\s*(brown\s*)?egg/i.test(c.querySelector("h3")?.textContent || ""));
+    const sample = brown || cards[0];
+    const parent = sample.parentElement;
+    if (!parent) return;
+
+    /* Only show on All or Eggs views (when brown eggs is visible, or heading says Eggs) */
+    const heading = (document.querySelector("h2,h1")?.textContent || "").toLowerCase();
+    const brownVisible = brown && brown.offsetParent !== null;
+    const isEggsView = heading.includes("egg") || brownVisible || cards.length >= 6;
+    if (!isEggsView && !brown) return;
+
+    const card = buildWhiteEggsCard(sample);
+    if (brown) {
+      brown.insertAdjacentElement("afterend", card);
+    } else {
+      parent.appendChild(card);
+    }
   };
 
   const fixUI = () => {
     document.querySelectorAll(".combo-suggestion").forEach(el => el.remove());
-    document.querySelectorAll(".product-card").forEach(card => {
+    document.querySelectorAll(".product-card, article.product-card").forEach(card => {
       const title = (card.querySelector("h3")?.textContent || "").trim();
       if (!title) return;
       const img = card.querySelector("img");
@@ -117,9 +139,8 @@
           break;
         }
       }
-      /* Hide weight/servings on white eggs */
       if (/white\s*egg/i.test(title)) {
-        card.querySelectorAll(".product-meta, .variant-label, .variant-options").forEach(el => el.style.display = "none");
+        card.querySelectorAll(".product-meta, .variant-label, .variant-options").forEach(el => { el.style.display = "none"; });
       }
     });
     document.querySelectorAll("h3, p, span, b").forEach(el => {
@@ -127,7 +148,7 @@
         let t = el.textContent || "";
         if (t.includes("Premium Mutton Chops")) t = t.replace(/Premium Mutton Chops/g, "Premium Mutton Curry Cut");
         if (t.trim() === "Farm Fresh Eggs") t = "Farm Fresh Brown Eggs";
-        if (t.includes("Farm Fresh Eggs") && !t.includes("Brown") && !t.includes("White")) t = t.replace(/Farm Fresh Eggs/g, "Farm Fresh Brown Eggs");
+        if (t.includes("Farm Fresh Eggs") && !/Brown|White/.test(t)) t = t.replace(/Farm Fresh Eggs/g, "Farm Fresh Brown Eggs");
         if (t.trim() === "Chicken Breast") t = "Fresh Whole Rohu";
         if (t.includes("Fresh boneless chicken breast, pink and firm")) t = "Fresh Rohu with cleaning and cut options for your kitchen.";
         if (t !== (el.textContent || "")) el.textContent = t;
@@ -136,11 +157,11 @@
     ensureWhiteEggs();
   };
 
-  setTimeout(fixUI, 400);
-  setTimeout(fixUI, 1000);
-  setTimeout(fixUI, 2000);
-  setTimeout(fixUI, 4000);
-  setInterval(fixUI, 2500);
-  const mo = new MutationObserver(() => fixUI());
+  setTimeout(fixUI, 500);
+  setTimeout(fixUI, 1200);
+  setTimeout(fixUI, 2500);
+  setTimeout(fixUI, 5000);
+  setInterval(fixUI, 2000);
+  const mo = new MutationObserver(() => { setTimeout(fixUI, 100); });
   mo.observe(document.documentElement, { childList: true, subtree: true });
 })();
