@@ -9,7 +9,6 @@ import {
   t
 } from '../i18n';
 
-/** Crisp product photos — matched by id, sku, OR name (Supabase uses UUIDs). */
 const byId: Record<string, string> = {
   p1: 'https://static.wixstatic.com/media/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg/v1/fill/w_900,h_675,al_c,q_90,usm_0.66_1.00_0.01/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg',
   p2: 'https://images.weserv.nl/?url=www.starquik.com/cdn/shop/files/Starfresh_Chicken_Breast_Boneless_1_Kg_Front_e2047377-7376-4980-8e4b-b6bcc56b5d4c.jpg&w=900&h=675&fit=contain&cbg=white&output=webp&q=90',
@@ -18,7 +17,8 @@ const byId: Record<string, string> = {
   p5: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85',
   p6: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ1m5uC3SQNra7ZQF6YzEZplNwVC41oknw593aKAIjUQuJsL2J3iBiq0ir&s=10',
   p7: 'https://images.weserv.nl/?url=illustrake.zappfresh.com/6a904eccc05e26f328ed9738&w=900&h=675&fit=cover&output=webp&q=90',
-  p8: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85'
+  p8: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85',
+  p9: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuqKMdmQTtzzr7Ziu8eSCQhnp4vXAsNfKyCP7OxmDg-HDnB159_FJyJQhi&s=10'
 };
 
 const bySku: Record<string, string> = {
@@ -28,6 +28,7 @@ const bySku: Record<string, string> = {
   'JWM-FSH-001': byId.p4,
   'JWM-SEA-001': byId.p5,
   'JWM-EGG-001': byId.p6,
+  'JWM-EGG-002': byId.p9,
   'JWM-RTC-001': byId.p7,
   'JWM-CMB-001': byId.p8
 };
@@ -37,11 +38,12 @@ function resolveImage(product: Product): string {
   if (product.id && byId[product.id]) return byId[product.id];
   if (product.sku && bySku[product.sku]) return bySku[product.sku];
   const n = (product.name || '').toLowerCase();
-  // Most specific first — mutton before any "curry cut"
   if (n.includes('mutton')) return byId.p3;
   if (n.includes('breast')) return byId.p2;
   if (n.includes('tikka')) return byId.p7;
   if (n.includes('prawn')) return byId.p5;
+  if (n.includes('white') && n.includes('egg')) return byId.p9;
+  if (n.includes('brown') && n.includes('egg')) return byId.p6;
   if (n.includes('egg')) return byId.p6;
   if (n.includes('rohu')) return byId.p4;
   if (n.includes('combo')) return byId.p8;
@@ -82,6 +84,10 @@ export const ProductCard: React.FC<Props> = ({
 
   const imgSrc = resolveImage(product);
   const isBreast = /breast/i.test(product.name || '');
+  const showWeight = !!(current.weight && String(current.weight).trim());
+  const showServings = !!(product.servings && String(product.servings).trim());
+  const showMeta = showWeight || showServings;
+  const showVariants = Array.isArray(product.variants) && product.variants.length > 0;
 
   return (
     <article className="product-card">
@@ -122,20 +128,26 @@ export const ProductCard: React.FC<Props> = ({
         </p>
         <h3>{localized.name}</h3>
         <p className="product-description">{localized.description}</p>
-        <div className="product-attributes">
-          {[...(product.attributes || []), ...(product.cutTypes || [])]
-            .slice(0, 4)
-            .map(a => (
-              <span key={a}>{localizedAttribute(a, language)}</span>
-            ))}
-        </div>
-        <div className="product-meta">
-          <span>{localizedWeight(current.weight, language)}</span>
-          <i>•</i>
-          <span>
-            {t(language, 'serves')} {product.servings}
-          </span>
-        </div>
+        {(product.attributes?.length || product.cutTypes?.length) ? (
+          <div className="product-attributes">
+            {[...(product.attributes || []), ...(product.cutTypes || [])]
+              .slice(0, 4)
+              .map(a => (
+                <span key={a}>{localizedAttribute(a, language)}</span>
+              ))}
+          </div>
+        ) : null}
+        {showMeta && (
+          <div className="product-meta">
+            {showWeight && <span>{localizedWeight(current.weight, language)}</span>}
+            {showWeight && showServings && <i>•</i>}
+            {showServings && (
+              <span>
+                {t(language, 'serves')} {product.servings}
+              </span>
+            )}
+          </div>
+        )}
         <div className="fresh-note">
           <Snowflake /> {t(language, 'packed')}
         </div>
