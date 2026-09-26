@@ -10,8 +10,8 @@ import {
   t
 } from '../i18n';
 
-/** One crisp image per product — breast uses whole fillets, not cut pieces. */
-const images: Record<string, string> = {
+/** Crisp product photos — matched by id, sku, OR name (Supabase uses UUIDs). */
+const byId: Record<string, string> = {
   p1: 'https://static.wixstatic.com/media/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg/v1/fill/w_900,h_675,al_c,q_90,usm_0.66_1.00_0.01/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg',
   p2: 'https://images.weserv.nl/?url=www.starquik.com/cdn/shop/files/Starfresh_Chicken_Breast_Boneless_1_Kg_Front_e2047377-7376-4980-8e4b-b6bcc56b5d4c.jpg&w=900&h=675&fit=contain&cbg=white&output=webp&q=90',
   p3: 'https://images.weserv.nl/?url=litter.catbox.moe/7s746z.webp&w=900&h=675&fit=cover&output=webp&q=85',
@@ -21,6 +21,33 @@ const images: Record<string, string> = {
   p7: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=900&h=675&q=85',
   p8: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85'
 };
+
+const bySku: Record<string, string> = {
+  'JWM-CHK-001': byId.p1,
+  'JWM-CHK-002': byId.p2,
+  'JWM-MUT-001': byId.p3,
+  'JWM-FSH-001': byId.p4,
+  'JWM-SEA-001': byId.p5,
+  'JWM-EGG-001': byId.p6,
+  'JWM-RTC-001': byId.p7,
+  'JWM-CMB-001': byId.p8
+};
+
+function resolveImage(product: Product): string {
+  if (product.imageUrl) return product.imageUrl;
+  if (product.id && byId[product.id]) return byId[product.id];
+  if (product.sku && bySku[product.sku]) return bySku[product.sku];
+  const n = (product.name || '').toLowerCase();
+  if (n.includes('breast')) return byId.p2;
+  if (n.includes('curry cut') && n.includes('chicken')) return byId.p1;
+  if (n.includes('mutton')) return byId.p3;
+  if (n.includes('rohu') || n.includes('fish')) return byId.p4;
+  if (n.includes('prawn')) return byId.p5;
+  if (n.includes('egg')) return byId.p6;
+  if (n.includes('tikka')) return byId.p7;
+  if (n.includes('combo')) return byId.p8;
+  return byId.p1;
+}
 
 type Props = {
   language: Language;
@@ -52,11 +79,12 @@ export const ProductCard: React.FC<Props> = ({
         ? t(language, 'onlyLeft', { n: current.stock })
         : t(language, 'inStock');
 
-  const imgSrc = images[product.id] || images.p1;
+  const imgSrc = resolveImage(product);
+  const isBreast = /breast/i.test(product.name || '');
 
   return (
     <article className="product-card">
-      <div className="product-image-wrap">
+      <div className="product-image-wrap" style={isBreast ? { background: '#fff' } : undefined}>
         <img
           src={imgSrc}
           alt={localized.name}
@@ -64,7 +92,12 @@ export const ProductCard: React.FC<Props> = ({
           width={900}
           height={675}
           decoding="async"
-          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+          style={{
+            objectFit: isBreast ? 'contain' : 'cover',
+            width: '100%',
+            height: '100%',
+            background: isBreast ? '#fff' : undefined
+          }}
         />
         {d > 0 && (
           <span className="discount-pill">
