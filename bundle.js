@@ -53,31 +53,33 @@
   style.textContent = ".combo-suggestion,.product-card .combo-suggestion{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;}";
   document.documentElement.appendChild(style);
 
+  /* Most specific first: mutton must beat generic "curry cut" */
   const byTitle = [
-    [/curry\s*cut/i, imgs.curryCut],
-    [/breast/i, imgs.breast],
     [/mutton/i, imgs.mutton],
-    [/rohu|fish/i, imgs.rohu],
+    [/breast/i, imgs.breast],
+    [/tikka/i, imgs.tikka],
     [/prawn/i, imgs.prawns],
     [/egg/i, imgs.eggs],
-    [/tikka/i, imgs.tikka],
-    [/combo/i, imgs.combo]
+    [/rohu/i, imgs.rohu],
+    [/combo/i, imgs.combo],
+    [/chicken.*curry\s*cut|curry\s*cut.*chicken|^classic chicken/i, imgs.curryCut],
+    [/^classic\s+chicken/i, imgs.curryCut]
   ];
 
   const fixUI = () => {
-    document.querySelectorAll(".combo-suggestion").forEach(el => {
-      el.remove();
-    });
+    document.querySelectorAll(".combo-suggestion").forEach(el => el.remove());
     document.querySelectorAll(".product-card").forEach(card => {
       const title = (card.querySelector("h3")?.textContent || "").trim();
       if (!title) return;
       const img = card.querySelector("img");
       if (!img) return;
       for (const [re, src] of byTitle) {
-        if (re.test(title) && img.getAttribute("src") !== src) {
-          img.setAttribute("src", src);
-          img.style.objectFit = title.match(/breast/i) ? "contain" : "cover";
-          img.style.background = title.match(/breast/i) ? "#fff" : "";
+        if (re.test(title)) {
+          if (img.getAttribute("src") !== src) {
+            img.setAttribute("src", src);
+            img.style.objectFit = /breast/i.test(title) ? "contain" : "cover";
+            img.style.background = /breast/i.test(title) ? "#fff" : "";
+          }
           break;
         }
       }
