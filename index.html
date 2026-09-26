@@ -1,25 +1,31 @@
 <!doctype html>
-<html data-theme="alfred-light">
+<html lang="en" data-theme="alfred-light">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>JabWeMeat – Fresh chicken, mutton &amp; fish delivery in Ranchi</title>
+    <meta name="description" content="Order fresh chicken, mutton, fish and eggs in Ranchi. Clean cuts, chilled packing, slot-based delivery and cash on delivery. Serving PIN 834002, 834003, 834004." />
+    <meta name="theme-color" content="#0d4529" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="JabWeMeat – Fresh meat delivery in Ranchi" />
+    <meta property="og:description" content="Premium cuts, delivered fresh. Cash on delivery. Slot-based delivery across select Ranchi neighbourhoods." />
+    <meta property="og:image" content="/assets/hero-chicken.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230d4529'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='28' font-family='Georgia,serif' fill='%23b5d98e'%3EJ%3C/text%3E%3C/svg%3E" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5" type="text/css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5/colors/properties-extended.css" type="text/css" />
-    <style>/* Instant-app theme. Values mirror the canonical brand tokens in
-   app/webclient/src/index.css (Tasklet Brand Book). This is a standalone bundle
-   that cannot import those tokens, so the hexes are duplicated here — keep them
-   in sync with the alfred-light / alfred-dark theme blocks in index.css. */
+    <style>
 [data-theme='alfred-light'] {
   color-scheme: light; --radius-selector: 0rem; --radius-field: 0.25rem; --radius-box: 0.25rem; --size-selector: 0.25rem; --size-field: 0.25rem; --border: 1px; --depth: 1; --noise: 0;
-  --color-base-100: #f5f5f5; --color-base-200: #eaeaea; --color-base-300: #dfdfdf; --color-base-content: #121215; --color-primary: #4e814e; --color-primary-content: #f5f5f5; --color-secondary: #676caa; --color-secondary-content: #121215; --color-accent: #676caa; --color-accent-content: #121215; --color-neutral: #09342a; --color-neutral-content: #f5f5f5; --color-info: #676caa; --color-info-content: #121215; --color-success: #4e814e; --color-success-content: #f5f5f5; --color-warning: #b8860b; --color-warning-content: #121215; --color-coral: #ff7542; --color-coral-80: #803b21; --color-error: #9e3d32; --color-error-content: #f5f5f5;
+  --color-base-100: #fbf8f1; --color-base-200: #f0ebe3; --color-base-300: #e4e0d6; --color-base-content: #173124; --color-primary: #236942; --color-primary-content: #f5f5f5; --color-secondary: #0d4529; --color-secondary-content: #f5f5f5; --color-accent: #d86443; --color-accent-content: #fff; --color-neutral: #0b2817; --color-neutral-content: #f5f5f5; --color-info: #236942; --color-info-content: #f5f5f5; --color-success: #236942; --color-success-content: #f5f5f5; --color-warning: #b8860b; --color-warning-content: #121215; --color-coral: #d86443; --color-coral-80: #803b21; --color-error: #9e3d32; --color-error-content: #f5f5f5;
 }
-[data-theme='alfred-dark'] { color-scheme: dark; --color-base-100:#121215; --color-base-200:#1a1a1e; --color-base-300:#252529; --color-base-content:#f5f5f5; --color-primary:#4e814e; --color-primary-content:#f5f5f5; --color-secondary:#9aa2ff; --color-secondary-content:#121215; --color-accent:#9aa2ff; --color-accent-content:#121215; --color-neutral:#3a3a42; --color-neutral-content:#b8b8c0; --color-info:#9aa2ff; --color-info-content:#121215; --color-success:#4e814e; --color-success-content:#f5f5f5; --color-warning:#b8860b; --color-warning-content:#121215; --color-coral:#ff7542; --color-coral-80:#803b21; --color-error:#9e3d32; --color-error-content:#f5f5f5; }
+[data-theme='alfred-dark'] { color-scheme: dark; --color-base-100:#121215; --color-base-200:#1a1a1e; --color-base-300:#252529; --color-base-content:#f5f5f5; --color-primary:#2a7a4a; --color-primary-content:#f5f5f5; --color-secondary:#9aa2ff; --color-secondary-content:#121215; --color-accent:#d86443; --color-accent-content:#fff; --color-neutral:#3a3a42; --color-neutral-content:#b8b8c0; --color-info:#2a7a4a; --color-info-content:#121215; --color-success:#2a7a4a; --color-success-content:#f5f5f5; --color-warning:#b8860b; --color-warning-content:#121215; --color-coral:#d86443; --color-coral-80:#803b21; --color-error:#9e3d32; --color-error-content:#f5f5f5; }
 </style>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="visual-polish.css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script>
-      (function() { var theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'alfred-dark' : 'alfred-light'; document.documentElement.setAttribute('data-theme', theme); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) { document.documentElement.setAttribute('data-theme', e.matches ? 'alfred-dark' : 'alfred-light'); }); })();
+      (function() { document.documentElement.setAttribute('data-theme', 'alfred-light'); })();
     </script>
   </head>
   <body class="bg-base-100 text-base-content"><div id="root"></div><script src="bundle.js"></script></body>

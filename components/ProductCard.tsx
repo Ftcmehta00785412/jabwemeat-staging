@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Minus, Plus, Star, Snowflake, ShoppingBasket } from 'lucide-react';
 import type { Product, Language } from '../types';
 import {
@@ -37,6 +37,10 @@ type Props = {
   onRemove: () => void;
 };
 
+/**
+ * Catalogue price/weight always come from the live product row (Supabase).
+ * Client-only multi-price variants are not shown so checkout matches the server.
+ */
 export const ProductCard: React.FC<Props> = ({
   language,
   product,
@@ -44,20 +48,9 @@ export const ProductCard: React.FC<Props> = ({
   onAdd,
   onRemove
 }) => {
-  const variant = product.variants?.[0];
-  const [weight, setWeight] = useState(product.weight);
-  const selected =
-    product.variants?.find(v => v.weight === weight) || variant;
-  const current = {
-    ...product,
-    ...selected,
-    weight: selected?.weight || product.weight,
-    price: selected?.price ?? product.price,
-    mrp: selected?.mrp ?? product.mrp,
-    stock: selected?.stock ?? product.stock
-  };
+  const current = product;
   const d =
-    current.mrp > 0
+    current.mrp > 0 && current.price < current.mrp
       ? Math.round((1 - current.price / current.mrp) * 100)
       : 0;
   const localized = localizedProduct(product, language);
@@ -73,7 +66,7 @@ export const ProductCard: React.FC<Props> = ({
   return (
     <article className="product-card">
       <div
-        className={`product-image-wrap ${product.id === 'p2' ? 'product-image-breast' : ''}`}
+        className={`product-image-wrap ${product.sku === 'JWM-CHK-002' ? 'product-image-breast' : ''}`}
       >
         <img
           src={
@@ -82,6 +75,7 @@ export const ProductCard: React.FC<Props> = ({
             images.p1
           }
           alt={localized.name}
+          loading="lazy"
         />
         {d > 0 && (
           <span className="discount-pill">
@@ -105,32 +99,13 @@ export const ProductCard: React.FC<Props> = ({
         </p>
         <h3>{localized.name}</h3>
         <p className="product-description">{localized.description}</p>
-        <div className="product-rating">
-          <span>★★★★★</span>
-          <small>{t(language, 'freshPick')}</small>
-        </div>
         <div className="product-attributes">
-          {[...(product.attributes || []), ...(product.cutTypes || [])].map(a => (
-            <span key={a}>{localizedAttribute(a, language)}</span>
-          ))}
+          {[...(product.attributes || []), ...(product.cutTypes || [])]
+            .slice(0, 4)
+            .map(a => (
+              <span key={a}>{localizedAttribute(a, language)}</span>
+            ))}
         </div>
-        {product.variants && product.variants.length > 0 && (
-          <>
-            <div className="variant-label">{t(language, 'chooseWeight')}</div>
-            <div className="variant-options">
-              {product.variants.map(v => (
-                <button
-                  key={v.weight}
-                  className={weight === v.weight ? 'selected' : ''}
-                  disabled={v.stock === 0}
-                  onClick={() => setWeight(v.weight)}
-                >
-                  {localizedWeight(v.weight, language)}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
         <div className="product-meta">
           <span>{localizedWeight(current.weight, language)}</span>
           <i>•</i>
@@ -150,7 +125,7 @@ export const ProductCard: React.FC<Props> = ({
         <div className="product-buy-row">
           <div className="price">
             <strong>₹{current.price}</strong>
-            <del>₹{current.mrp}</del>
+            {current.mrp > current.price && <del>₹{current.mrp}</del>}
           </div>
           {quantity === 0 ? (
             <button
@@ -166,13 +141,15 @@ export const ProductCard: React.FC<Props> = ({
             </button>
           ) : (
             <div className="quantity-control">
-              <button onClick={onRemove}>
+              <button type="button" onClick={onRemove} aria-label="Decrease">
                 <Minus />
               </button>
               <span>{quantity}</span>
               <button
+                type="button"
                 onClick={() => onAdd(current)}
                 disabled={!stockKnown || current.stock === 0}
+                aria-label="Increase"
               >
                 <Plus />
               </button>
