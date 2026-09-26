@@ -1,4 +1,4 @@
-/* JabWeMeat production visual polish */
+/* JabWeMeat production visual polish + crisp product photography */
 :root{
   --polish-ink:#173124;
   --polish-green:#0d4529;
@@ -17,7 +17,43 @@ body{background:var(--polish-cream)}
 .cart-button{height:44px;border-radius:10px;background:#2a7a4a;font-size:12px;padding:0 14px}
 .category-nav{height:44px;background:#1c623a}.category-nav button{font-size:11px;padding:0 20px}.category-nav button.active,.category-nav button:hover{background:#2b7b4b}
 .hero-section{height:440px}.hero-copy h1{font-size:54px;line-height:1.06}.hero-copy>p{font-size:16px}.primary-cta{height:50px;border-radius:10px;font-size:12px}
-.product-card{border-radius:14px;box-shadow:0 4px 15px rgba(27,42,31,.08)}.product-info{padding:14px}.product-info h3{font-size:17px}.add-button{height:38px;min-width:96px;border-radius:999px;font-size:11px}
+
+/* Product cards — crisp, grocery-style imagery */
+.product-card{
+  border-radius:14px;
+  box-shadow:0 4px 15px rgba(27,42,31,.08);
+  overflow:hidden;
+  background:#fff;
+}
+.product-image-wrap{
+  aspect-ratio:4/3 !important;
+  height:auto !important;
+  background:#f3f1ea;
+  overflow:hidden;
+}
+.product-image-wrap img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center !important;
+  transform:none !important;
+  image-rendering:auto;
+  -webkit-backface-visibility:hidden;
+}
+.product-card:hover .product-image-wrap img{
+  transform:scale(1.04) !important;
+  transition:transform .35s ease;
+}
+.category-strip button{
+  border-radius:12px;
+  overflow:hidden;
+}
+.category-strip img{
+  object-fit:cover !important;
+  object-position:center !important;
+}
+.product-info{padding:14px}.product-info h3{font-size:17px;line-height:1.25}.add-button{height:38px;min-width:96px;border-radius:999px;font-size:11px}
+
 .payment-methods{display:none!important}
 .payment-trust{background:linear-gradient(135deg,#0d4529,#1c623a)!important;color:#eef5ee}
 .payment-trust-inner{max-width:1120px;margin:auto;padding:40px 20px}
@@ -28,6 +64,7 @@ body{background:var(--polish-cream)}
 .footer-bottom{padding:16px 0;font-size:12px}
 @media(max-width:700px){
   .hero-copy h1{font-size:40px}
-  .product-grid{grid-template-columns:1fr 1fr}
+  .product-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .product-image-wrap{aspect-ratio:1/1 !important}
   .floating-cart-summary{bottom:12px;width:calc(100% - 18px);border-radius:14px}
 }
