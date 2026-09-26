@@ -17,8 +17,8 @@ const byId: Record<string, string> = {
   p3: 'https://images.weserv.nl/?url=litter.catbox.moe/7s746z.webp&w=900&h=675&fit=cover&output=webp&q=85',
   p4: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&h=675&q=85',
   p5: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85',
-  p6: 'https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=900&h=675&q=85',
-  p7: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=900&h=675&q=85',
+  p6: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ1m5uC3SQNra7ZQF6YzEZplNwVC41oknw593aKAIjUQuJsL2J3iBiq0ir&s=10',
+  p7: 'https://images.weserv.nl/?url=illustrake.zappfresh.com/6a904eccc05e26f328ed9738&w=900&h=675&fit=cover&output=webp&q=90',
   p8: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85'
 };
 
@@ -41,7 +41,7 @@ function resolveImage(product: Product): string {
   if (n.includes('breast')) return byId.p2;
   if (n.includes('curry cut') && n.includes('chicken')) return byId.p1;
   if (n.includes('mutton')) return byId.p3;
-  if (n.includes('rohu') || n.includes('fish')) return byId.p4;
+  if (n.includes('rohu') || (n.includes('fish') && !n.includes('prawn'))) return byId.p4;
   if (n.includes('prawn')) return byId.p5;
   if (n.includes('egg')) return byId.p6;
   if (n.includes('tikka')) return byId.p7;
