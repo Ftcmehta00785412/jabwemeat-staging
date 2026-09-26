@@ -48,6 +48,11 @@
   s.src = URL.createObjectURL(blob);
   document.body.appendChild(s);
 
+  /* Hide brown cart recommendation under "Freshly packed" */
+  const style = document.createElement("style");
+  style.textContent = ".combo-suggestion{display:none!important;}";
+  document.head.appendChild(style);
+
   const byTitle = [
     [/curry\s*cut/i, imgs.curryCut],
     [/breast/i, imgs.breast],
@@ -59,7 +64,10 @@
     [/combo/i, imgs.combo]
   ];
 
-  const fixImages = () => {
+  const fixUI = () => {
+    document.querySelectorAll(".combo-suggestion").forEach(el => {
+      el.style.display = "none";
+    });
     document.querySelectorAll(".product-card").forEach(card => {
       const title = (card.querySelector("h3")?.textContent || "").trim();
       if (!title) return;
@@ -85,10 +93,10 @@
     });
   };
 
-  setTimeout(fixImages, 600);
-  setTimeout(fixImages, 1500);
-  setTimeout(fixImages, 3000);
-  setInterval(fixImages, 2500);
-  const mo = new MutationObserver(() => fixImages());
+  setTimeout(fixUI, 600);
+  setTimeout(fixUI, 1500);
+  setTimeout(fixUI, 3000);
+  setInterval(fixUI, 2500);
+  const mo = new MutationObserver(() => fixUI());
   mo.observe(document.documentElement, { childList: true, subtree: true });
 })();
