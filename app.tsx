@@ -34,14 +34,10 @@ const iconFor = (c: string) =>
     Combos: '🛍️'
   } as Record<string, string>)[c] || '🥩';
 
-const sameLine = (a: { id: string; weight: string }, b: { id: string; weight: string }) =>
-  a.id === b.id && a.weight === b.weight;
-
 const adapt = (p: any): Product => {
   const category = p.categories?.name || p.category || 'Chicken';
   const f = PRODUCTS.find(x => x.sku === p.sku || x.id === p.id);
   return {
-    ...f,
     id: p.id,
     sku: p.sku,
     name: p.name,
@@ -53,7 +49,7 @@ const adapt = (p: any): Product => {
     mrp: Number(p.mrp),
     stock: Number(p.stock || 0),
     icon: iconFor(category),
-    imageUrl: undefined,
+    imageUrl: p.image_url || undefined,
     featured: !!p.featured,
     active: p.active !== false,
     attributes: Array.isArray(p.attributes)
@@ -64,7 +60,7 @@ const adapt = (p: any): Product => {
       : Array.isArray(p.cutTypes)
         ? p.cutTypes
         : f?.cutTypes || [],
-    variants: f?.variants
+    recommendation: f?.recommendation
   };
 };
 
@@ -156,21 +152,10 @@ const App: React.FC = () => {
           old.flatMap(i => {
             const n = live.find(x => x.id === i.id || x.sku === i.sku);
             if (!n) return [];
-            const variant = n.variants?.find(v => v.weight === i.weight);
-            const line = variant
-              ? {
-                  ...n,
-                  weight: variant.weight,
-                  price: variant.price,
-                  mrp: variant.mrp,
-                  stock: variant.stock
-                }
-              : n;
-            const maxStock = Number.isFinite(line.stock) ? line.stock : n.stock;
             return [
               {
-                ...line,
-                quantity: Math.max(1, Math.min(i.quantity, Math.max(0, maxStock)))
+                ...n,
+                quantity: Math.max(1, Math.min(i.quantity, Math.max(0, n.stock)))
               }
             ];
           })
@@ -213,35 +198,35 @@ const App: React.FC = () => {
 
   const add = (p: Product) =>
     setCart(x => {
-      const existing = x.find(i => sameLine(i, p));
+      const existing = x.find(i => i.id === p.id);
       if (existing) {
         return x.map(i =>
-          sameLine(i, p)
-            ? { ...i, quantity: Math.min(i.quantity + 1, Math.max(1, p.stock)) }
+          i.id === p.id
+            ? { ...i, ...p, quantity: Math.min(i.quantity + 1, Math.max(1, p.stock)) }
             : i
         );
       }
       return [...x, { ...p, quantity: 1 }];
     });
 
-  const remove = (id: string, weight?: string) =>
+  const remove = (id: string) =>
     setCart(x =>
       x.flatMap(i => {
         if (i.id !== id) return [i];
-        if (weight !== undefined && i.weight !== weight) return [i];
         if (i.quantity > 1) return [{ ...i, quantity: i.quantity - 1 }];
         return [];
       })
     );
 
-  const removeAll = (id: string, weight?: string) =>
-    setCart(x =>
-      x.filter(i => {
-        if (i.id !== id) return true;
-        if (weight !== undefined) return i.weight !== weight;
-        return false;
-      })
+  const removeAll = (id: string) => setCart(x => x.filter(i => i.id !== id));
+
+  const goCategory = (c: string) => {
+    setCategory(c);
+    setView('store');
+    requestAnimationFrame(() =>
+      document.getElementById('shop')?.scrollIntoView({ behavior: 'smooth' })
     );
+  };
 
   return (
     <div className="app-shell">
@@ -274,7 +259,9 @@ const App: React.FC = () => {
             {t(language, 'orderConfirmed')} · {success.order_number || 'JWM'}
           </b>
           <span>{t(language, 'codPlaced', { n: success.total || 0 })}</span>
-          <button onClick={() => setSuccess(null)}>×</button>
+          <button type="button" onClick={() => setSuccess(null)}>
+            ×
+          </button>
         </div>
       )}
       <Storefront
@@ -287,10 +274,11 @@ const App: React.FC = () => {
         search={search}
         setSearch={setSearch}
         pincode={pincode}
+        setPincode={setPincode}
         serviceable={pins.includes(pincode)}
         slots={slots}
         onAdd={add}
-        onRemove={id => remove(id)}
+        onRemove={remove}
         onCart={() => setCartOpen(true)}
         subtotal={subtotal}
       />
@@ -326,34 +314,51 @@ const App: React.FC = () => {
               </span>
             </div>
             <p>{t(language, 'footerBody')}</p>
-            <div className="socials">
-              <button aria-label={t(language, 'socialInstagram')}>◎</button>
-              <button aria-label={t(language, 'socialFacebook')}>f</button>
-            </div>
+            <p className="footer-contact-line">
+              <a href="mailto:hello@jabwemeat.com">hello@jabwemeat.com</a>
+            </p>
           </div>
           <div className="footer-shop">
             <h4>{t(language, 'shop')}</h4>
             <div className="footer-shop-links">
               {['Chicken', 'Mutton', 'Fish & Seafood', 'Ready to Cook'].map(c => (
-                <a key={c}>
+                <button
+                  type="button"
+                  className="footer-link-btn"
+                  key={c}
+                  onClick={() => goCategory(c)}
+                >
                   {t(language, 'shopNow')} · {localizedCategory(c, language)}
-                </a>
+                </button>
               ))}
             </div>
           </div>
           <div>
             <h4>{t(language, 'help')}</h4>
-            <a>{t(language, 'about')}</a>
-            <a>{t(language, 'faqs')}</a>
-            <a>{t(language, 'contact')}</a>
-            <button className="footer-privacy-link" onClick={() => setPrivacyOpen(true)}>
+            <a href="mailto:hello@jabwemeat.com">{t(language, 'contact')}</a>
+            <button
+              type="button"
+              className="footer-privacy-link footer-link-btn"
+              onClick={() => setPrivacyOpen(true)}
+            >
               {t(language, 'privacy')}
             </button>
+            <p className="footer-help-note">{t(language, 'ranchiOnly')}</p>
+          </div>
+          <div>
+            <h4>Service area</h4>
+            <p>PINs {pins.join(', ')}</p>
+            <p>Cash on delivery only</p>
+            <p>Slot-based delivery · Ranchi</p>
           </div>
         </div>
         <div className="footer-bottom">
           <span>{t(language, 'rights')}</span>
-          <span>{loading ? t(language, 'loading') : t(language, 'live')}</span>
+          <span>
+            {loading
+              ? t(language, 'loading')
+              : 'Fresh delivery · COD · Ranchi'}
+          </span>
         </div>
       </footer>
     </div>
