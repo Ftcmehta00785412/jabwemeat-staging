@@ -13,7 +13,7 @@ import {
 const images: Record<string, string> = {
   p1: 'https://static.wixstatic.com/media/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg/v1/fill/w_900,h_675,al_c,q_90,usm_0.66_1.00_0.01/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg',
   p2: 'https://images.unsplash.com/photo-1633096013004-e2cb4023b560?auto=format&fit=crop&w=900&h=675&q=85',
-  p3: 'https://litter.catbox.moe/7s746z.webp',
+  p3: 'https://images.weserv.nl/?url=litter.catbox.moe/7s746z.webp&w=900&h=675&fit=cover&output=webp&q=85',
   p4: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&h=675&q=85',
   p5: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85',
   p6: 'https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=900&h=675&q=85',
@@ -72,6 +72,8 @@ export const ProductCard: React.FC<Props> = ({
           loading="lazy"
           width={900}
           height={675}
+          decoding="async"
+          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
         />
         {d > 0 && (
           <span className="discount-pill">
