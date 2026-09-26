@@ -12,7 +12,7 @@ type Props = {
   cart: CartItem[];
   pincode: string;
   setPincode: (v: string) => void;
-  onRemoveAll: (id: string, weight?: string) => void;
+  onRemoveAll: (id: string) => void;
   slots?: DeliverySlot[];
   serviceablePins?: string[];
   sessionKey: string;
@@ -152,7 +152,7 @@ export const CartDrawer: React.FC<Props> = ({
             <h2 className="text-xl font-black">{t(language, 'cartTitle')}</h2>
             <p className="text-xs text-base-content/60">{t(language, 'minOrder')}</p>
           </div>
-          <button className="btn btn-circle btn-ghost btn-sm" onClick={onClose}>
+          <button type="button" className="btn btn-circle btn-ghost btn-sm" onClick={onClose}>
             <X />
           </button>
         </div>
@@ -168,7 +168,7 @@ export const CartDrawer: React.FC<Props> = ({
             <>
               <div className="cart-items">
                 {cart.map(i => (
-                  <div className="cart-line flex gap-3 rounded-xl bg-base-200 p-3" key={`${i.id}::${i.weight}`}>
+                  <div className="cart-line flex gap-3 rounded-xl bg-base-200 p-3" key={i.id}>
                     <span className="grid h-14 w-14 place-items-center rounded-xl bg-primary/10 text-2xl">
                       {i.icon}
                     </span>
@@ -180,8 +180,9 @@ export const CartDrawer: React.FC<Props> = ({
                       <p className="font-bold">₹{i.price * i.quantity}</p>
                     </div>
                     <button
+                      type="button"
                       className="btn btn-ghost btn-sm"
-                      onClick={() => onRemoveAll(i.id, i.weight)}
+                      onClick={() => onRemoveAll(i.id)}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -299,10 +300,7 @@ export const CartDrawer: React.FC<Props> = ({
                 </label>
                 {form.pincode.length === 6 && !serviceable && (
                   <p className="checkout-error">
-                    {t(language, 'currentlyAvailable').replace(
-                      '834002, 834003 and 834004',
-                      pinsList
-                    )}
+                    Currently available only in {pinsList}.
                   </p>
                 )}
                 {!liveSlotsReady && cart.length > 0 && (
@@ -326,7 +324,7 @@ export const CartDrawer: React.FC<Props> = ({
                 <span>−₹{Math.min(100, subtotal)}</span>
               </div>
               <div className="flex justify-between">
-                <span>{t(language, 'freeDelivery')}</span>
+                <span>Delivery</span>
                 <span>{t(language, 'freeDelivery')}</span>
               </div>
               <div className="flex justify-between border-t border-base-300 pt-2 text-lg font-black">
@@ -335,6 +333,7 @@ export const CartDrawer: React.FC<Props> = ({
               </div>
             </div>
             <button
+              type="submit"
               form="checkout-form"
               className="btn btn-primary w-full"
               disabled={!valid || busy || !liveSlotsReady}
