@@ -37,14 +37,16 @@ function resolveImage(product: Product): string {
   if (product.id && byId[product.id]) return byId[product.id];
   if (product.sku && bySku[product.sku]) return bySku[product.sku];
   const n = (product.name || '').toLowerCase();
-  if (n.includes('breast')) return byId.p2;
-  if (n.includes('curry cut') && n.includes('chicken')) return byId.p1;
+  // Most specific first — mutton before any "curry cut"
   if (n.includes('mutton')) return byId.p3;
-  if (n.includes('rohu') || (n.includes('fish') && !n.includes('prawn'))) return byId.p4;
+  if (n.includes('breast')) return byId.p2;
+  if (n.includes('tikka')) return byId.p7;
   if (n.includes('prawn')) return byId.p5;
   if (n.includes('egg')) return byId.p6;
-  if (n.includes('tikka')) return byId.p7;
+  if (n.includes('rohu')) return byId.p4;
   if (n.includes('combo')) return byId.p8;
+  if (n.includes('chicken') && n.includes('curry')) return byId.p1;
+  if (n.includes('curry cut') && !n.includes('mutton')) return byId.p1;
   return byId.p1;
 }
 
