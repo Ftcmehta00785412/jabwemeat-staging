@@ -10,23 +10,24 @@ import {
   t
 } from '../i18n';
 
+/** Crisp product photography (Unsplash, 900×675, product-relevant). */
 const images: Record<string, string> = {
-  p1: 'assets/chicken-curry.webp',
-  p2: 'assets/chicken-breast-boneless-finance.webp',
-  p3: 'assets/mutton.webp',
-  p4: 'assets/rohu.webp',
-  p5: 'assets/prawns.webp',
-  p6: 'assets/eggs.webp',
-  p7: 'assets/tikka.webp',
-  p8: 'assets/family-combo.webp'
+  p1: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&w=900&h=675&q=85',
+  p2: 'https://images.unsplash.com/photo-1633096013004-e2cb4023b560?auto=format&fit=crop&w=900&h=675&q=85',
+  p3: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=900&h=675&q=85',
+  p4: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&h=675&q=85',
+  p5: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85',
+  p6: 'https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=900&h=675&q=85',
+  p7: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=900&h=675&q=85',
+  p8: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85'
 };
 const categoryImages: Record<string, string> = {
-  Chicken: 'assets/chicken-curry.webp',
-  Mutton: 'assets/mutton.webp',
-  'Fish & Seafood': 'assets/rohu.webp',
-  Eggs: 'assets/eggs.webp',
-  'Ready to Cook': 'assets/tikka.webp',
-  Combos: 'assets/family-combo.webp'
+  Chicken: images.p1,
+  Mutton: images.p3,
+  'Fish & Seafood': images.p4,
+  Eggs: images.p6,
+  'Ready to Cook': images.p7,
+  Combos: images.p8
 };
 
 type Props = {
@@ -37,10 +38,6 @@ type Props = {
   onRemove: () => void;
 };
 
-/**
- * Catalogue price/weight always come from the live product row (Supabase).
- * Client-only multi-price variants are not shown so checkout matches the server.
- */
 export const ProductCard: React.FC<Props> = ({
   language,
   product,
@@ -65,9 +62,7 @@ export const ProductCard: React.FC<Props> = ({
 
   return (
     <article className="product-card">
-      <div
-        className={`product-image-wrap ${product.sku === 'JWM-CHK-002' ? 'product-image-breast' : ''}`}
-      >
+      <div className="product-image-wrap">
         <img
           src={
             images[product.id] ||
@@ -76,6 +71,8 @@ export const ProductCard: React.FC<Props> = ({
           }
           alt={localized.name}
           loading="lazy"
+          width={900}
+          height={675}
         />
         {d > 0 && (
           <span className="discount-pill">
