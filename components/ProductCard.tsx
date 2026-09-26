@@ -1,11 +1,10 @@
 import React from 'react';
-import { Minus, Plus, Star, Snowflake, ShoppingBasket } from 'lucide-react';
+import { Minus, Plus, Star, Snowflake } from 'lucide-react';
 import type { Product, Language } from '../types';
 import {
   localizedAttribute,
   localizedCategory,
   localizedProduct,
-  localizedRecommendation,
   localizedWeight,
   t
 } from '../i18n';
@@ -138,12 +137,6 @@ export const ProductCard: React.FC<Props> = ({
         <div className="fresh-note">
           <Snowflake /> {t(language, 'packed')}
         </div>
-        {product.recommendation && (
-          <div className="combo-suggestion">
-            <ShoppingBasket />{' '}
-            {localizedRecommendation(product.recommendation, language)}
-          </div>
-        )}
         <div className="product-buy-row">
           <div className="price">
             <strong>₹{current.price}</strong>
