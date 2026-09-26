@@ -47,7 +47,34 @@
   s.type = "module";
   s.src = URL.createObjectURL(blob);
   document.body.appendChild(s);
-  const rename = () => {
+
+  /* Match image by product TITLE so UUID ids cannot fall back to curry-cut */
+  const byTitle = [
+    [/curry\s*cut/i, imgs.curryCut],
+    [/breast/i, imgs.breast],
+    [/mutton/i, imgs.mutton],
+    [/rohu|fish/i, imgs.rohu],
+    [/prawn/i, imgs.prawns],
+    [/egg/i, imgs.eggs],
+    [/tikka/i, imgs.tikka],
+    [/combo/i, imgs.combo]
+  ];
+
+  const fixImages = () => {
+    document.querySelectorAll(".product-card").forEach(card => {
+      const title = (card.querySelector("h3")?.textContent || "").trim();
+      if (!title) return;
+      const img = card.querySelector("img");
+      if (!img) return;
+      for (const [re, src] of byTitle) {
+        if (re.test(title) && img.getAttribute("src") !== src) {
+          img.setAttribute("src", src);
+          img.style.objectFit = title.match(/breast/i) ? "contain" : "cover";
+          img.style.background = title.match(/breast/i) ? "#fff" : "";
+          break;
+        }
+      }
+    });
     document.querySelectorAll("h3, p, span, b").forEach(el => {
       if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
         let t = el.textContent || "";
@@ -58,7 +85,11 @@
       }
     });
   };
-  setTimeout(rename, 800);
-  setTimeout(rename, 2000);
-  setInterval(rename, 4000);
+
+  setTimeout(fixImages, 600);
+  setTimeout(fixImages, 1500);
+  setTimeout(fixImages, 3000);
+  setInterval(fixImages, 2500);
+  const mo = new MutationObserver(() => fixImages());
+  mo.observe(document.documentElement, { childList: true, subtree: true });
 })();
