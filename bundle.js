@@ -3,7 +3,7 @@
   let code = await (await fetch(url)).text();
   const imgs = {
     curryCut: "https://static.wixstatic.com/media/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg/v1/fill/w_900,h_675,al_c,q_90,usm_0.66_1.00_0.01/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg",
-    breast: "https://images.weserv.nl/?url=www.starquik.com/cdn/shop/files/SQ109620_01_6acafdd0-6812-49f5-9ce7-64b819989971.png&w=900&h=675&fit=cover&output=webp&q=85",
+    breast: "https://images.weserv.nl/?url=www.starquik.com/cdn/shop/files/Starfresh_Chicken_Breast_Boneless_1_Kg_Front_e2047377-7376-4980-8e4b-b6bcc56b5d4c.jpg&w=900&h=675&fit=contain&cbg=white&output=webp&q=90",
     mutton: "https://images.weserv.nl/?url=litter.catbox.moe/7s746z.webp&w=900&h=675&fit=cover&output=webp&q=85",
     rohu: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&h=675&q=85",
     prawns: "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85",
@@ -26,6 +26,7 @@
     ["assets/chicken-breast.webp", imgs.breast],
     ["https://images.unsplash.com/photo-1633096013004-e2cb4023b560?auto=format&fit=crop&w=900&h=675&q=85", imgs.breast],
     ["https://images.weserv.nl/?url=images.pexels.com/photos/5769378/pexels-photo-5769378.jpeg&w=900&h=675&fit=cover&output=webp&q=85", imgs.breast],
+    ["https://images.weserv.nl/?url=www.starquik.com/cdn/shop/files/SQ109620_01_6acafdd0-6812-49f5-9ce7-64b819989971.png&w=900&h=675&fit=cover&output=webp&q=85", imgs.breast],
     ["assets/mutton.webp", imgs.mutton],
     ["https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=900&h=675&q=85", imgs.mutton],
     ["https://litter.catbox.moe/7s746z.webp", imgs.mutton],
