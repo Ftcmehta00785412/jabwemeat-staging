@@ -3,7 +3,7 @@
   let code = await (await fetch(url)).text();
   const imgs = {
     curryCut: "https://static.wixstatic.com/media/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg/v1/fill/w_900,h_675,al_c,q_90,usm_0.66_1.00_0.01/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg",
-    breast: "https://images.weserv.nl/?url=images.pexels.com/photos/5769378/pexels-photo-5769378.jpeg&w=900&h=675&fit=cover&output=webp&q=85",
+    breast: "https://images.weserv.nl/?url=www.starquik.com/cdn/shop/files/SQ109620_01_6acafdd0-6812-49f5-9ce7-64b819989971.png&w=900&h=675&fit=cover&output=webp&q=85",
     mutton: "https://images.weserv.nl/?url=litter.catbox.moe/7s746z.webp&w=900&h=675&fit=cover&output=webp&q=85",
     rohu: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&h=675&q=85",
     prawns: "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85",
@@ -25,6 +25,7 @@
     ["assets/chicken-breast-boneless.webp", imgs.breast],
     ["assets/chicken-breast.webp", imgs.breast],
     ["https://images.unsplash.com/photo-1633096013004-e2cb4023b560?auto=format&fit=crop&w=900&h=675&q=85", imgs.breast],
+    ["https://images.weserv.nl/?url=images.pexels.com/photos/5769378/pexels-photo-5769378.jpeg&w=900&h=675&fit=cover&output=webp&q=85", imgs.breast],
     ["assets/mutton.webp", imgs.mutton],
     ["https://images.unsplash.com/photo-1432139555190-58524dae6a55?auto=format&fit=crop&w=900&h=675&q=85", imgs.mutton],
     ["https://litter.catbox.moe/7s746z.webp", imgs.mutton],
@@ -50,9 +51,6 @@
       if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
         let t = el.textContent || "";
         if (t.includes("Premium Mutton Chops")) t = t.replace(/Premium Mutton Chops/g, "Premium Mutton Curry Cut");
-        if (t === "Chicken Breast" || t.includes("Chicken Breast") && !t.includes("Boneless") && !t.includes("Curry") && !t.includes("Tikka")) {
-          /* keep only Chicken Breast Boneless; live Supabase may still show renamed Rohu as Chicken Breast — restore label */
-        }
         if (t.trim() === "Chicken Breast") t = "Fresh Whole Rohu";
         if (t.includes("Fresh boneless chicken breast, pink and firm")) t = "Fresh Rohu with cleaning and cut options for your kitchen.";
         if (t !== (el.textContent || "")) el.textContent = t;
