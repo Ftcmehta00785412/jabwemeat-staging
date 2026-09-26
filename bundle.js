@@ -8,7 +8,6 @@
     rohu: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&h=675&q=85",
     prawns: "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85",
     brownEggs: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ1m5uC3SQNra7ZQF6YzEZplNwVC41oknw593aKAIjUQuJsL2J3iBiq0ir&s=10",
-    whiteEggs: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuqKMdmQTtzzr7Ziu8eSCQhnp4vXAsNfKyCP7OxmDg-HDnB159_FJyJQhi&s=10",
     tikka: "https://images.weserv.nl/?url=illustrake.zappfresh.com/6a904eccc05e26f328ed9738&w=900&h=675&fit=cover&output=webp&q=90",
     combo: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85"
   };
@@ -52,10 +51,7 @@
 
   const style = document.createElement("style");
   style.id = "jwm-hide-rec";
-  style.textContent = 
-    ".combo-suggestion{display:none!important;}" +
-    "#jwm-white-eggs .variant-label,#jwm-white-eggs .variant-options,#jwm-white-eggs .product-meta{display:none!important;}" +
-    "#jwm-white-eggs{display:flex!important;}";
+  style.textContent = ".combo-suggestion{display:none!important;}";
   document.documentElement.appendChild(style);
 
   const byTitle = [
@@ -63,66 +59,23 @@
     [/breast/i, imgs.breast],
     [/tikka/i, imgs.tikka],
     [/prawn/i, imgs.prawns],
-    [/white\s*egg/i, imgs.whiteEggs],
-    [/brown\s*egg/i, imgs.brownEggs],
-    [/farm\s*fresh.*egg/i, imgs.brownEggs],
-    [/egg/i, imgs.brownEggs],
+    [/brown\s*egg|farm\s*fresh.*egg|egg/i, imgs.brownEggs],
     [/rohu/i, imgs.rohu],
     [/combo/i, imgs.combo],
     [/chicken.*curry\s*cut|^classic chicken/i, imgs.curryCut]
   ];
 
-  function buildWhiteEggsCard(sample) {
-    const card = document.createElement("article");
-    card.className = sample.className || "product-card";
-    card.id = "jwm-white-eggs";
-    card.setAttribute("data-jwm-injected", "1");
-    card.innerHTML =
-      '<div class="product-image-wrap">' +
-        '<img src="' + imgs.whiteEggs + '" alt="Farm Fresh White Eggs" loading="lazy" width="900" height="675" style="object-fit:cover;width:100%;height:100%" />' +
-        '<span class="availability-badge">In stock</span>' +
-      '</div>' +
-      '<div class="product-info">' +
-        '<p class="product-category">Eggs</p>' +
-        '<h3>Farm Fresh White Eggs</h3>' +
-        '<p class="product-description">Fresh white eggs, clean and ready for your kitchen.</p>' +
-        '<div class="fresh-note">Freshly packed for your slot</div>' +
-        '<div class="product-buy-row">' +
-          '<div class="price"><strong>₹245</strong></div>' +
-          '<button type="button" class="add-button">ADD TO CART</button>' +
-        '</div>' +
-      '</div>';
-    return card;
-  }
-
-  const ensureWhiteEggs = () => {
-    const existing = document.getElementById("jwm-white-eggs");
-    if (existing && existing.isConnected) return;
-    if (existing) existing.remove();
-
-    const cards = [...document.querySelectorAll("article.product-card, .product-card")];
-    if (!cards.length) return;
-
-    const brown = cards.find(c => /brown\s*egg|farm\s*fresh\s*(brown\s*)?egg/i.test(c.querySelector("h3")?.textContent || ""));
-    const sample = brown || cards[0];
-    const parent = sample.parentElement;
-    if (!parent) return;
-
-    /* Only show on All or Eggs views (when brown eggs is visible, or heading says Eggs) */
-    const heading = (document.querySelector("h2,h1")?.textContent || "").toLowerCase();
-    const brownVisible = brown && brown.offsetParent !== null;
-    const isEggsView = heading.includes("egg") || brownVisible || cards.length >= 6;
-    if (!isEggsView && !brown) return;
-
-    const card = buildWhiteEggsCard(sample);
-    if (brown) {
-      brown.insertAdjacentElement("afterend", card);
-    } else {
-      parent.appendChild(card);
-    }
-  };
-
   const fixUI = () => {
+    /* Remove any previously injected White Eggs cards */
+    document.querySelectorAll("#jwm-white-eggs, [data-jwm-injected]").forEach(el => el.remove());
+    document.querySelectorAll(".product-card, article.product-card").forEach(card => {
+      const title = (card.querySelector("h3")?.textContent || "").trim();
+      if (/white\s*egg/i.test(title)) {
+        card.remove();
+        return;
+      }
+    });
+
     document.querySelectorAll(".combo-suggestion").forEach(el => el.remove());
     document.querySelectorAll(".product-card, article.product-card").forEach(card => {
       const title = (card.querySelector("h3")?.textContent || "").trim();
@@ -139,9 +92,6 @@
           break;
         }
       }
-      if (/white\s*egg/i.test(title)) {
-        card.querySelectorAll(".product-meta, .variant-label, .variant-options").forEach(el => { el.style.display = "none"; });
-      }
     });
     document.querySelectorAll("h3, p, span, b").forEach(el => {
       if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
@@ -154,7 +104,6 @@
         if (t !== (el.textContent || "")) el.textContent = t;
       }
     });
-    ensureWhiteEggs();
   };
 
   setTimeout(fixUI, 500);
