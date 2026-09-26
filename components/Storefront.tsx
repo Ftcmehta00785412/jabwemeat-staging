@@ -9,7 +9,9 @@ import {
   Clock3,
   PackageCheck,
   ChevronRight,
-  ShoppingCart
+  ShoppingCart,
+  Banknote,
+  Phone
 } from 'lucide-react';
 import { CATEGORIES } from '../data';
 import { ProductCard } from './ProductCard';
@@ -36,6 +38,7 @@ type Props = {
   search: string;
   setSearch: (v: string) => void;
   pincode: string;
+  setPincode?: (v: string) => void;
   serviceable: boolean;
   slots?: Slot[];
   onAdd: (p: Product) => void;
@@ -54,6 +57,7 @@ export const Storefront: React.FC<Props> = ({
   search,
   setSearch,
   pincode,
+  setPincode,
   serviceable,
   slots = [],
   onAdd,
@@ -118,9 +122,16 @@ export const Storefront: React.FC<Props> = ({
 
   const next = slots.find(s => s.label.trim());
   const count = cart.reduce((n, i) => n + i.quantity, 0);
-
   const qtyFor = (productId: string) =>
     cart.filter(i => i.id === productId).reduce((n, i) => n + i.quantity, 0);
+
+  const focusPin = () => {
+    const el = document.querySelector(
+      '.delivery-location input, .pin-inline-input'
+    ) as HTMLInputElement | null;
+    el?.focus();
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   return (
     <main id="top">
@@ -159,8 +170,8 @@ export const Storefront: React.FC<Props> = ({
                 {t(language, 'chilledHandling')}
               </span>
               <span>
-                <PackageCheck />
-                {t(language, 'cleanlyPacked')}
+                <Banknote />
+                {t(language, 'cod')}
               </span>
             </div>
           </div>
@@ -214,9 +225,22 @@ export const Storefront: React.FC<Props> = ({
               {serviceable ? t(language, 'chooseSlots') : t(language, 'currentlyServing')}
             </small>
           </div>
-          <button>
-            {t(language, 'changePin')} <ChevronRight />
-          </button>
+          {setPincode ? (
+            <label className="pin-inline">
+              <input
+                className="pin-inline-input"
+                inputMode="numeric"
+                maxLength={6}
+                value={pincode}
+                onChange={e => setPincode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                aria-label={t(language, 'pinCode')}
+              />
+            </label>
+          ) : (
+            <button type="button" onClick={focusPin}>
+              {t(language, 'changePin')} <ChevronRight />
+            </button>
+          )}
         </div>
 
         <div className="delivery-confidence" aria-label={t(language, 'nextSlot')}>
@@ -227,6 +251,13 @@ export const Storefront: React.FC<Props> = ({
               <small>
                 {serviceable && next ? next.label : t(language, 'unavailableSlots')}
               </small>
+            </span>
+          </div>
+          <div>
+            <Banknote />
+            <span>
+              <b>{t(language, 'cod')}</b>
+              <small>Pay when your order arrives</small>
             </span>
           </div>
         </div>
@@ -376,58 +407,28 @@ export const Storefront: React.FC<Props> = ({
         </div>
       </section>
 
-      <section className="payment-trust" aria-label="Secured payments">
+      <section className="payment-trust cod-only" aria-label="Payment">
         <div className="payment-trust-inner">
           <div className="payment-trust-copy">
             <span className="payment-eyebrow">JABWEMEAT CHECKOUT</span>
-            <h2>Pay with confidence.</h2>
-            <p>Choose the payment method that works best for you.</p>
+            <h2>Cash on delivery</h2>
+            <p>
+              Pay in cash when your order is delivered. No online card or UPI
+              payment is required at checkout right now.
+            </p>
             <div className="payment-assurance">
-              <ShieldCheck />
-              <span>Safe, simple &amp; secure</span>
+              <Banknote />
+              <span>COD · Secure verification at your door</span>
+            </div>
+            <div className="payment-assurance secondary">
+              <Phone />
+              <span>WhatsApp / phone support after you place an order</span>
             </div>
           </div>
-          <div className="payment-methods" aria-label="Accepted payment methods">
-            <span className="payment-logo visa">
-              <b>VISA</b>
-              <small>cards</small>
-            </span>
-            <span className="payment-logo mastercard">
-              <i className="payment-mark mastercard-mark" /> <small>Mastercard</small>
-            </span>
-            <span className="payment-logo maestro">
-              <i className="payment-mark maestro-mark" /> <small>Maestro</small>
-            </span>
-            <span className="payment-logo rupay">
-              <b>RuPay</b>
-              <small>cards</small>
-            </span>
-            <span className="payment-logo upi">
-              <b>UPI</b>
-              <small>payments</small>
-            </span>
-            <span className="payment-logo paytm">
-              <b>paytm</b>
-              <small>wallet</small>
-            </span>
-            <span className="payment-logo amazon">
-              <b>
-                amazon<span>pay</span>
-              </b>
-              <small>wallet</small>
-            </span>
-            <span className="payment-logo phonepe">
-              <b>
-                <i>◉</i> PhonePe
-              </b>
-              <small>wallet</small>
-            </span>
-            <span className="payment-logo gpay">
-              <b>
-                <i>G</i> Pay
-              </b>
-              <small>wallet</small>
-            </span>
+          <div className="cod-highlight">
+            <Banknote size={40} />
+            <b>Pay on delivery</b>
+            <small>Available on every order in serviceable PIN codes</small>
           </div>
         </div>
       </section>
