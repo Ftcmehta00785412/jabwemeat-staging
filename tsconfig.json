@@ -8,14 +8,6 @@
     "strict": false,
     "skipLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-      "*": [
-        "/tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/*"
-      ]
-    },
-    "typeRoots": [
-      "/tmp/tasklet-deps/jabwemeat-store-c7223c5a48c3/node_modules/@types"
-    ],
     "types": [
       "react",
       "react-dom"
@@ -27,6 +19,9 @@
     "./**/*.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "admin-dashboard",
+    "public",
+    "bundle.js"
   ]
 }
