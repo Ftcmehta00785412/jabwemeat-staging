@@ -18,7 +18,7 @@ const byId: Record<string, string> = {
   p6: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ1m5uC3SQNra7ZQF6YzEZplNwVC41oknw593aKAIjUQuJsL2J3iBiq0ir&s=10',
   p7: 'https://images.weserv.nl/?url=illustrake.zappfresh.com/6a904eccc05e26f328ed9738&w=900&h=675&fit=cover&output=webp&q=90',
   p8: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85',
-  p9: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuqKMdmQTtzzr7Ziu8eSCQhnp4vXAsNfKyCP7OxmDg-HDnB159_FJyJQhi&s=10'
+  p10: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBjTfNdM-oVdnnZwc7r4RJs6kAEyE3jAYACoL5s9gpHf0E2XhqWHhGH6A&s=10'
 };
 
 const bySku: Record<string, string> = {
@@ -28,8 +28,8 @@ const bySku: Record<string, string> = {
   'JWM-FSH-001': byId.p4,
   'JWM-SEA-001': byId.p5,
   'JWM-EGG-001': byId.p6,
-  'JWM-EGG-002': byId.p9,
   'JWM-RTC-001': byId.p7,
+  'JWM-RTE-001': byId.p10,
   'JWM-CMB-001': byId.p8
 };
 
@@ -38,12 +38,11 @@ function resolveImage(product: Product): string {
   if (product.id && byId[product.id]) return byId[product.id];
   if (product.sku && bySku[product.sku]) return bySku[product.sku];
   const n = (product.name || '').toLowerCase();
+  if (n.includes('biryani')) return byId.p10;
   if (n.includes('mutton')) return byId.p3;
   if (n.includes('breast')) return byId.p2;
   if (n.includes('tikka')) return byId.p7;
   if (n.includes('prawn')) return byId.p5;
-  if (n.includes('white') && n.includes('egg')) return byId.p9;
-  if (n.includes('brown') && n.includes('egg')) return byId.p6;
   if (n.includes('egg')) return byId.p6;
   if (n.includes('rohu')) return byId.p4;
   if (n.includes('combo')) return byId.p8;
@@ -87,7 +86,6 @@ export const ProductCard: React.FC<Props> = ({
   const showWeight = !!(current.weight && String(current.weight).trim());
   const showServings = !!(product.servings && String(product.servings).trim());
   const showMeta = showWeight || showServings;
-  const showVariants = Array.isArray(product.variants) && product.variants.length > 0;
 
   return (
     <article className="product-card">

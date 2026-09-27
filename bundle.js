@@ -9,7 +9,8 @@
     prawns: "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85",
     brownEggs: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ1m5uC3SQNra7ZQF6YzEZplNwVC41oknw593aKAIjUQuJsL2J3iBiq0ir&s=10",
     tikka: "https://images.weserv.nl/?url=illustrake.zappfresh.com/6a904eccc05e26f328ed9738&w=900&h=675&fit=cover&output=webp&q=90",
-    combo: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85"
+    combo: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85",
+    biryani: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBjTfNdM-oVdnnZwc7r4RJs6kAEyE3jAYACoL5s9gpHf0E2XhqWHhGH6A&s=10"
   };
   const patches = [
     ["Live staging storefront \u00b7 COD only", "Fresh delivery \u00b7 COD \u00b7 Ranchi"],
@@ -51,10 +52,11 @@
 
   const style = document.createElement("style");
   style.id = "jwm-hide-rec";
-  style.textContent = ".combo-suggestion{display:none!important;}";
+  style.textContent = ".combo-suggestion{display:none!important;}#jwm-biryani{display:flex!important;}";
   document.documentElement.appendChild(style);
 
   const byTitle = [
+    [/biryani/i, imgs.biryani],
     [/mutton/i, imgs.mutton],
     [/breast/i, imgs.breast],
     [/tikka/i, imgs.tikka],
@@ -65,17 +67,86 @@
     [/chicken.*curry\s*cut|^classic chicken/i, imgs.curryCut]
   ];
 
+  function ensureReadyToEatNav() {
+    const nav = document.querySelector("nav, .nav, header nav, [class*='nav']") || document.body;
+    if (document.getElementById("jwm-rte-nav")) return;
+    const cook = [...document.querySelectorAll("a,button,span")].find(el => /ready\s*to\s*cook/i.test((el.textContent||"").trim()) && (el.textContent||"").trim().length < 20);
+    if (!cook || !cook.parentElement) return;
+    const btn = cook.cloneNode(true);
+    btn.id = "jwm-rte-nav";
+    if (btn.textContent) btn.textContent = "READY TO EAT";
+    btn.querySelectorAll("*").forEach(c => { if (c.childNodes.length === 1 && c.childNodes[0].nodeType === 3) c.textContent = "READY TO EAT"; });
+    cook.parentElement.insertBefore(btn, cook.nextSibling);
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      document.querySelectorAll(".product-card, article.product-card").forEach(c => {
+        const cat = (c.querySelector(".product-category")?.textContent || "").trim();
+        const name = (c.querySelector("h3")?.textContent || "").trim();
+        const isBiryani = /biryani/i.test(name) || /ready\s*to\s*eat/i.test(cat);
+        c.style.display = isBiryani ? "" : "none";
+      });
+      const h = document.querySelector("h1,h2");
+      if (h) h.textContent = "READY TO EAT";
+      ensureBiryaniCard();
+    });
+  }
+
+  function ensureBiryaniCard() {
+    if (document.getElementById("jwm-biryani")) return;
+    const cards = [...document.querySelectorAll("article.product-card, .product-card")];
+    if (!cards.length) return;
+    const sample = cards[0];
+    const parent = sample.parentElement;
+    if (!parent) return;
+    const card = document.createElement("article");
+    card.className = sample.className || "product-card";
+    card.id = "jwm-biryani";
+    card.setAttribute("data-jwm-injected", "biryani");
+    card.innerHTML =
+      '<div class="product-image-wrap">' +
+        '<img src="' + imgs.biryani + '" alt="Fresh Chicken Biryani" loading="lazy" width="900" height="675" style="object-fit:cover;width:100%;height:100%" />' +
+        '<span class="availability-badge">In stock</span>' +
+        '<span class="bestseller">Bestseller</span>' +
+      '</div>' +
+      '<div class="product-info">' +
+        '<p class="product-category">Ready to Eat</p>' +
+        '<h3>Fresh Chicken Biryani</h3>' +
+        '<p class="product-description">Aromatic chicken biryani served with raita and salad. Ready to enjoy.</p>' +
+        '<div class="product-attributes"><span>served with raita</span><span>salad</span><span>biryani</span></div>' +
+        '<div class="variant-label">Choose weight</div>' +
+        '<div class="variant-options">' +
+          '<button type="button" class="selected" data-w="500 g" data-p="250">500 g</button>' +
+          '<button type="button" data-w="1 kg" data-p="400">1 kg</button>' +
+        '</div>' +
+        '<div class="product-meta"><span id="jwm-biryani-w">500 g</span><i>•</i><span>Serves 2–3</span></div>' +
+        '<div class="fresh-note">Freshly packed for your slot</div>' +
+        '<div class="product-buy-row">' +
+          '<div class="price"><strong id="jwm-biryani-price">₹250</strong></div>' +
+          '<button type="button" class="add-button">ADD TO CART</button>' +
+        '</div>' +
+      '</div>';
+    parent.appendChild(card);
+    card.querySelectorAll(".variant-options button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        card.querySelectorAll(".variant-options button").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        const p = btn.getAttribute("data-p");
+        const w = btn.getAttribute("data-w");
+        const pe = document.getElementById("jwm-biryani-price");
+        const we = document.getElementById("jwm-biryani-w");
+        if (pe) pe.textContent = "₹" + p;
+        if (we) we.textContent = w;
+      });
+    });
+  }
+
   const fixUI = () => {
-    /* Remove any previously injected White Eggs cards */
-    document.querySelectorAll("#jwm-white-eggs, [data-jwm-injected]").forEach(el => el.remove());
+    document.querySelectorAll("#jwm-white-eggs").forEach(el => el.remove());
     document.querySelectorAll(".product-card, article.product-card").forEach(card => {
       const title = (card.querySelector("h3")?.textContent || "").trim();
-      if (/white\s*egg/i.test(title)) {
-        card.remove();
-        return;
-      }
+      if (/white\s*egg/i.test(title)) { card.remove(); return; }
     });
-
     document.querySelectorAll(".combo-suggestion").forEach(el => el.remove());
     document.querySelectorAll(".product-card, article.product-card").forEach(card => {
       const title = (card.querySelector("h3")?.textContent || "").trim();
@@ -104,13 +175,15 @@
         if (t !== (el.textContent || "")) el.textContent = t;
       }
     });
+    ensureReadyToEatNav();
+    ensureBiryaniCard();
   };
 
   setTimeout(fixUI, 500);
   setTimeout(fixUI, 1200);
   setTimeout(fixUI, 2500);
   setTimeout(fixUI, 5000);
-  setInterval(fixUI, 2000);
+  setInterval(fixUI, 2500);
   const mo = new MutationObserver(() => { setTimeout(fixUI, 100); });
   mo.observe(document.documentElement, { childList: true, subtree: true });
 })();
