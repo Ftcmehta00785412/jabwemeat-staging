@@ -32,3 +32,6 @@
 
 /* Biryani menu additions retain the original storefront typography. */
 .product-tagline,.product-accompaniments{font-size:10px;line-height:1.6;margin-top:7px;color:var(--muted)}.product-tagline{color:var(--ink)}.category-tiles{grid-template-columns:repeat(6,minmax(0,1fr))}.nav-inner{gap:clamp(15px,3vw,40px)}@media(max-width:620px){.product-tagline,.product-accompaniments{font-size:9px}.nav-inner{gap:24px}}
+
+/* Supplied chicken photographs retain the same product-card frame. */
+.product-image-button.product-photograph img{object-fit:cover;object-position:center;mix-blend-mode:normal}

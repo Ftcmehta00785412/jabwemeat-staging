@@ -40,7 +40,8 @@ export function connectCatalogue(onChange) {
         if(!id || !categories.some(item=>item.id===category) || !Number.isFinite(Number(row.price)))return null;
         return {
           id, category, name:String(row.name), description:String(row.description || 'Product description pending approval.'),
-          image:category==='biryani' ? `biryani-${String(row.slug).startsWith('paneer-') ? 'paneer' : String(row.slug).startsWith('veg-') ? 'veg' : 'chicken'}` : /prawn|shrimp/i.test(row.name) ? 3 : (theme?.image ?? 0),
+          photograph:/chicken.*(?:drumstick|wings)/i.test(row.name),
+          image:/chicken.*drumstick/i.test(row.name) ? 'chicken-drumstick-photo' : /chicken.*wings/i.test(row.name) ? 'chicken-wings-photo' : category==='biryani' ? `biryani-${String(row.slug).startsWith('paneer-') ? 'paneer' : String(row.slug).startsWith('veg-') ? 'veg' : 'chicken'}` : /prawn|shrimp/i.test(row.name) ? 3 : (theme?.image ?? 0),
           tag:Number(row.stock)>0 ? (row.featured ? 'A HOUSE FAVOURITE' : 'ON THE MENU') : 'CURRENTLY SOLD OUT',
           tagline:category==='biryani' ? String(row.description || '').split(' Served with ')[0] : '',
           accompaniments:category==='biryani' ? 'Served with Raita, Pickle, Salad.' : '',
