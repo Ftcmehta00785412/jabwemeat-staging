@@ -37,7 +37,7 @@ Vercel builds the `dist` folder from this repository. Production-shaped local pr
 
 Both applications share the existing JabWeMeat staging Supabase connection. `.env.example` documents optional browser-safe overrides. Never commit service-role keys, secret keys or passwords. Admin login and access checks remain in place; merely knowing the admin URL grants no access.
 
-The connected staging database was reported inactive during setup. Restore it before testing authentication, orders or real-time inventory. Existing migrations are preserved and are not automatically applied by the frontend build. Do not re-run migrations without checking the database history.
+The existing staging database was restored on 22 October 2026 and reported `ACTIVE_HEALTHY`. Anonymous storefront reads of products, categories, delivery slots and settings were verified after applying `013_restore_public_catalogue_access.sql` (remote migration name: `restore_public_catalogue_access`). This splits anonymous active-catalogue reads from authenticated access policies without granting anonymous access to the admin helper or changing business records. Existing migrations are preserved and are not automatically applied by the frontend build. Do not re-run migrations without checking the database history.
 
 While live data is unavailable, a prominent preview notice labels the sample catalogue, and checkout is disabled. Admin sign-in remains access-controlled. Loading the login page does not mean authentication or database operations have been verified. Frontend styling is compiled at build time, rather than downloaded from a runtime CSS/JavaScript CDN.
 
@@ -47,4 +47,4 @@ The requested Pinterest video could not be inspected. This update preserves the 
 
 ## Next launch steps
 
-Restore and audit staging; test product edits, login and COD order lifecycle; verify inventory and slot limits; approve actual imagery, business details and policies; then configure the final domain and production environment. Add online payments only after server-side payment verification is ready.
+Complete an authenticated admin sign-in and controlled COD order lifecycle test; test real-time product edits; review security-advisor warnings and guest-checkout abuse protections; verify inventory and slot limits; reconcile the database catalogue with intended products; approve actual imagery, business details and policies; then configure the final domain and production environment. Restoring the database does not certify the store for public ordering. Add online payments only after server-side payment verification is ready.
