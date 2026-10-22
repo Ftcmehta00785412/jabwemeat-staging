@@ -70,7 +70,7 @@ function AuthScreen({ message }: { message?: string }) {
     setBusy(true); setError('');
     const { error: sendError } = await supabase.auth.signInWithOtp({
       email: normalizedEmail,
-      options: { shouldCreateUser: false }
+      options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/admin-dashboard/` }
     });
     setBusy(false);
     if (sendError) { setError(describeError(sendError.message)); return; }
