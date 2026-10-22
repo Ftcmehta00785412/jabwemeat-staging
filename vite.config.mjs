@@ -29,7 +29,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         storefront: resolve(root, 'index.html'),
-        admin: resolve(root, 'admin-dashboard/index.html')
+        admin: resolve(root, 'admin-dashboard/index.html'),
+        checkout: resolve(root, 'checkout/index.html')
       }
     }
   }

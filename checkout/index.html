@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8f5ee"><meta name="robots" content="noindex,nofollow">
+  <title>Checkout · JabWeMeat</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/original-theme/favicon.svg">
+  <script type="module" src="./payment.js"></script>
+</head>
+<body>
+  <div class="preview">PAYMENT SETUP PREVIEW <span>· No money is collected. No order is placed.</span></div>
+  <header><a class="brand" href="/">Jab<span>We</span>Meat<span>.</span></a><a class="back" href="/">← Back to the menu</a></header>
+  <main>
+    <div class="intro"><p class="eyebrow">A LITTLE CLOSER TO SOMETHING DELICIOUS</p><h1>The good part?<br><em>Almost here.</em></h1><p>One place for your bag, delivery details and payment.</p></div>
+    <div class="layout">
+      <section class="steps" aria-label="Checkout details">
+        <article class="panel"><div class="section-title"><span class="number">01</span><div><h2>Delivery details</h2><p>A good meal starts with the right address.</p></div><span class="tag">Not open yet</span></div>
+          <p class="notice">Address collection opens after delivery rules and payment testing are complete. These fields are a layout preview only.</p>
+          <fieldset disabled><legend class="sr-only">Delivery form preview — disabled</legend><div class="fields"><label>Full name<input autocomplete="off" placeholder="Your name"></label><label>Phone number<input type="tel" autocomplete="off" placeholder="10-digit mobile number"></label><label class="wide">Delivery address<input autocomplete="off" placeholder="House / flat, building and street"></label><label>Delivery PIN code<input inputmode="numeric" placeholder="6-digit PIN code"></label><label>Delivery slot<select><option>Available after setup</option></select></label></div></fieldset>
+        </article>
+        <article class="panel payment"><div class="section-title"><span class="number">02</span><div><h2>Payment</h2><p>Planned payment partner: Razorpay.</p></div></div>
+          <div class="gateway"><span class="gateway-icon" aria-hidden="true">↗</span><div><strong>Razorpay Checkout</strong><p>Available methods will be shown by Razorpay after your account is connected.</p></div><span class="tag">Setup pending</span></div>
+          <div class="methods" aria-label="Planned methods, subject to account availability"><span>UPI</span><span>Cards</span><span>Netbanking</span><span>Wallets</span></div>
+          <p class="security">Payment details will be entered in Razorpay’s checkout—not stored in this page. Methods depend on your account configuration.</p>
+          <div class="pending"><strong>First, a safe test run.</strong><p>Razorpay credentials are not connected. Test transactions, secure payment verification and order creation must be completed before payments can open.</p></div>
+        </article>
+      </section>
+      <aside class="panel summary" aria-labelledby="summary-title"><p class="eyebrow">YOUR NEXT DELICIOUS BEGINNING</p><h2 id="summary-title">In your bag.</h2><div id="bag-lines" aria-live="polite"><p>Connecting to the catalogue…</p></div><div class="totals"><div><span>Items subtotal</span><strong id="subtotal">—</strong></div><div><span>Delivery</span><span>Not configured</span></div><div><span>Taxes / other fees</span><span>Not configured</span></div><div class="total"><span>Final payable amount</span><span>Not available</span></div></div><button class="pay" disabled aria-describedby="payment-status">Payments not enabled</button><p id="payment-status" class="fine">No payment can be initiated from this preview. Prices are from staging and are not a final retail offer.</p><a class="continue" href="/">Keep exploring the menu ↗</a></aside>
+    </div>
+    <footer><span>Good food. Great company. JabWeMeat.</span><span>Pre-launch · Payment setup pending</span></footer>
+  </main>
+</body>
+</html>
