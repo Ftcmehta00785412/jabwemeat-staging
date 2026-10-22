@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f8f5ee"><meta name="robots" content="noindex,nofollow">
-  <title>Checkout · JabWeMeat</title>
+  <title>Checkout · <span class="brand-name">JabWeMeat<sup class="brand-tm" aria-label="trademark">™</sup></span></title>
   <link rel="icon" type="image/svg+xml" href="/assets/original-theme/favicon.svg">
   <script type="module" src="./payment.js"></script>
+  <style>.brand-tm{position:relative;top:-.55em;font-size:.52em;line-height:0;vertical-align:baseline;letter-spacing:0;margin-left:.1em}.brand>.brand-tm{font-size:.3em;top:-1.55em}.brand-name{white-space:nowrap}</style>
 </head>
 <body>
   <div class="preview">RAZORPAY TEST CHECKOUT <span>· Test mode only. No real money or customer order.</span></div>
-  <header><a class="brand" href="/">Jab<span>We</span>Meat<span>.</span></a><a class="back" href="/">← Back to the menu</a></header>
+  <header><a class="brand" href="/">Jab<span>We</span>Meat<sup class="brand-tm" aria-label="trademark">™</sup><span>.</span></a><a class="back" href="/">← Back to the menu</a></header>
   <main>
     <div class="intro"><p class="eyebrow">A LITTLE CLOSER TO SOMETHING DELICIOUS</p><h1>The good part?<br><em>Almost here.</em></h1><p>One place for your bag, delivery details and payment.</p></div>
     <div class="layout">
@@ -22,12 +23,12 @@
           <div class="gateway"><span class="gateway-icon" aria-hidden="true">↗</span><div><strong>Razorpay Checkout</strong><p>Choose a test payment method inside Razorpay’s modal.</p></div><span class="tag" id="gateway-status">Checking setup</span></div>
           <div class="methods" aria-label="Planned methods, subject to account availability"><span>UPI</span><span>Cards</span><span>Netbanking</span><span>Wallets</span></div>
           <p class="security">Payment details will be entered in Razorpay’s checkout—not stored in this page. Methods depend on your account configuration.</p>
-          <div class="pending"><strong>First, a safe test run.</strong><p id="setup-note">Checking server configuration. Only signed-in administrators can run test payments. Live keys are blocked. No delivery order is created and inventory is not reserved.</p><a href="/admin-dashboard/">Sign in to admin ↗</a></div>
+          <div class="pending"><strong>First, a safe test run.</strong><p id="setup-note">Checking server configuration. Only signed-in administrators can run test payments. Live keys are blocked. No delivery order is created and inventory is not reserved.</p></div>
         </article>
       </section>
       <aside class="panel summary" aria-labelledby="summary-title"><p class="eyebrow">YOUR NEXT DELICIOUS BEGINNING</p><h2 id="summary-title">In your bag.</h2><div id="bag-lines" aria-live="polite"><p>Connecting to the catalogue…</p></div><div class="totals"><div><span>Items subtotal</span><strong id="subtotal">—</strong></div><div><span>Delivery</span><span>Excluded from test</span></div><div><span>Taxes / other fees</span><span>Excluded from test</span></div><div class="total"><span>Test amount</span><span id="test-amount">—</span></div></div><button id="pay-button" class="pay" disabled aria-describedby="payment-status">Checking payment setup…</button><button id="verify-button" class="pay secondary" hidden>Recheck payment status</button><p id="payment-status" class="fine" role="status" aria-live="polite">No real money is collected. The server rechecks your bag prices before opening Razorpay.</p><div id="test-result" class="pending" hidden></div><a class="continue" href="/">Keep exploring the menu ↗</a></aside>
     </div>
-    <footer><span>Good food. Great company. JabWeMeat.</span><span>Pre-launch · Administrator payment testing only</span></footer>
+    <footer><span>Good food. Great company. <span class="brand-name">JabWeMeat<sup class="brand-tm" aria-label="trademark">™</sup></span>.</span><span>Pre-launch · Administrator payment testing only</span></footer>
   </main>
 </body>
 </html>

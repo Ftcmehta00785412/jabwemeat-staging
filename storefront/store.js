@@ -134,7 +134,7 @@ const info = {
   terms: { title: 'Terms & policies', body: '<p>This is a non-transactional design preview, not an offer to sell. Staging prices, product names, pack sizes, ingredients and images are not verified product specifications.</p><p>Delivery, cancellation, refund, consumer-grievance, terms-of-sale and privacy policies have not been approved. They must be finalised for the actual business before the website accepts any orders.</p><div class="notice warning">No orders, payments or reservations can be made through this preview.</div>' },
   images: { title: 'A note on the imagery', body: '<p>The food images in this preview are original, generated illustrations created for the JabWeMeat design concept. They are not photographs of real inventory or supplier products.</p><p>Category illustrations are reused for some sample product variants. Garnishes and cooked serving suggestions do not indicate the contents of a product pack.</p><p>Replace these with accurate, approved product photography before accepting orders.</p>' }
 };
-function openInfo(topic) { const content = info[topic]; if (!content) return; $('#dialog-content').innerHTML = `${header(content.title)}<div class="dialog-inner info-body">${content.body}</div>`; openDialog('info'); }
+function openInfo(topic) { const content = info[topic]; if (!content) return; $('#dialog-content').innerHTML = `${header(content.title)}<div class="dialog-inner info-body">${brandInfoHTML(content.body)}</div>`; openDialog('info'); }
 
 document.addEventListener('click', event => {
   const button = event.target.closest('[data-action]');
@@ -193,3 +193,5 @@ connectCatalogue(() => {
   if (state.modal === 'product') { if(productById(state.product)) renderProductDetails(); else closeDialog(); }
 
 });
+
+function brandInfoHTML(html) { return html.replace(/\bJabWeMeat\b/g, 'JabWeMeat<sup class="brand-tm" aria-label="trademark">™</sup>'); }

@@ -1,0 +1,1 @@
+import '../storefront/theme.css';
