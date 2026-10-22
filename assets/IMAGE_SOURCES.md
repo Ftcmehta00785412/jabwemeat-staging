@@ -13,4 +13,6 @@ All eight files are local WebP derivatives prepared from the documented public s
 | `tikka.webp` | Unsplash photo `1599487488170-d11ec9c172f0` | Unsplash License | https://images.unsplash.com/photo-1599487488170-d11ec9c172f0 |
 | `family-combo.webp` | Composite made locally from the downloaded `chicken-breast.webp`, `rohu.webp`, `prawns.webp`, and `eggs.webp` source images above | Inherits the listed source licenses | Local composition; no additional source |
 
-No files were changed in GitHub.
+These source and license claims were inherited with the repository and have not been independently reverified in this update. All fallback photographs are illustrative staging imagery, not verified product photographs. Replace them with approved photographs before accepting customer orders.
+
+The product-card fallbacks now use local files instead of third-party retailer and image-proxy URLs. `product-placeholder.svg` is an original neutral placeholder used where suitable product photography is not available. Historical unused image files are retained to preserve the original assets.

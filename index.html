@@ -12,8 +12,7 @@
     <meta property="og:image" content="/assets/hero-chicken.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230d4529'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='28' font-family='Georgia,serif' fill='%23b5d98e'%3EJ%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5" type="text/css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5/colors/properties-extended.css" type="text/css" />
+    <link rel="stylesheet" href="/tailwind.css" />
     <style>
 [data-theme='alfred-light'] {
   color-scheme: light; --radius-selector: 0rem; --radius-field: 0.25rem; --radius-box: 0.25rem; --size-selector: 0.25rem; --size-field: 0.25rem; --border: 1px; --depth: 1; --noise: 0;
@@ -21,12 +20,10 @@
 }
 [data-theme='alfred-dark'] { color-scheme: dark; --color-base-100:#121215; --color-base-200:#1a1a1e; --color-base-300:#252529; --color-base-content:#f5f5f5; --color-primary:#2a7a4a; --color-primary-content:#f5f5f5; --color-secondary:#9aa2ff; --color-secondary-content:#121215; --color-accent:#d86443; --color-accent-content:#fff; --color-neutral:#3a3a42; --color-neutral-content:#b8b8c0; --color-info:#2a7a4a; --color-info-content:#121215; --color-success:#2a7a4a; --color-success-content:#f5f5f5; --color-warning:#b8860b; --color-warning-content:#121215; --color-coral:#d86443; --color-coral-80:#803b21; --color-error:#9e3d32; --color-error-content:#f5f5f5; }
 </style>
-    <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="visual-polish.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script>
       (function() { document.documentElement.setAttribute('data-theme', 'alfred-light'); })();
     </script>
   </head>
-  <body class="bg-base-100 text-base-content"><div id="root"></div><script src="bundle.js"></script></body>
+  <body class="bg-base-100 text-base-content"><div id="root"></div><script type="module" src="/app.tsx"></script></body>
 </html>

@@ -18,6 +18,7 @@ type Props = {
   sessionKey: string;
   onSuccess: (result: any) => void;
   language?: Language;
+  checkoutReady?: boolean;
 };
 type Form = {
   name: string;
@@ -45,12 +46,13 @@ export const CartDrawer: React.FC<Props> = ({
   serviceablePins = SERVICEABLE_PINS,
   sessionKey,
   onSuccess,
-  language = 'en'
+  language = 'en',
+  checkoutReady = false
 }) => {
   const availableSlots: DeliverySlot[] = slots.length
     ? slots
     : SLOTS.map(label => ({ label }));
-  const liveSlotsReady = availableSlots.some(s => s.id && isUuid(String(s.id)));
+  const liveSlotsReady = checkoutReady && availableSlots.some(s => s.id && isUuid(String(s.id)));
 
   const [form, setForm] = useState<Form>({
     name: '',
@@ -90,6 +92,7 @@ export const CartDrawer: React.FC<Props> = ({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (!checkoutReady) { setError(t(language, 'offlineCheckout')); return; }
 
     if (cart.some(item => !isUuid(item.id))) {
       setError(t(language, 'olderItem'));
@@ -111,6 +114,7 @@ export const CartDrawer: React.FC<Props> = ({
     }
 
     setBusy(true);
+    try {
     const { data, error: rpcError } = await supabase.rpc('place_cod_order', {
       p_session_key: sessionKey,
       p_customer_name: form.name.trim(),
@@ -134,6 +138,9 @@ export const CartDrawer: React.FC<Props> = ({
       return;
     }
     onSuccess(data);
+    } catch {
+      setError('Could not reach the store. Check your connection and try again.');
+    } finally { setBusy(false); }
   };
 
   if (!open) return null;
@@ -158,6 +165,7 @@ export const CartDrawer: React.FC<Props> = ({
         </div>
 
         <div className="cart-drawer-body flex-1 space-y-4 overflow-y-auto p-4">
+          {!checkoutReady && <p className="checkout-error" role="status">{t(language, 'offlineCheckout')}</p>}
           {!cart.length ? (
             <div className="grid place-items-center gap-2 py-20 text-center">
               <span className="text-5xl">🛒</span>

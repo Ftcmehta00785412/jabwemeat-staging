@@ -192,7 +192,7 @@ function App() {
   return <div className="shell"><aside className={mobile ? 'open' : ''}><div className="logo"><span>J</span><div><b>JAB<span>WE</span>MEAT<sup>™</sup></b><small>ADMIN CONSOLE</small></div></div>
     <nav>{visibleNav.map(([name, Icon]) => <button className={tab === name ? 'active' : ''} onClick={() => { setTab(name); setMobile(false); }} key={name}><Icon />{name}{name === 'Orders' && activeOrders.length > 0 && <i>{activeOrders.length}</i>}</button>)}</nav>
     <div className="admin-user"><div>{profileInitials}</div><p><b>{profileName}</b><small>{session.user.email}</small></p><button title="Sign out" onClick={() => supabase.auth.signOut()}><LogOut /></button></div></aside>
-    {mobile && <div className="scrim" onClick={() => setMobile(false)} />}<main><header><button className="menu" onClick={() => setMobile(true)}><Menu /></button><div><h1>{tab}</h1><p>Live staging · {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p></div><label><Search /><input placeholder="Search orders, SKU, customers…" /></label><button className="bell"><Bell /><i /></button><button className="store" onClick={() => window.open('../apps/jabwemeat-store/index.html', '_blank')}>View store <ArrowUpRight /></button></header>
+    {mobile && <div className="scrim" onClick={() => setMobile(false)} />}<main><header><button className="menu" onClick={() => setMobile(true)}><Menu /></button><div><h1>{tab}</h1><p>Live staging · {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p></div><label><Search /><input placeholder="Search orders, SKU, customers…" /></label><button className="bell"><Bell /><i /></button><button className="store" onClick={() => window.open('/', '_blank', 'noopener,noreferrer')}>View store <ArrowUpRight /></button></header>
       <section className="content">{error && <div className="error-banner page-error">{error}<button onClick={() => { setError(''); loadAll(); }}><RefreshCw /> Retry</button></div>}{loading && <div className="sync-note">Syncing live data…</div>}
         {tab === 'Dashboard' && <Overview active={activeOrders.length} value={todayValue} products={products.filter(p => p.active !== false).length} carts={carts.length} low={low} orders={orders} onTab={setTab} profileName={profileName} canInventoryEdit={canEdit('Inventory')} canOrdersView={canView('Orders')} />}
         {tab === 'Orders' && <Orders orders={orders} refresh={loadAll} editable={canEdit('Orders')} fullAccess={role === 'Owner' || role === 'Admin'} slots={slots} />}
@@ -218,7 +218,7 @@ function Orders({ orders, refresh, editable, fullAccess, slots }: any) {
 
   const loadDetail = async (order: any) => {
     setSelected(order); setDetailBusy(true); setActionError('');
-    const [items, payments, assignments, notes, timeline, executives] = await Promise.all([
+    const [items, payments, assignments, notes, timeline, executives, refunds, proofs] = await Promise.all([
       supabase.from('order_items').select('*,order_item_preparation(*)').eq('order_id', order.id).order('id'),
       supabase.from('payments').select('*').eq('order_id', order.id).order('created_at'),
       supabase.from('order_assignments').select('*,delivery_executives(*)').eq('order_id', order.id),

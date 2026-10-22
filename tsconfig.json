@@ -10,7 +10,8 @@
     "baseUrl": ".",
     "types": [
       "react",
-      "react-dom"
+      "react-dom",
+      "vite/client"
     ]
   },
   "include": [
@@ -20,8 +21,9 @@
   ],
   "exclude": [
     "node_modules",
-    "admin-dashboard",
     "public",
+    "dist",
+    "admin-dashboard/public",
     "bundle.js"
   ]
 }

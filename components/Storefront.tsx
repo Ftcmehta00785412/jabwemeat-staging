@@ -16,16 +16,17 @@ import {
 import { CATEGORIES } from '../data';
 import { ProductCard } from './ProductCard';
 import type { CartItem, Product, Language } from '../types';
-import { localizedCategory, t } from '../i18n';
+import { localizedCategory, t, type TranslationKey } from '../i18n';
 
 const categoryImages: Record<string, string> = {
-  All: 'assets/family-combo.webp',
+  All: 'assets/hero-chicken.webp',
   Chicken: 'assets/chicken-curry.webp',
-  Mutton: 'assets/mutton.webp',
-  'Fish & Seafood': 'assets/rohu.webp',
+  Mutton: 'assets/product-placeholder.svg',
+  'Fish & Seafood': 'assets/product-placeholder.svg',
   Eggs: 'assets/eggs.webp',
   'Ready to Cook': 'assets/tikka.webp',
-  Combos: 'assets/family-combo.webp'
+  'Ready to Eat': 'assets/product-placeholder.svg',
+  Combos: 'assets/product-placeholder.svg'
 };
 
 type Slot = { id?: string; label: string };
@@ -78,7 +79,7 @@ export const Storefront: React.FC<Props> = ({
     'steaks',
     'chops'
   ];
-  const filterLabels: Record<string, string> = {
+  const filterLabels: Record<string, TranslationKey> = {
     'bone-in': 'filterBoneIn',
     boneless: 'filterBoneless',
     skinless: 'filterSkinless',

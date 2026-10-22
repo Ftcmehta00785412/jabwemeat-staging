@@ -10,15 +10,15 @@ import {
 } from '../i18n';
 
 const byId: Record<string, string> = {
-  p1: 'https://static.wixstatic.com/media/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg/v1/fill/w_900,h_675,al_c,q_90,usm_0.66_1.00_0.01/8bcb0b_b2ae4acc71f3497d97336e5df97d5ec0~mv2.jpg',
-  p2: 'https://images.weserv.nl/?url=www.starquik.com/cdn/shop/files/Starfresh_Chicken_Breast_Boneless_1_Kg_Front_e2047377-7376-4980-8e4b-b6bcc56b5d4c.jpg&w=900&h=675&fit=contain&cbg=white&output=webp&q=90',
-  p3: 'https://images.weserv.nl/?url=litter.catbox.moe/7s746z.webp&w=900&h=675&fit=cover&output=webp&q=85',
-  p4: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&h=675&q=85',
-  p5: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=900&h=675&q=85',
-  p6: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ1m5uC3SQNra7ZQF6YzEZplNwVC41oknw593aKAIjUQuJsL2J3iBiq0ir&s=10',
-  p7: 'https://images.weserv.nl/?url=illustrake.zappfresh.com/6a904eccc05e26f328ed9738&w=900&h=675&fit=cover&output=webp&q=90',
-  p8: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&h=675&q=85',
-  p10: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBjTfNdM-oVdnnZwc7r4RJs6kAEyE3jAYACoL5s9gpHf0E2XhqWHhGH6A&s=10'
+  p1: '/assets/chicken-curry.webp',
+  p2: '/assets/chicken-breast.webp',
+  p3: '/assets/product-placeholder.svg',
+  p4: '/assets/product-placeholder.svg',
+  p5: '/assets/prawns.webp',
+  p6: '/assets/eggs.webp',
+  p7: '/assets/tikka.webp',
+  p8: '/assets/product-placeholder.svg',
+  p10: '/assets/product-placeholder.svg'
 };
 
 const bySku: Record<string, string> = {
@@ -48,7 +48,7 @@ function resolveImage(product: Product): string {
   if (n.includes('combo')) return byId.p8;
   if (n.includes('chicken') && n.includes('curry')) return byId.p1;
   if (n.includes('curry cut') && !n.includes('mutton')) return byId.p1;
-  return byId.p1;
+  return '/assets/product-placeholder.svg';
 }
 
 type Props = {
@@ -97,6 +97,7 @@ export const ProductCard: React.FC<Props> = ({
           width={900}
           height={675}
           decoding="async"
+          onError={e => { const image = e.currentTarget; if (!image.src.endsWith('/assets/product-placeholder.svg')) image.src = '/assets/product-placeholder.svg'; }}
           style={{
             objectFit: isBreast ? 'contain' : 'cover',
             width: '100%',

@@ -6,7 +6,7 @@ import { CartDrawer } from './components/CartDrawer';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { AccountPanel } from './components/AccountPanel';
 import type { User } from '@supabase/supabase-js';
-import { PRODUCTS, SERVICEABLE_PINS, SLOTS } from './data';
+import { CATEGORIES, PRODUCTS, SERVICEABLE_PINS, SLOTS } from './data';
 import { supabase } from './supabase';
 import type { AppView, CartItem, Product, Language } from './types';
 import { t, localizedCategory } from './i18n';
@@ -67,15 +67,7 @@ const adapt = (p: any): Product => {
 const App: React.FC = () => {
   const [view, setView] = useState<AppView>('store');
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
-  const [categories, setCategories] = useState<string[]>([
-    'All',
-    'Chicken',
-    'Mutton',
-    'Fish & Seafood',
-    'Eggs',
-    'Ready to Cook',
-    'Combos'
-  ]);
+  const [categories, setCategories] = useState<string[]>([...CATEGORIES]);
   const [slots, setSlots] = useState<Slot[]>(SLOTS.map(label => ({ id: '', label })));
   const [pins, setPins] = useState(SERVICEABLE_PINS);
   const [language, setLanguage] = useState<Language>('en');
@@ -88,6 +80,7 @@ const App: React.FC = () => {
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [liveReady, setLiveReady] = useState(false);
   const [success, setSuccess] = useState<any>();
 
   const key = useMemo(sessionKey, []);
@@ -114,7 +107,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem('jwm-cart', JSON.stringify(cart));
-    if (!loading && cart.length) {
+    if (liveReady && cart.length) {
       supabase.rpc('save_cart', {
         p_session_key: key,
         p_customer_name: null,
@@ -124,34 +117,37 @@ const App: React.FC = () => {
         p_items: cart.map(i => ({ product_id: i.id, quantity: i.quantity }))
       });
     }
-  }, [cart, pincode, key, loading]);
+  }, [cart, pincode, key, liveReady]);
 
   useEffect(() => {
     let alive = true;
     const load = async () => {
+      const signal = AbortSignal.timeout(12000);
       const [p, c, s, settings] = await Promise.all([
         supabase
           .from('products')
           .select('*,categories(name)')
           .eq('active', true)
-          .order('created_at'),
-        supabase.from('categories').select('name').eq('active', true).order('sort_order'),
+          .order('created_at').abortSignal(signal),
+        supabase.from('categories').select('name').eq('active', true).order('sort_order').abortSignal(signal),
         supabase
           .from('delivery_slots')
           .select('id,label')
           .eq('active', true)
-          .order('sort_order'),
-        supabase.from('store_settings').select('key,value')
+          .order('sort_order').abortSignal(signal),
+        supabase.from('store_settings').select('key,value').abortSignal(signal)
       ]);
       if (!alive) return;
 
-      if (!p.error && p.data?.length) {
-        const live = p.data.map(adapt);
+      const ready = ![p, c, s, settings].some(result => result.error);
+      setLiveReady(ready);
+      if (!p.error) {
+        const live = (p.data || []).map(adapt);
         setProducts(live);
         setCart(old =>
           old.flatMap(i => {
             const n = live.find(x => x.id === i.id || x.sku === i.sku);
-            if (!n) return [];
+            if (!n || n.stock <= 0) return [];
             return [
               {
                 ...n,
@@ -165,9 +161,7 @@ const App: React.FC = () => {
       if (!c.error && c.data?.length) {
         setCategories(['All', ...c.data.map((x: any) => x.name)]);
       }
-      if (!s.error && s.data?.length) {
-        setSlots(s.data as Slot[]);
-      }
+      setSlots(!s.error ? (s.data || []) as Slot[] : []);
       if (!settings.error) {
         const pin = (settings.data || []).find((x: any) => x.key === 'serviceable_pins');
         if (Array.isArray(pin?.value) && pin.value.length) {
@@ -179,14 +173,15 @@ const App: React.FC = () => {
       setLoading(false);
     };
 
-    load();
+    const safeLoad = () => load().catch(() => { if (alive) { setLiveReady(false); setSlots([]); setLoading(false); } });
+    safeLoad();
     const ch = supabase
       .channel('store-live')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, load)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, safeLoad)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'delivery_slots' },
-        load
+        safeLoad
       )
       .subscribe();
 
@@ -245,6 +240,9 @@ const App: React.FC = () => {
         onAccount={() => setAccountOpen(true)}
         accountEmail={user?.email}
       />
+      <div className="staging-status" role="status">
+        {loading ? t(language, 'loadingPreview') : liveReady ? t(language, 'preview') : t(language, 'offlinePreview')}
+      </div>
       {privacyOpen && <PrivacyPolicy onClose={() => setPrivacyOpen(false)} />}
       <AccountPanel
         open={accountOpen}
@@ -292,6 +290,7 @@ const App: React.FC = () => {
         slots={slots}
         serviceablePins={pins}
         sessionKey={key}
+        checkoutReady={liveReady && !loading}
         onSuccess={r => {
           setCart([]);
           setCartOpen(false);
@@ -357,7 +356,7 @@ const App: React.FC = () => {
           <span>
             {loading
               ? t(language, 'loading')
-              : 'Fresh delivery · COD · Ranchi'}
+              : liveReady ? t(language, 'preview') : t(language, 'offlineCheckout')}
           </span>
         </div>
       </footer>
