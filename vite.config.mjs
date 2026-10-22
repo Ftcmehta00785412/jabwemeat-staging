@@ -30,6 +30,7 @@ export default defineConfig({
       input: {
         storefront: resolve(root, 'index.html'),
         faq: resolve(root, 'faq/index.html'),
+        privacy: resolve(root, 'privacy-policy/index.html'),
         admin: resolve(root, 'admin-dashboard/index.html'),
         checkout: resolve(root, 'checkout/index.html')
       }
