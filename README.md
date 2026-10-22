@@ -41,6 +41,12 @@ The existing staging database was restored on 22 October 2026 and reported `ACTI
 
 While live data is unavailable, a prominent preview notice labels the sample catalogue, and checkout is disabled. Admin sign-in remains access-controlled. Loading the login page does not mean authentication or database operations have been verified. Frontend styling is compiled at build time, rather than downloaded from a runtime CSS/JavaScript CDN.
 
+### Browse-only staging safety hold
+
+Restoring the database does not open customer ordering. `STAGING_COMMERCE_ENABLED` remains false: catalogue reads and local cart testing work, but browser cart synchronisation and checkout are paused. Migration `014_staging_browse_only.sql` (staging only) also revokes guest and signed-in execution of `place_cod_order` and `save_cart`; hiding a button alone is not a security boundary. Trigger-only helpers no longer have unnecessary visitor execution grants. Existing order, payment, stock and customer records are preserved, and COD/payment settings are unchanged.
+
+Before re-enabling commerce, add and test duplicate-submission protection, server-side slot-capacity/cutoff enforcement, input and cart-ownership validation, and guest-checkout abuse controls. Review the remaining authenticated-function warnings and [password protection guidance](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). Admin operations have server-side role checks; their existence is not an end-to-end security certification. Do not simply flip the frontend constant or restore database grants to bypass this review.
+
 ## Design reference
 
 The requested Pinterest video could not be inspected. This update preserves the supplied repository's design; it does not claim to match that video. Supply screenshots or the video, or approve browser inspection, for a separate design pass.

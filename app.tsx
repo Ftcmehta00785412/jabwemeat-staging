@@ -7,7 +7,7 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { AccountPanel } from './components/AccountPanel';
 import type { User } from '@supabase/supabase-js';
 import { CATEGORIES, PRODUCTS, SERVICEABLE_PINS, SLOTS } from './data';
-import { supabase } from './supabase';
+import { supabase, STAGING_COMMERCE_ENABLED } from './supabase';
 import type { AppView, CartItem, Product, Language } from './types';
 import { t, localizedCategory } from './i18n';
 import './styles.css';
@@ -107,7 +107,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem('jwm-cart', JSON.stringify(cart));
-    if (liveReady && cart.length) {
+    if (STAGING_COMMERCE_ENABLED && liveReady && cart.length) {
       supabase.rpc('save_cart', {
         p_session_key: key,
         p_customer_name: null,
@@ -290,7 +290,7 @@ const App: React.FC = () => {
         slots={slots}
         serviceablePins={pins}
         sessionKey={key}
-        checkoutReady={liveReady && !loading}
+        checkoutReady={STAGING_COMMERCE_ENABLED && liveReady && !loading}
         onSuccess={r => {
           setCart([]);
           setCartOpen(false);
