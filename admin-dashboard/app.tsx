@@ -10,6 +10,8 @@ import {
 import { supabase } from './supabase';
 import './styles.css';
 import './original-theme.css';
+import { signInWithGoogle, googleReturnError } from '../auth/google';
+import '../auth/google.css';
 
 type Tab = 'Dashboard' | 'Orders' | 'Inventory' | 'Customers' | 'Abandoned Carts' | 'Invoices' | 'Delivery slots' | 'Team';
 type Area = Tab;
@@ -47,7 +49,7 @@ function AuthScreen({ message }: { message?: string }) {
   const [code, setCode] = useState('');
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(googleReturnError);
   const [cooldownUntil, setCooldownUntil] = useState(0);
   const [cooldown, setCooldown] = useState(0);
 
@@ -60,6 +62,12 @@ function AuthScreen({ message }: { message?: string }) {
   }, [cooldownUntil]);
 
   const normalizedEmail = email.trim().toLowerCase();
+  const googleSignIn = async () => {
+    setBusy(true); setError('');
+    try { await signInWithGoogle('admin'); }
+    catch (err) { setError(err instanceof Error ? err.message : 'Could not start Google sign-in.'); }
+    finally { setBusy(false); }
+  };
   const describeError = (raw: string) => /rate limit|too many|limit exceeded/i.test(raw)
     ? 'Too many code requests. Please wait a minute before trying again.'
     : raw;
@@ -87,6 +95,7 @@ function AuthScreen({ message }: { message?: string }) {
 
   return <div className="auth-shell"><section className="auth-brand-panel"><a className="auth-wordmark" href="/">Jab<span>We</span>Meat.</a><div><span className="auth-brand-eyebrow">THE PEOPLE BEHIND THE FRESHNESS</span><h2>Good food.<br />Great teamwork.</h2><p>Your daily operations, brought together in one thoughtfully simple space.</p><div className="auth-brand-tags"><span>Fresh perspectives</span><span>Seamless operations</span></div></div><small>JABWEMEAT · OPERATIONS CONSOLE</small></section><div className="auth-form-panel"><div className="auth-card"><div className="auth-mark"><ShieldCheck aria-hidden="true" /></div><span className="auth-kicker">SECURE TEAM ACCESS</span><div className="auth-steps"><span className="done">01 · Email</span><i /><span className={sent ? 'done' : ''}>02 · Verify</span></div><h1>{sent ? 'Check your inbox.' : 'Welcome back.'}</h1><p>{sent ? 'Enter your one-time email code below to securely access your workspace.' : 'Sign in to your JabWeMeat workspace. No passwords to remember, just your work email.'}</p>
     {message && <div className="error-banner">{message}</div>}
+    {!sent && <><button type="button" className="google-signin" disabled={busy} onClick={googleSignIn}><span aria-hidden="true">G</span>{busy ? 'Please wait…' : 'Continue with Google'}</button><p className="auth-divider">or use your approved work email</p></>}
     {sent ? <form onSubmit={verifyCode}><div className="auth-email-receipt" role="status"><Mail aria-hidden="true" /><span>Code requested for<strong>{normalizedEmail}</strong></span></div><label htmlFor="admin-otp">6-digit verification code</label><input id="admin-otp" className="auth-otp-input" aria-describedby="otp-help" autoFocus inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} placeholder="000000" required value={code} disabled={busy} onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))} /><small id="otp-help" className="auth-help">Paste the code from your latest email. Never share it with anyone.</small>{error && <div className="error-banner" role="alert">{error}</div>}<button className="primary wide" disabled={busy || code.length !== 6}>{busy ? 'Verifying…' : 'Verify & enter workspace'}<ArrowUpRight /></button><div className="auth-resend-row"><span>Didn’t receive a code?</span><button type="button" className="auth-secondary" disabled={busy || cooldown > 0} onClick={() => void sendCode()}>{cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend code'}</button></div><button type="button" className="auth-secondary" disabled={busy} onClick={() => { setSent(false); setCode(''); setError(''); }}>← Use another email</button></form> : <form onSubmit={sendCode}><label htmlFor="admin-email">Work email address</label><input id="admin-email" type="email" autoComplete="email" placeholder="you@company.com" required disabled={busy} value={email} onChange={e => setEmail(e.target.value)} />{error && <div className="error-banner" role="alert">{error}</div>}<button className="primary wide" disabled={busy || cooldown > 0}>{busy ? 'Sending code…' : cooldown > 0 ? `Request again in ${cooldown}s` : 'Send email code'}<ArrowUpRight /></button></form>}
     <small className="auth-note"><LockKeyhole aria-hidden="true" /> Only approved, active team members can enter.</small><a className="auth-store-link" href="/">← Back to JabWeMeat</a></div><footer className="auth-footer">A little more secure. A lot more simple.</footer></div></div>;
 }

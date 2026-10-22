@@ -4,6 +4,7 @@ import type { User } from '@supabase/supabase-js';
 import { supabase } from '../supabase';
 import type { Language } from '../types';
 import { t } from '../i18n';
+import { signInWithGoogle, googleReturnError } from '../auth/google';
 
 type Props = {
   open: boolean;
@@ -24,10 +25,17 @@ export const AccountPanel: React.FC<Props> = ({
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState<'email' | 'otp'>('email');
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(googleReturnError);
   const [notice, setNotice] = useState('');
 
   if (!open) return null;
+
+  const googleSignIn = async () => {
+    setBusy(true); setError('');
+    try { await signInWithGoogle('customer'); }
+    catch (err) { setError(err instanceof Error ? err.message : 'Could not start Google sign-in.'); }
+    finally { setBusy(false); }
+  };
 
   const requestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +49,7 @@ export const AccountPanel: React.FC<Props> = ({
     setNotice('');
     const { error: sendError } = await supabase.auth.signInWithOtp({
       email: normalized,
-      options: { shouldCreateUser: false }
+      options: { shouldCreateUser: true, emailRedirectTo: `${window.location.origin}/?account=1` }
     });
     setBusy(false);
     if (sendError) {
@@ -50,7 +58,7 @@ export const AccountPanel: React.FC<Props> = ({
     }
     setEmail(normalized);
     setStep('otp');
-    setNotice(t(language, 'codeSent'));
+    setNotice('Check your newest email and follow the sign-in link. If it contains a code, enter it below. Email sending limits may apply.');
   };
 
   const verifyOtp = async (e: React.FormEvent) => {
@@ -122,7 +130,9 @@ export const AccountPanel: React.FC<Props> = ({
           </>
         ) : step === 'email' ? (
           <form onSubmit={requestOtp}>
-            <p className="account-copy">{t(language, 'accountCopy')}</p>
+            <p className="account-copy">Create an account or sign in with Google. No email code needed.</p>
+            <button type="button" className="google-signin" disabled={busy} onClick={googleSignIn}><span aria-hidden="true">G</span>{busy ? 'Please wait…' : 'Continue with Google'}</button>
+            <p className="auth-divider">or continue with email</p>
             <label>
               {t(language, 'emailAddress')}
               <input
@@ -145,7 +155,7 @@ export const AccountPanel: React.FC<Props> = ({
               </p>
             )}
             <button className="account-submit" disabled={busy}>
-              {busy ? t(language, 'sending') : t(language, 'sendCode')}
+              {busy ? t(language, 'sending') : 'Send sign-in email'}
             </button>
           </form>
         ) : (

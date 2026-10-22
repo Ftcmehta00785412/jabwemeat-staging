@@ -5,12 +5,13 @@ import { AccountPanel } from './components/AccountPanel';
 import { supabase } from './supabase';
 import './storefront/theme.css';
 import './storefront/account.css';
+import './auth/google.css';
 import './storefront/store.js';
 
 // The original, approved HTML theme owns the storefront; the existing account
 // component retains the same Supabase sign-in flow. Admin remains a separate app.
 function AccountBridge() {
-  const [open,setOpen]=useState(false);
+  const [open,setOpen]=useState(()=>new URLSearchParams(window.location.search).get('account')==='1'||new URLSearchParams(window.location.hash.slice(1)).has('error'));
   const [user,setUser]=useState<User|null>(null);
   useEffect(()=>{
     const show=()=>setOpen(true);
