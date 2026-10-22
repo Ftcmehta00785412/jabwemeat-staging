@@ -31,6 +31,7 @@ export default defineConfig({
         storefront: resolve(root, 'index.html'),
         faq: resolve(root, 'faq/index.html'),
         privacy: resolve(root, 'privacy-policy/index.html'),
+        certification: resolve(root, 'fssai-certification/index.html'),
         contact: resolve(root, 'contact/index.html'),
         admin: resolve(root, 'admin-dashboard/index.html'),
         checkout: resolve(root, 'checkout/index.html')
