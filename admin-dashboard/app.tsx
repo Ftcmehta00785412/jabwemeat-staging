@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { supabase } from './supabase';
 import './styles.css';
+import './original-theme.css';
 
 type Tab = 'Dashboard' | 'Orders' | 'Inventory' | 'Customers' | 'Abandoned Carts' | 'Invoices' | 'Delivery slots' | 'Team';
 type Area = Tab;
@@ -84,10 +85,10 @@ function AuthScreen({ message }: { message?: string }) {
     else getDeviceToken();
   };
 
-  return <div className="auth-shell"><div className="auth-card"><div className="auth-mark">J</div><span className="auth-kicker">JABWEMEAT · RANCHI OPERATIONS</span><h1>Admin console</h1><p>Sign in with the authorised email to manage the live staging store.</p>
+  return <div className="auth-shell"><div className="auth-card"><div className="auth-mark">J</div><span className="auth-kicker">JABWEMEAT · RANCHI OPERATIONS</span><h1>Admin console</h1><p>No password needed. Enter your authorised email to receive a one-time sign-in code.</p>
     {message && <div className="error-banner">{message}</div>}
     {sent ? <form onSubmit={verifyCode}><div className="sent-card"><Mail /><b>Check your inbox</b><span>Enter the 6-digit code sent to <strong>{normalizedEmail}</strong>.</span></div><label>Email verification code<input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required value={code} onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))} /></label>{error && <div className="error-banner">{error}</div>}<button className="primary wide" disabled={busy || code.length !== 6}>{busy ? 'Verifying…' : 'Verify code'}<ArrowUpRight /></button><button type="button" className="auth-secondary" disabled={busy || cooldown > 0} onClick={() => void sendCode()}>{cooldown > 0 ? `Resend code in ${cooldown}s` : 'Resend code'}</button><button type="button" className="auth-secondary" disabled={busy} onClick={() => { setSent(false); setCode(''); setError(''); }}>Use another email</button></form> : <form onSubmit={sendCode}><label>Administrator email<input type="email" required value={email} onChange={e => setEmail(e.target.value)} /></label>{error && <div className="error-banner">{error}</div>}<button className="primary wide" disabled={busy}>{busy ? 'Sending code…' : 'Send email code'}<ArrowUpRight /></button></form>}
-    <small className="auth-note">Only approved active team accounts can access this console.</small></div></div>;
+    <small className="auth-note">Only approved active team accounts can access this console.</small><a className="auth-store-link" href="/">← Back to JabWeMeat</a></div></div>;
 }
 
 function App() {

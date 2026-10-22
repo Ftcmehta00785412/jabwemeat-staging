@@ -1,0 +1,21 @@
+/* Existing account access, styled to the original JabWeMeat palette. */
+.footer-col .admin-link{font-size:11px;color:var(--paper);opacity:.8;line-height:1.5}
+.footer-col .admin-link:hover{opacity:1;text-decoration:underline}
+.account-backdrop{position:fixed;inset:0;z-index:70;background:#17271fd1;backdrop-filter:blur(3px);display:grid;place-items:center;padding:20px}
+.account-panel{position:relative;width:min(430px,100%);max-height:90dvh;overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:38px}
+.account-close{position:absolute;right:15px;top:15px;width:34px;height:34px;background:none;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center}
+.account-close svg{width:16px;height:16px}
+.account-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:50%;background:var(--pink);color:var(--primary);margin-bottom:20px}
+.account-eyebrow{font-size:9px;font-weight:700;letter-spacing:.14em;color:var(--primary)}
+.account-panel h2{font-size:33px;margin:10px 0 18px}
+.account-copy{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:20px}
+.account-panel label{display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:700;margin-top:18px}
+.account-panel input{min-height:44px;padding:11px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:13px;min-width:0}
+.account-submit{width:100%;margin-top:20px;min-height:44px;background:var(--primary);border:0;color:var(--surface);border-radius:6px;font-weight:700;font-size:12px}
+.account-submit:hover{background:var(--primary-hover)}
+.account-back{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:15px;background:none;border:0;font-size:11px;padding:8px}
+.account-back svg,.account-email svg{width:15px;height:15px}
+.account-email{display:flex;align-items:center;gap:8px;font-size:12px;margin:18px 0;overflow-wrap:anywhere}
+.account-error,.account-notice{font-size:11px;line-height:1.7;padding:10px 12px;border-radius:5px;margin-top:15px;background:var(--pink);color:var(--primary)}
+.account-notice{background:var(--green);color:var(--ink)}
+@media(max-width:620px){.footer-col .admin-link{font-size:10px}.account-panel{padding:30px 24px}}

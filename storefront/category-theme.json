@@ -1,0 +1,42 @@
+[
+  {
+    "id": "all",
+    "label": "Shop all",
+    "short": "All"
+  },
+  {
+    "id": "chicken",
+    "label": "Chicken",
+    "short": "Chicken",
+    "image": 0,
+    "note": "Your everyday favourites"
+  },
+  {
+    "id": "mutton",
+    "label": "Mutton",
+    "short": "Mutton",
+    "image": 1,
+    "note": "For the Sunday kind of meal"
+  },
+  {
+    "id": "seafood",
+    "label": "Fish & seafood",
+    "short": "Seafood",
+    "image": 2,
+    "note": "A little coastal inspiration"
+  },
+  {
+    "id": "ready",
+    "label": "Ready to cook",
+    "short": "Ready to cook",
+    "image": 4,
+    "note": "Bring a little more flavour"
+  },
+  {
+    "id": "eggs",
+    "label": "Eggs",
+    "short": "Eggs",
+    "image": 5,
+    "note": "Small beginnings, big possibilities"
+  }
+]

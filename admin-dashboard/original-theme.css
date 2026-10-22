@@ -1,0 +1,13 @@
+/* Shared brand palette only: preserve all admin functionality and access checks. */
+body{font-family:Arial,Helvetica,sans-serif;background:#f8f5ee;color:#253b32}
+.auth-shell,.loading-screen{background:#f8f5ee;color:#253b32}
+.auth-card{background:#fffdf9;border-color:#deded1;box-shadow:0 20px 60px #253b3212}
+.auth-mark{border:1px dashed #b83b2a;border-radius:50%;background:#f5e5dc;font:italic 32px Georgia,serif;color:#b83b2a}
+.auth-kicker{color:#b83b2a}
+.auth-card h1{font:400 36px Georgia,serif;letter-spacing:-.035em;color:#253b32}
+.auth-card>p,.auth-note{color:#656b61}
+.auth-card input{background:#f8f5ee;border-color:#deded1;font-size:12px}
+.auth-card input:focus{border-color:#b83b2a;box-shadow:0 0 0 3px #f5e5dc}
+.primary{background:#b83b2a}
+.primary:hover:not(:disabled){background:#922c1f}
+.auth-store-link{display:inline-block;margin-top:18px;font-size:11px;color:#b83b2a;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:3px}
