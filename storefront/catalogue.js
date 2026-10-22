@@ -40,12 +40,14 @@ export function connectCatalogue(onChange) {
         if(!id || !categories.some(item=>item.id===category) || !Number.isFinite(Number(row.price)))return null;
         return {
           id, category, name:String(row.name), description:String(row.description || 'Product description pending approval.'),
-          image:/prawn|shrimp/i.test(row.name) ? 3 : (theme?.image ?? 0),
+          image:category==='biryani' ? `biryani-${String(row.slug).startsWith('paneer-') ? 'paneer' : String(row.slug).startsWith('veg-') ? 'veg' : 'chicken'}` : /prawn|shrimp/i.test(row.name) ? 3 : (theme?.image ?? 0),
           tag:Number(row.stock)>0 ? (row.featured ? 'A HOUSE FAVOURITE' : 'ON THE MENU') : 'CURRENTLY SOLD OUT',
+          tagline:category==='biryani' ? String(row.description || '').split(' Served with ')[0] : '',
+          accompaniments:category==='biryani' ? 'Served with Raita, Pickle, Salad.' : '',
           detail:String(row.servings ? `Serves ${row.servings}` : 'Staging catalogue selection'),
           stock:Math.max(0,Math.floor(Number(row.stock)||0)),
           packs:[{label:String(row.weight || 'Configured pack'),price:Math.round(Number(row.price)*100)}],
-          idea:'Plan your favourite recipe around the listed cut. The imagery is a serving or category illustration.',
+          idea:category==='biryani' ? 'A meal for two, served with raita, pickle and salad.' : 'Plan your favourite recipe around the listed cut. The imagery is a serving or category illustration.',
           allergens:'Complete verified ingredients, allergen and cross-contact information must be provided before ordering opens.'
         };
       }).filter(Boolean);

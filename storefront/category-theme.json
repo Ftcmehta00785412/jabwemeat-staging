@@ -38,5 +38,12 @@
     "short": "Eggs",
     "image": 5,
     "note": "Small beginnings, big possibilities"
+  },
+  {
+    "id": "biryani",
+    "label": "Biryani",
+    "short": "Biryani",
+    "image": "biryani-chicken",
+    "note": "Big flavour. Made to share."
   }
 ]

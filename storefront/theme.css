@@ -29,3 +29,6 @@
 .faq-footer{padding-top:30px}
 .faq-footer>.container>p{font-size:12px;line-height:1.8;margin:14px 0 28px;opacity:.85}
 @media(max-width:600px){.faq-page .header-main{flex-wrap:nowrap;gap:12px}.faq-page .wordmark{font-size:27px}.faq-back{font-size:11px;padding:10px 12px;min-height:40px}.faq-page .faq-section{padding-block:35px 48px}.faq-page .faq-group h3{font-size:22px}.faq-page .faq-section h2{font-size:35px}}
+
+/* Biryani menu additions retain the original storefront typography. */
+.product-tagline,.product-accompaniments{font-size:10px;line-height:1.6;margin-top:7px;color:var(--muted)}.product-tagline{color:var(--ink)}.category-tiles{grid-template-columns:repeat(6,minmax(0,1fr))}.nav-inner{gap:clamp(15px,3vw,40px)}@media(max-width:620px){.product-tagline,.product-accompaniments{font-size:9px}.nav-inner{gap:24px}}
