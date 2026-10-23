@@ -11,6 +11,7 @@ import { supabase } from './supabase';
 import './styles.css';
 import './original-theme.css';
 import './operations-theme.css';
+import Invoices from './Invoices';
 import { signInWithGoogle, googleReturnError } from '../auth/google';
 import '../auth/google.css';
 
@@ -210,7 +211,7 @@ function App() {
         {tab === 'Inventory' && <Inventory products={products} categories={categories} onStock={(id: string, stock: number) => setProducts(rows => rows.map(p => p.id === id ? { ...p, stock } : p))} refresh={loadAll} editable={canEdit('Inventory')} />}
         {tab === 'Delivery slots' && <Slots slots={slots} onSaved={(slot: any) => setSlots(rows => rows.map(s => s.id === slot.id ? { ...s, ...slot } : s))} editable={canEdit('Delivery slots')} />}
         {tab === 'Team' && <Team members={team} refresh={loadAll} rolePermissions={rolePermissions} canManageRoles={role === 'Owner' || role === 'Admin'} canManageTeam={role === 'Owner' || role === 'Admin'} onPermissionsSaved={editRolePermissions} />}
-        {tab === 'Customers' && <Customers />}{tab === 'Abandoned Carts' && <AbandonedCarts carts={carts} refresh={loadAll} editable={canEdit('Abandoned Carts')} />}{tab === 'Invoices' && <Upcoming title="Invoices" />}
+        {tab === 'Customers' && <Customers />}{tab === 'Abandoned Carts' && <AbandonedCarts carts={carts} refresh={loadAll} editable={canEdit('Abandoned Carts')} />}{tab === 'Invoices' && <Invoices orders={orders} editable={canEdit('Invoices')} />}
       </section></main></div>;
 }
 
