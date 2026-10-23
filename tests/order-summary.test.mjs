@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {historicalOrderSummary} from '../documents/order-summary.js';
+const order={id:'fixture',order_number:'DEMO-LEGACY',created_at:'2026-09-14T02:21:02Z',subtotal:540,discount:100,delivery_charge:0,total:440,gst_rate:null,gst_amount:null,payment_method:'COD',status:'delivered'};
+const items=[{sku:'SAMPLE',product_name:'Sample product',quantity:3,unit_price:180,line_total:540}];
+test('historical PDF retains original amounts and GSTIN without manufacturing tax or an invoice number',()=>{const r=historicalOrderSummary(order,items);assert.equal(r.document_type,'order_summary');assert.equal(r.snapshot.totals.total,440);assert.equal(r.snapshot.totals.discount,100);assert.equal(r.snapshot.totals.gst_amount,null);assert.equal(r.snapshot.supplier.gstin,'20AAJFU1454F1ZJ');assert.equal(r.invoice_number,undefined);assert.equal(order.invoice_number,undefined);});
+test('inconsistent historical totals are rejected instead of edited',()=>{assert.throws(()=>historicalOrderSummary({...order,total:500},items),/needs review/);assert.throws(()=>historicalOrderSummary(order,[]),/saved order items/);});
