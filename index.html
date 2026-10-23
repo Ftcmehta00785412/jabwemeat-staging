@@ -11,6 +11,8 @@
   <link rel="preload" as="image" href="/assets/original-theme/hero.webp">
 
   <script type="module" src="/app.tsx"></script>
+  <link rel="stylesheet" href="/storefront/chicken-banner.css">
+  <script type="module" src="/storefront/chicken-banner.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#catalogue">Skip to products</a>
@@ -35,6 +37,23 @@
         <div class="hero-note"><span class="mini-heart" data-icon="heart"></span><span>For the love of food. And the people you share it with.</span></div>
       </div>
       <div class="hero-visual"><img src="/assets/original-theme/hero.webp" width="1400" height="933" alt="Illustrative serving suggestion: tandoori chicken with lime and onion on a green plate" fetchpriority="high"><div class="hero-stamp" aria-hidden="true"><span>LET’S MAKE IT</span><strong>a meat-cute.</strong><span>JABWEMEAT<sup class="brand-tm" aria-label="trademark">™</sup></span></div><div class="image-caption">Serving suggestion · illustrative image</div></div>
+    </section>
+
+    <section class="container chicken-clock-section" id="chicken-clock-banner" aria-labelledby="chicken-clock-title">
+      <div class="chicken-clock-card">
+        <div class="chicken-clock-copy">
+          <a href="/" class="wordmark chicken-clock-brand" aria-label="JabWeMeat home">Jab<span>We</span>Meat<sup class="brand-tm" aria-label="trademark">™</sup><span class="brand-dot">.</span></a>
+          <p class="eyebrow">A MATCH MADE IN YOUR KITCHEN</p>
+          <h2 id="chicken-clock-title">Good times.<br><em>Chicken time.</em></h2>
+          <p class="chicken-clock-description">From everyday curries to weekend feasts,<br class="chicken-clock-desktop-break"> make room for your favourites.</p>
+          <button class="btn btn-primary" data-action="category" data-category="chicken">Shop chicken <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="chicken-clock-media">
+          <video id="chicken-clock-video" muted loop playsinline preload="none" poster="/assets/original-theme/chicken-clock-poster.webp" data-src="/assets/original-theme/chicken-clock-banner.mp4" aria-label="Animated serving suggestion showing a chicken dinner inside a ticking clock"></video>
+          <button class="chicken-clock-toggle" type="button" aria-controls="chicken-clock-video" aria-label="Play banner animation">Play animation</button>
+          <span class="chicken-clock-caption">Serving inspiration</span>
+        </div>
+      </div>
     </section>
     <div class="occasion-strip container" aria-label="Meal inspiration"><span><span data-icon="sun"></span> Everyday cravings</span><span class="strip-divider"></span><span><span data-icon="flame"></span> Weekend feasts</span><span class="strip-divider"></span><span><span data-icon="heart"></span> Moments worth sharing</span></div>
     <section class="section container categories-section" id="categories" aria-labelledby="categories-title"><div class="section-heading"><div><p class="eyebrow">FOLLOW YOUR APPETITE</p><h2 id="categories-title">What’s your type?</h2></div><p>A little something for every kind of cook.</p></div><div class="category-tiles" id="category-tiles"></div></section>

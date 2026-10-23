@@ -1,0 +1,14 @@
+.chicken-clock-section{margin-top:34px;margin-bottom:34px}
+.chicken-clock-card{display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden;border-radius:26px;background:#f3e9e8;border:1px solid rgba(45,67,47,.09)}
+.chicken-clock-copy{padding:44px 28px 44px 52px;align-self:center}
+.chicken-clock-copy .chicken-clock-brand{display:inline-block;font-size:32px;margin-bottom:22px}
+.chicken-clock-copy .eyebrow{font-size:10px;letter-spacing:.16em;margin-bottom:14px}
+.chicken-clock-copy h2{font-family:Georgia,'Times New Roman',serif;font-size:clamp(36px,4.3vw,62px);font-weight:500;line-height:1.04;letter-spacing:-.035em;margin:0 0 18px;color:#263c2d}
+.chicken-clock-copy h2 em{color:#a94d38;font-weight:500}
+.chicken-clock-description{font-size:15px;line-height:1.7;color:#505b4d;margin:0 0 24px}
+.chicken-clock-media{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;background:#f3e9e8}
+.chicken-clock-media video{display:block;width:100%;max-height:480px;aspect-ratio:1;object-fit:contain}
+.chicken-clock-toggle{position:absolute;right:16px;bottom:16px;z-index:1;border:1px solid #d2c6c3;background:#fff9f0ed;border-radius:30px;padding:9px 13px;color:#263c2d;font:inherit;font-size:11px;cursor:pointer}
+.chicken-clock-toggle:focus-visible{outline:3px solid #a94d38;outline-offset:3px}
+.chicken-clock-caption{position:absolute;left:16px;bottom:20px;font-size:10px;color:#59564f}
+@media(max-width:680px){.chicken-clock-section{margin-top:22px;margin-bottom:22px}.chicken-clock-card{grid-template-columns:1fr;border-radius:20px}.chicken-clock-copy{padding:30px 26px 14px}.chicken-clock-copy .chicken-clock-brand{font-size:29px;margin-bottom:18px}.chicken-clock-copy h2{font-size:43px}.chicken-clock-description{font-size:14px}.chicken-clock-media{padding:0 12px 16px}.chicken-clock-media video{max-height:355px}.chicken-clock-toggle{bottom:22px}.chicken-clock-caption{bottom:27px;left:22px}.chicken-clock-desktop-break{display:none}}
