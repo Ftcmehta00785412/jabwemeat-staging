@@ -1,0 +1,6 @@
+.whatsapp-contact{position:fixed;right:24px;bottom:24px;z-index:90;display:flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:50%;background:#128c4a;color:#fff;box-shadow:0 4px 18px #163c2930;border:2px solid #fff;text-decoration:none;transition:background .18s,box-shadow .18s}
+.whatsapp-contact:hover{background:#0e733d;box-shadow:0 5px 22px #163c2945}
+.whatsapp-contact:focus-visible{outline:3px solid #c65f3b;outline-offset:4px}
+.whatsapp-contact svg{display:block;flex-shrink:0}
+@media(max-width:700px){.whatsapp-contact{right:16px;bottom:calc(22px + env(safe-area-inset-bottom,0px));width:54px;height:54px}body:has(#mobile-bag:not([hidden])) .whatsapp-contact{bottom:calc(90px + env(safe-area-inset-bottom,0px))}}
+@media(prefers-reduced-motion:reduce){.whatsapp-contact{transition:none}}
