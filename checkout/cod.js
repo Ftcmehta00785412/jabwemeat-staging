@@ -1,6 +1,7 @@
 import './payment.css';
 import './cod.css';
 import {supabase} from '../supabase';
+import {checkoutContact} from './contact.js';
 import {connectCatalogue,calculateBag,catalogue,formatMoney} from '../storefront/catalogue.js';
 const $=s=>document.querySelector(s);
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -36,11 +37,15 @@ function renderSlots(){
  $('#slot').value=slots.some(s=>s.id===previous)?previous:'';
 }
 $('#delivery-date').addEventListener('change',renderSlots);
+const contactFields={name:$('#customer-name'),email:$('#email'),mobile:$('#mobile')};
+for(const field of Object.values(contactFields))field.addEventListener('input',()=>field.setCustomValidity(''));
 $('#checkout-form').addEventListener('submit',async event=>{
  event.preventDefault();if(busy||done||$('#place-order').disabled)return;
+ const {contact,errors}=checkoutContact(Object.fromEntries(Object.entries(contactFields).map(([key,field])=>[key,field.value])));
+ for(const [key,field] of Object.entries(contactFields))field.setCustomValidity(errors[key]||'');
  const form=event.target;if(!form.reportValidity())return;
  if($('#website').value)return;
- const payload={p_session_key:'',p_customer_name:$('#customer-name').value.trim(),p_email:$('#email').value.trim().toLowerCase(),p_mobile:$('#mobile').value.trim(),p_address:{line1:$('#address').value.trim(),line2:$('#address2').value.trim(),city:'Ranchi',state:'Jharkhand'},p_pincode:$('#pincode').value,p_delivery_date:$('#delivery-date').value,p_slot_id:$('#slot').value,p_items:bag.map(x=>({product_id:x.id,quantity:x.quantity})),p_notes:null,p_expected_total:(priced.subtotal+Math.round(priced.subtotal*.18))/100};
+ const payload={p_session_key:'',p_customer_name:contact.name,p_email:contact.email,p_mobile:contact.mobile,p_address:{line1:$('#address').value.trim(),line2:$('#address2').value.trim(),city:'Ranchi',state:'Jharkhand'},p_pincode:$('#pincode').value,p_delivery_date:$('#delivery-date').value,p_slot_id:$('#slot').value,p_items:bag.map(x=>({product_id:x.id,quantity:x.quantity})),p_notes:null,p_expected_total:(priced.subtotal+Math.round(priced.subtotal*.18))/100};
  busy=true;controls();notice('Checking availability and saving your COD order. Please do not close this page.');
  try{
   const fingerprint=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(payload))))).map(x=>x.toString(16).padStart(2,'0')).join('');
