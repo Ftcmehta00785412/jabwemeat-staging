@@ -1,0 +1,17 @@
+.home-banner-slider{padding-top:24px;padding-bottom:14px;outline-offset:4px}
+.home-banner-stage{display:grid;isolation:isolate}
+.home-banner-stage>.banner-slide{grid-area:1/1;width:100%;margin:0;min-width:0;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .45s ease;align-self:stretch}
+.home-banner-stage>.banner-slide.is-active{visibility:visible;opacity:1;pointer-events:auto;z-index:1}
+.home-banner-stage>.hero{padding-top:0;padding-bottom:0;min-height:460px}
+.home-banner-stage .chicken-clock-card{height:100%;min-height:460px}
+.home-banner-stage .chicken-clock-media video{max-height:460px}
+.home-banner-controls{display:flex;align-items:center;justify-content:center;gap:16px;padding-top:14px}
+.banner-arrow{border:1px solid #d7d9ce;border-radius:50%;height:36px;width:36px;background:#fbf8f1;color:#263c2d;font-size:19px;display:grid;place-items:center}
+.banner-arrow:hover{background:#eee9de}.banner-dots{display:flex;gap:8px;align-items:center}
+.banner-dot{width:28px;height:36px;border:0;padding:0;background:transparent;position:relative}
+.banner-dot:after{content:"";display:block;width:9px;height:9px;border-radius:20px;background:#c5c6b9;margin:auto;transition:width .2s,background .2s}
+.banner-dot[aria-current=true]:after{width:23px;background:#b63b28}
+.banner-autoplay{font:inherit;font-size:11px;color:#52614e;background:transparent;border:0;text-decoration:underline;text-underline-offset:3px;padding:10px 4px}
+.banner-sr-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:680px){.home-banner-slider{padding-top:20px;padding-bottom:6px}.home-banner-stage>.hero{padding:0;grid-template-rows:auto 280px;align-content:space-between;gap:20px;min-height:640px}.home-banner-stage .chicken-clock-card{min-height:640px;grid-template-rows:auto 300px}.home-banner-stage .chicken-clock-copy{padding:26px 24px 10px}.home-banner-stage .chicken-clock-copy h2{font-size:43px}.home-banner-stage .chicken-clock-media video{max-height:290px}.home-banner-stage .chicken-clock-media{padding-bottom:12px}.home-banner-controls{gap:12px;padding-top:10px}.banner-autoplay{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.home-banner-stage>.banner-slide,.banner-dot:after{transition:none}}

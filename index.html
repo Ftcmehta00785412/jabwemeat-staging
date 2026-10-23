@@ -13,6 +13,8 @@
   <script type="module" src="/app.tsx"></script>
   <link rel="stylesheet" href="/storefront/chicken-banner.css">
   <script type="module" src="/storefront/chicken-banner.js"></script>
+  <link rel="stylesheet" href="/storefront/banner-slider.css">
+  <script type="module" src="/storefront/banner-slider.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#catalogue">Skip to products</a>
@@ -28,7 +30,8 @@
     <nav class="category-nav" aria-label="Shop by category"><div class="container nav-inner" id="top-categories"></div></nav>
   </header>
   <main>
-    <section class="hero container" aria-labelledby="hero-title">
+    <div class="home-banner-slider container" id="home-banner-slider" role="region" aria-roledescription="carousel" aria-label="JabWeMeat highlights" tabindex="0">
+      <div class="home-banner-stage"><section class="hero container banner-slide is-active" id="home-slide-1" role="group" aria-roledescription="slide" aria-label="1 of 2" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow"><span class="tiny-star" aria-hidden="true">✳</span> A MATCH MADE IN YOUR KITCHEN</p>
         <h1 id="hero-title">When good food<br> meets <em>good mood.</em></h1>
@@ -38,8 +41,7 @@
       </div>
       <div class="hero-visual"><img src="/assets/original-theme/hero.webp" width="1400" height="933" alt="Illustrative serving suggestion: tandoori chicken with lime and onion on a green plate" fetchpriority="high"><div class="hero-stamp" aria-hidden="true"><span>LET’S MAKE IT</span><strong>a meat-cute.</strong><span>JABWEMEAT<sup class="brand-tm" aria-label="trademark">™</sup></span></div><div class="image-caption">Serving suggestion · illustrative image</div></div>
     </section>
-
-    <section class="container chicken-clock-section" id="chicken-clock-banner" aria-labelledby="chicken-clock-title">
+<section class="container chicken-clock-section banner-slide" role="group" aria-roledescription="slide" aria-label="2 of 2" aria-hidden="true" inert id="chicken-clock-banner" aria-labelledby="chicken-clock-title">
       <div class="chicken-clock-card">
         <div class="chicken-clock-copy">
           <a href="/" class="wordmark chicken-clock-brand" aria-label="JabWeMeat home">Jab<span>We</span>Meat<sup class="brand-tm" aria-label="trademark">™</sup><span class="brand-dot">.</span></a>
@@ -54,7 +56,15 @@
           <span class="chicken-clock-caption">Serving inspiration</span>
         </div>
       </div>
-    </section>
+    </section></div>
+      <div class="home-banner-controls">
+        <button type="button" class="banner-arrow" data-slide-prev aria-label="Previous banner">←</button>
+        <div class="banner-dots" role="group" aria-label="Choose banner"><button type="button" class="banner-dot" data-slide-to="0" aria-label="Show banner 1: Good food, good mood" aria-current="true"></button><button type="button" class="banner-dot" data-slide-to="1" aria-label="Show banner 2: Chicken time"></button></div>
+        <button type="button" class="banner-arrow" data-slide-next aria-label="Next banner">→</button>
+        <button type="button" class="banner-autoplay" aria-label="Pause automatic banner rotation" aria-pressed="false">Pause slides</button>
+        <span class="banner-sr-status" role="status" aria-live="polite"></span>
+      </div>
+    </div>
     <div class="occasion-strip container" aria-label="Meal inspiration"><span><span data-icon="sun"></span> Everyday cravings</span><span class="strip-divider"></span><span><span data-icon="flame"></span> Weekend feasts</span><span class="strip-divider"></span><span><span data-icon="heart"></span> Moments worth sharing</span></div>
     <section class="section container categories-section" id="categories" aria-labelledby="categories-title"><div class="section-heading"><div><p class="eyebrow">FOLLOW YOUR APPETITE</p><h2 id="categories-title">What’s your type?</h2></div><p>A little something for every kind of cook.</p></div><div class="category-tiles" id="category-tiles"></div></section>
     <section class="section catalogue-section" id="catalogue" aria-labelledby="catalogue-title"><div class="container"><div class="section-heading"><div><p class="eyebrow">GOOD TASTE STARTS HERE</p><h2 id="catalogue-title">Meet the menu.</h2></div><span class="badge sample-badge" id="catalogue-badge">Product catalogue</span></div><div class="catalogue-controls"><div class="filter-chips" id="filter-chips" role="group" aria-label="Product category filters"></div><label class="sort-label" for="sort">Sort by <select class="select" id="sort"><option value="featured">Featured</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="name">Name: A–Z</option></select></label></div><p class="results-line" id="results-line" aria-live="polite"></p><div class="product-grid" id="product-grid"></div><p class="catalogue-footnote">Images are illustrative serving suggestions and may not represent the contents of a product pack.</p></div></section>
