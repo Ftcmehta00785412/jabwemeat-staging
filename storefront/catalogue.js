@@ -3,7 +3,7 @@ import { supabase } from '../supabase';
 
 export const categories = themeCategories.map(category => ({ ...category }));
 export const products = [];
-export const catalogue = { live: false, loading: true, pins: [], slots: [] };
+export const catalogue = { live: false, loading: true, orderingEnabled: false, pins: [], slots: [] };
 const categoryId = slug => ({ 'fish-seafood':'seafood', 'ready-to-cook':'ready' }[slug] || slug);
 const safeId = value => /^[a-zA-Z0-9-]{1,100}$/.test(String(value)) ? String(value) : null;
 export const formatMoney = paise => new Intl.NumberFormat('en-IN', { style:'currency', currency:'INR', maximumFractionDigits:2 }).format(paise / 100);
@@ -22,7 +22,7 @@ export function connectCatalogue(onChange) {
       const [p,c,s,settings]=await Promise.all([
         supabase.from('products').select('*,categories(name,slug)').eq('active',true).order('created_at').abortSignal(signal),
         supabase.from('categories').select('name,slug').eq('active',true).order('sort_order').abortSignal(signal),
-        supabase.from('delivery_slots').select('id,label').eq('active',true).order('sort_order').abortSignal(signal),
+        supabase.from('delivery_slots').select('id,label,start_time,end_time').eq('active',true).order('sort_order').abortSignal(signal),
         supabase.from('store_settings').select('key,value').abortSignal(signal)
       ]);
       if(version!==request)return;
@@ -45,17 +45,18 @@ export function connectCatalogue(onChange) {
           tag:Number(row.stock)>0 ? (row.featured ? 'A HOUSE FAVOURITE' : 'ON THE MENU') : 'CURRENTLY SOLD OUT',
           tagline:category==='biryani' ? String(row.description || '').split(' Served with ')[0] : '',
           accompaniments:category==='biryani' ? 'Served with Raita, Pickle, Salad.' : '',
-          detail:String(row.servings ? `Serves ${row.servings}` : 'Staging catalogue selection'),
+          detail:String(row.servings ? `Serves ${row.servings}` : 'Product selection'),
           stock:Math.max(0,Math.floor(Number(row.stock)||0)),
           packs:[{label:String(row.weight || 'Configured pack'),price:Math.round(Number(row.price)*100)}],
           idea:category==='biryani' ? 'A meal for two, served with raita, pickle and salad.' : 'Plan your favourite recipe around the listed cut. The imagery is a serving or category illustration.',
-          allergens:'Complete verified ingredients, allergen and cross-contact information must be provided before ordering opens.'
+          allergens:'For ingredient, allergen or cross-contact questions, contact our team before placing your order.'
         };
       }).filter(Boolean);
       products.splice(0,products.length,...liveProducts);
       const pins=(settings.data||[]).find(row=>row.key==='serviceable_pins')?.value;
       catalogue.pins=Array.isArray(pins) ? pins.map(String).filter(pin=>/^[1-9]\d{5}$/.test(pin)) : [];
       catalogue.slots=s.data||[];
+      catalogue.orderingEnabled=(settings.data||[]).find(row=>row.key==='ordering_enabled')?.value===true;
       catalogue.live=true;
     } catch(error) {
       if(version!==request)return;
